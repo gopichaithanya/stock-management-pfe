@@ -2,10 +2,23 @@ package com.pfe.server.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+@Entity
+@Table(name = "Products")
 public class Product {
 
-	private int id;
+	private UUID id;
 	private ProductType productType;
 	private BigDecimal unitPrice;
 	private int quantity;
@@ -13,14 +26,20 @@ public class Product {
 	private Boolean sold;
 	private Date created;
 
-	public int getId() {
+	@Id
+	@Type(type = "pg-uuid")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
+	@ManyToOne
+	@JoinColumn(name="type_id")
 	public ProductType getProductType() {
 		return productType;
 	}
@@ -45,6 +64,8 @@ public class Product {
 		this.quantity = quantity;
 	}
 
+	@ManyToOne
+	@JoinColumn(name="location_id")
 	public Location getLocation() {
 		return location;
 	}
