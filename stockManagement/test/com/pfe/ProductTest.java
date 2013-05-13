@@ -23,9 +23,9 @@ public class ProductTest {
 
 		Date date = Calendar.getInstance().getTime();
 		Product p = new Product();
-		p.setQuantity(10);
+		p.setQuantity(100);
 		p.setSold(false);
-		p.setUnitPrice(new BigDecimal(10));
+		p.setUnitPrice(new BigDecimal(12));
 		p.setCreated(date);
 
 		Session session = HibernateUtil.getSessionFactory().openSession();

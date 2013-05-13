@@ -15,14 +15,14 @@ public class LocationTypeTest {
 	@Test
 	public void createTypeTest() {
 		LocationType ltype = new LocationType();
-		ltype.setDescription("test type");
+		ltype.setDescription("warehouse");
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		session.save(ltype);
 		transaction.commit();
 		
 		LocationType type = (LocationType) session.createCriteria(LocationType.class).add(
-				Restrictions.eq("description","test type")).uniqueResult();
+				Restrictions.eq("description","warehouse")).uniqueResult();
 		session.close();
 		assertTrue(type != null);
 	}
