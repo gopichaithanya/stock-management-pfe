@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -65,7 +66,7 @@ public class Invoice {
 		this.paymentType = paymentType;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
 	public List<Product> getProducts() {
 		return products;
 	}

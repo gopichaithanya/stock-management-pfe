@@ -25,9 +25,10 @@ public final class LocationTest {
 		session.save(location);
 		transaction.commit();
 
-		LocationType retrieved = (LocationType) session.createCriteria(LocationType.class).add(
+		Location retrieved = (Location) session.createCriteria(Location.class).add(
 				Restrictions.eq("name","Location test")).uniqueResult();
 		assertTrue(retrieved != null);
 		session.close();
 	}
+	
 }

@@ -26,6 +26,8 @@
 		<mapping class="com.pfe.server.model.LocationType" />
 		<mapping class="com.pfe.server.model.Location" />
 		<mapping class="com.pfe.server.model.Product" />
+		<mapping class="com.pfe.server.model.Supplier" />
+		<mapping class="com.pfe.server.model.Invoice" />
 
 	</session-factory>
 
