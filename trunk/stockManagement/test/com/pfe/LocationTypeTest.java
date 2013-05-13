@@ -26,4 +26,5 @@ public class LocationTypeTest {
 		session.close();
 		assertTrue(type != null);
 	}
+	
 }

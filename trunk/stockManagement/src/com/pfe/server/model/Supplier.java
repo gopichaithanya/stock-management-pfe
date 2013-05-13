@@ -50,7 +50,7 @@ public class Supplier {
 		this.description = description;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "supplier")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
 	public List<Invoice> getInvoices() {
 		return invoices;
 	}
