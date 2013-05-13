@@ -25,6 +25,7 @@ public class Product {
 	private Location location;
 	private Boolean sold;
 	private Date created;
+	private Invoice invoice;
 
 	@Id
 	@Type(type = "pg-uuid")
@@ -88,6 +89,16 @@ public class Product {
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	@ManyToOne
+	@JoinColumn(name="invoice_id")
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 	}
 
 }

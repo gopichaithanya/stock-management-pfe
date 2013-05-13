@@ -21,17 +21,17 @@ public final class LocationTest {
 //	@Test
 //	public void createLocationTest() {
 //		Location location = new Location();
-//		location.setName("Location test");
+//		location.setName("Location 2");
 //		Session session = HibernateUtil.getSessionFactory().openSession();
 //		Transaction transaction = session.beginTransaction();
 //		LocationType type = (LocationType) session.createCriteria(LocationType.class).add(
-//				Restrictions.eq("description","warehouse")).uniqueResult();
+//				Restrictions.eq("description","store")).uniqueResult();
 //		location.setType(type);
 //		session.save(location);
 //		transaction.commit();
 //
 //		Location retrieved = (Location) session.createCriteria(Location.class).add(
-//				Restrictions.eq("name","Location test")).uniqueResult();
+//				Restrictions.eq("name","Location 2")).uniqueResult();
 //		assertTrue(retrieved != null);
 //		session.close();
 //	}
