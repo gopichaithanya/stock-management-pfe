@@ -6,7 +6,7 @@ public class StockManagement implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		// TODO Auto-generated method stub
+		System.out.println("test");
 
 	}
 
