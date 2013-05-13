@@ -1,12 +1,16 @@
 package com.pfe.server.model;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -19,6 +23,7 @@ public class Location {
 	private UUID id;
 	private String name;
 	private LocationType type;
+	private List<Product> products;
 
 	@Id
 	@Type(type = "pg-uuid")
@@ -48,6 +53,16 @@ public class Location {
 
 	public void setType(LocationType type) {
 		this.type = type;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+	@OrderBy("created")
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 }
