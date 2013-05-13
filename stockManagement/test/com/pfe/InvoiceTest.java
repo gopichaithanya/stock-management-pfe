@@ -27,17 +27,17 @@ public class InvoiceTest {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		Invoice i = new Invoice();
-		i.setCode(1);
 		i.setPaymentType("immediate");
 		i.setRestToPay(new BigDecimal(0));
+		i.setCode(1);
 		
 		//create new products
 		List<Product> products = new ArrayList<Product>();
 		Date date = Calendar.getInstance().getTime();
 		Product p = new Product();
-		p.setQuantity(100);
+		p.setQuantity(10);
 		p.setSold(false);
-		p.setUnitPrice(new BigDecimal(102));
+		p.setUnitPrice(new BigDecimal(10));
 		p.setCreated(date);
 		ProductType type = (ProductType) session
 				.createCriteria(ProductType.class)
@@ -50,6 +50,7 @@ public class InvoiceTest {
 		criteria.add(locName);
 		Location location = (Location) criteria.uniqueResult();
 		p.setLocation(location);
+		p.setInvoice(i);
 		
 		//add products to invoice
 		products.add(p);
@@ -66,20 +67,5 @@ public class InvoiceTest {
 		transaction.commit();
 		session.close();
 	}
-	
-//	@Test
-//	public void deleteInvoice(){
-//		Session session = HibernateUtil.getSessionFactory().openSession();
-//		Transaction transaction = session.beginTransaction();
-//		
-//		Criteria criteria = session.createCriteria(Invoice.class);
-//		Criterion id = Restrictions.eq("code", 1);
-//		criteria.add(id);
-//		Invoice i = (Invoice) criteria.uniqueResult();
-//		
-//		session.delete(i);
-//		transaction.commit();
-//		session.close();
-//	}
 
 }
