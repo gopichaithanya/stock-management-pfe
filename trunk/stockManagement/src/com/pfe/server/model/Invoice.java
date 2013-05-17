@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -50,7 +51,7 @@ public class Invoice {
 	}
 
 	@ManyToOne
-	@JoinColumn(name="supplier_id")
+	@JoinColumn(name = "supplier_id")
 	public Supplier getSupplier() {
 		return supplier;
 	}
@@ -67,7 +68,6 @@ public class Invoice {
 		this.paymentType = paymentType;
 	}
 
-
 	public BigDecimal getRestToPay() {
 		return restToPay;
 	}
@@ -76,7 +76,7 @@ public class Invoice {
 		this.restToPay = restToPay;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice", cascade = CascadeType.ALL)
 	public List<Shipment> getShipments() {
 		return shipments;
 	}

@@ -3,6 +3,7 @@ package com.pfe.server.model;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class Location {
 		this.type = type;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public List<Stock> getStocks() {
 		return stocks;
 	}
@@ -62,6 +63,28 @@ public class Location {
 	public void setStocks(List<Stock> stocks) {
 		this.stocks = stocks;
 	}
-
+	
+	/**
+	 * Returns stock by product type
+	 * 
+	 * @param pType
+	 * @return
+	 */
+	public Stock getStockByType(ProductType pType){
+		int i = 0;
+		Boolean found = false;
+		int size = stocks.size();
+		Stock s = null;
+		
+		while(!found && i < size){
+			Stock currentStock = stocks.get(i);
+			if(currentStock.getType().getId().equals(pType.getId())){
+				found = true;
+				s = currentStock;
+			}
+			i++;
+		}
+		return s;
+	}
 
 }
