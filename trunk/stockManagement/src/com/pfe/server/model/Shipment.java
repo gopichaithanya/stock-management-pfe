@@ -15,15 +15,15 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "Products")
-public class Product {
+@Table(name = "Shipments")
+public class Shipment {
 
 	private UUID id;
 	private ProductType productType;
 	private BigDecimal unitPrice;
-	private int quantity;
-	private Location location;
-	private Boolean sold;
+	private int initialQuantity;
+	private int currentQuantity;
+	private Boolean paid;
 	private Date created;
 	private Invoice invoice;
 
@@ -57,32 +57,6 @@ public class Product {
 		this.unitPrice = unitPrice;
 	}
 
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	@ManyToOne
-	@JoinColumn(name="location_id")
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	public Boolean getSold() {
-		return sold;
-	}
-
-	public void setSold(Boolean sold) {
-		this.sold = sold;
-	}
-
 	public Date getCreated() {
 		return created;
 	}
@@ -99,6 +73,30 @@ public class Product {
 
 	public void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
+	}
+
+	public int getInitialQuantity() {
+		return initialQuantity;
+	}
+
+	public void setInitialQuantity(int initialQuantity) {
+		this.initialQuantity = initialQuantity;
+	}
+
+	public int getCurrentQuantity() {
+		return currentQuantity;
+	}
+
+	public void setCurrentQuantity(int currentQuantity) {
+		this.currentQuantity = currentQuantity;
+	}
+
+	public Boolean getPaid() {
+		return paid;
+	}
+
+	public void setPaid(Boolean paid) {
+		this.paid = paid;
 	}
 
 }

@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -23,7 +22,7 @@ public class Location {
 	private UUID id;
 	private String name;
 	private LocationType type;
-	private List<Product> products;
+	private List<Stock> stocks;
 
 	@Id
 	@Type(type = "pg-uuid")
@@ -55,14 +54,14 @@ public class Location {
 		this.type = type;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
-	@OrderBy("created")
-	public List<Product> getProducts() {
-		return products;
+	@OneToMany(fetch = FetchType.EAGER)
+	public List<Stock> getStocks() {
+		return stocks;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setStocks(List<Stock> stocks) {
+		this.stocks = stocks;
 	}
+
 
 }
