@@ -1,7 +1,5 @@
 package com.pfe;
 
-import static org.junit.Assert.assertTrue;
-
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -25,8 +23,8 @@ public class ProductTypeTest {
         HibernateTemplate ht = new HibernateTemplate(sf);
 		
 		ProductType type = new ProductType();
-		type.setName("test type");
-		type.setDescription("description");
+		type.setName("pen");
+		type.setDescription("pen description");
 		ht.saveOrUpdate(type);
 
 	}
