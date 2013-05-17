@@ -1,10 +1,10 @@
 package com.pfe.server.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,8 +25,9 @@ public class Invoice {
 	private int code;
 	private Supplier supplier;
 	private String paymentType;
-	private List<Product> products;
+	private List<Shipment> shipments;
 	private BigDecimal restToPay;
+	private Date created;
 
 	@Id
 	@Type(type = "pg-uuid")
@@ -66,14 +67,6 @@ public class Invoice {
 		this.paymentType = paymentType;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
 
 	public BigDecimal getRestToPay() {
 		return restToPay;
@@ -81,6 +74,23 @@ public class Invoice {
 
 	public void setRestToPay(BigDecimal restToPay) {
 		this.restToPay = restToPay;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice")
+	public List<Shipment> getShipments() {
+		return shipments;
+	}
+
+	public void setShipments(List<Shipment> shipments) {
+		this.shipments = shipments;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 }

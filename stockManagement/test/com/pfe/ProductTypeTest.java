@@ -2,34 +2,32 @@ package com.pfe;
 
 import static org.junit.Assert.assertTrue;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.SessionFactory;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.pfe.server.model.HibernateUtil;
 import com.pfe.server.model.ProductType;
 
 public class ProductTypeTest {
 
 	@Test
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void createTypeTest() {
+		
+		ApplicationContext context=new ClassPathXmlApplicationContext
+				("db-config.xml");  
+        
+        SessionFactory sf=(SessionFactory)context.getBean("sessionFactory");
+        HibernateTemplate ht = new HibernateTemplate(sf);
+		
 		ProductType type = new ProductType();
 		type.setName("test type");
 		type.setDescription("description");
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		session.save(type);
-		transaction.commit();
+		ht.saveOrUpdate(type);
 
-		ProductType retrieved = (ProductType) session.createCriteria(ProductType.class).add(
-				Restrictions.eq("name","test type")).uniqueResult();
-		assertTrue(retrieved != null);
-		
-		transaction = session.beginTransaction();
-		session.delete(retrieved);
-		transaction.commit();
-		session.close();
 	}
-	
 }
