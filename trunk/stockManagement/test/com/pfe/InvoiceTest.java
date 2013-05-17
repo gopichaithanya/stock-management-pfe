@@ -37,7 +37,7 @@ public class InvoiceTest {
 		//Invoice attributes 
 		Invoice i = new Invoice();
 		Date date = Calendar.getInstance().getTime();
-		i.setCode(100);
+		i.setCode(20);
 		i.setCreated(date);
 		i.setPaymentType("onSale");
 		i.setRestToPay(new BigDecimal(0));
@@ -55,6 +55,7 @@ public class InvoiceTest {
 				.find("from ProductType pt where pt.name = 'pen'");
 		ProductType type = types.get(0);
 		s1.setProductType(type);
+		s1.setInvoice(i);
 		shipments.add(s1);
 		i.setShipments(shipments);
 		
@@ -92,7 +93,34 @@ public class InvoiceTest {
 				"db-config.xml");
 		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
 		HibernateTemplate ht = new HibernateTemplate(sf);
-		//TODO finish this
 		
+		//Get the warehouse
+		List<Location> locations = ht
+				.find("from Location l where l.name = 'Main warehouse'");
+		Location warehouse = locations.get(0);
+		
+		//Get invoice to delete
+		List<Invoice> list = ht.find("from Invoice i where i.code = 20");
+		Invoice i = list.get(0);
+		
+		List<Shipment> shipments = i.getShipments();
+		for(Shipment s : shipments){
+			ProductType pType = s.getProductType();
+			int qty = s.getCurrentQuantity();
+			Stock warehouseStock = warehouse.getStockByType(pType);
+			if(warehouseStock == null){
+				//can't delete ---> rollback everything
+			} else{
+				int warehouseQty = warehouseStock.getQuantity();
+				if(warehouseQty < qty){
+					//can't delete
+				} else{
+					int newQty = warehouseStock.getQuantity() - qty;
+					warehouseStock.setQuantity(newQty);
+				}
+			}
+		}
+		ht.delete(i);
+		ht.update(warehouse);
 	}
 }
