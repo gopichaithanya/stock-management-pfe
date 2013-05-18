@@ -18,7 +18,6 @@ public class ProductTypeTest {
 		
 		ApplicationContext context=new ClassPathXmlApplicationContext
 				("db-config.xml");  
-        
         SessionFactory sf=(SessionFactory)context.getBean("sessionFactory");
         HibernateTemplate ht = new HibernateTemplate(sf);
 		
