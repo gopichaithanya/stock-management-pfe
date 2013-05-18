@@ -86,5 +86,36 @@ public class Location {
 		}
 		return s;
 	}
+	
+	/**
+	 * 
+	 * @param pType
+	 * @param quantity
+	 */
+	public void receiveProducts(ProductType pType, int quantity){
+		Stock stock = getStockByType(pType);
+		if(stock == null){
+			stock = new Stock();
+			stock.setType(pType);
+			stock.setQuantity(quantity);
+			getStocks().add(stock);
+		} else{
+			int newStoreQty = stock.getQuantity() + quantity;
+			stock.setQuantity(newStoreQty);
+		}
+	}
+	
+	/**
+	 * Contract: the stock of the given type exists in the
+	 * location and its quantity is sufficient
+	 * 
+	 * @param pType
+	 * @param quantity
+	 */
+	public void removeProducts(ProductType pType, int quantity){
+		Stock stock = getStockByType(pType);
+		int newQuantity = stock.getQuantity() - quantity;
+		stock.setQuantity(newQuantity);
+	}
 
 }
