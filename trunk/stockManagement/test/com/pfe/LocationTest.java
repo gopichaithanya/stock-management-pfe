@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfe.server.model.Location;
 import com.pfe.server.model.LocationType;
 import com.pfe.server.model.ProductType;
+import com.pfe.server.model.Shipment;
 import com.pfe.server.model.Stock;
 
 @SuppressWarnings("unchecked")
@@ -39,9 +40,13 @@ public class LocationTest {
 
 	}
 
+	/**
+	 * Move products
+	 * 
+	 */
 	@Test
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void moveStocksTest() {
+	public void moveProductsTest() {
 
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"db-config.xml");
@@ -85,8 +90,11 @@ public class LocationTest {
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * Sell products
+	 * 
+	 */
 	@Test
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void sellProductsTest() {
@@ -96,19 +104,19 @@ public class LocationTest {
 		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
 		HibernateTemplate ht = new HibernateTemplate(sf);
 
-		//sell some products from the warehouse
+		// sell some products from the warehouse
 		// Get the warehouse
 		List<Location> warehouseList = ht
 				.find("from Location l where l.name = 'Main warehouse'");
 		Location warehouse = warehouseList.get(0);
-		
+
 		// get productType to sell
 		List<ProductType> types = ht
 				.find("from ProductType pt where pt.name = 'pen'");
 		ProductType type = types.get(0);
 		// quantity to sell
-		int quantityToSell = 20;
-		
+		int quantityToSell = 50;
+
 		Stock warehouseStock = warehouse.getStockByType(type);
 		if (warehouseStock == null) {
 			// throw exception; not enough goods
@@ -119,15 +127,30 @@ public class LocationTest {
 			} else {
 				// update warehouse quantity
 				warehouse.removeProducts(type, quantityToSell);
-				// retrieve products from real shipments
+
+				// retrieve shipments corresponding to ProductType
+				String query = "from Shipment s where s.productType = ? order by s.created";
+				List<Shipment> shipments = ht.find(query, type);
 				
-				
-				
+				Boolean stop = false;
+				int currentQuantity = 0;
+				int i = 0;
+				// while quantity not sufficient, update next shipment
+				while (!stop) {
+					Shipment s = shipments.get(i);
+					currentQuantity += s.getCurrentQuantity();
+					if (currentQuantity <= quantityToSell) {
+						s.setCurrentQuantity(0);
+					} else {
+						int newQty = currentQuantity - quantityToSell;
+						s.setCurrentQuantity(newQty);
+						stop = true;
+					}
+					ht.update(s);
+					i++;
+				}
 				ht.update(warehouse);
-			
 			}
 		}
-		
 	}
-	
 }

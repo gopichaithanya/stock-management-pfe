@@ -24,6 +24,10 @@ import com.pfe.server.model.Supplier;
 @SuppressWarnings("unchecked")
 public class InvoiceTest {
 
+	/**
+	 * Receive new invoice
+	 * 
+	 */
 	@Test
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void receiveInvoiceTest() {
@@ -81,6 +85,10 @@ public class InvoiceTest {
 		ht.saveOrUpdate(i);
 	}
 
+	/**
+	 * Delete invoice
+	 * 
+	 */
 	@Test
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteInvoiceTest() {
