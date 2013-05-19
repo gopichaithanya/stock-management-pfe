@@ -3,6 +3,9 @@ package com.pfe;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -111,8 +114,11 @@ public class LocationTest {
 		Location warehouse = warehouseList.get(0);
 
 		// get productType to sell
-		List<ProductType> types = ht
-				.find("from ProductType pt where pt.name = 'pen'");
+		DetachedCriteria criteriaProductType = DetachedCriteria.forClass(ProductType.class);
+		criteriaProductType.add(Restrictions.eq("name", "pen"));
+		List<ProductType> types = ht.findByCriteria(criteriaProductType);
+		/*List<ProductType> types = ht
+				.find("from ProductType pt where pt.name = 'pen'");*/
 		ProductType type = types.get(0);
 		// quantity to sell
 		int quantityToSell = 50;
@@ -129,8 +135,11 @@ public class LocationTest {
 				warehouse.removeProducts(type, quantityToSell);
 
 				// retrieve shipments corresponding to ProductType
-				String query = "from Shipment s where s.productType = ? order by s.created";
-				List<Shipment> shipments = ht.find(query, type);
+				//String query = "from Shipment s where s.productType = ? order by s.created";
+				DetachedCriteria criteriaShipments = DetachedCriteria.forClass(Shipment.class);
+				criteriaShipments.add(Restrictions.eq("type", type));
+				criteriaShipments.addOrder(Order.asc("created"));
+				List<Shipment> shipments = ht.findByCriteria(criteriaShipments);
 				
 				Boolean stop = false;
 				int currentQuantity = 0;
