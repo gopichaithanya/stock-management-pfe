@@ -23,7 +23,7 @@ public class LocationTypeTest {
         HibernateTemplate ht = new HibernateTemplate(sf);
 		
 		LocationType ltype = new LocationType();
-		ltype.setDescription("store");
+		ltype.setDescription("warehouse");
 		ht.saveOrUpdate(ltype);
 
 	}

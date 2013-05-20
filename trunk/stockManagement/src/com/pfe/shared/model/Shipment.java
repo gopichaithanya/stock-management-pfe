@@ -3,24 +3,21 @@ package com.pfe.shared.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Shipments")
 public class Shipment implements Serializable{
 
-	private UUID id;
+	private Long id;
 	private ProductType productType;
 	private BigDecimal unitPrice;
 	private int initialQuantity;
@@ -30,14 +27,12 @@ public class Shipment implements Serializable{
 	private Invoice invoice;
 
 	@Id
-	@Type(type = "pg-uuid")
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	public UUID getId() {
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
