@@ -1,34 +1,29 @@
 package com.pfe.shared.model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ProductTypes")
 public class ProductType implements Serializable {
 
-	private UUID id;
+	private Long id;
 	private String name;
 	private String description;
 
 	@Id
-	@Type(type = "pg-uuid")
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	public UUID getId() {
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
