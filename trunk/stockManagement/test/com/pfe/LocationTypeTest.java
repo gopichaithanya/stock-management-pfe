@@ -8,7 +8,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pfe.server.model.LocationType;
+import com.pfe.shared.model.LocationType;
 
 public class LocationTypeTest {
 
@@ -23,7 +23,7 @@ public class LocationTypeTest {
         HibernateTemplate ht = new HibernateTemplate(sf);
 		
 		LocationType ltype = new LocationType();
-		ltype.setDescription("warehouse");
+		ltype.setDescription("store");
 		ht.saveOrUpdate(ltype);
 
 	}

@@ -13,11 +13,11 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pfe.server.model.Location;
-import com.pfe.server.model.LocationType;
-import com.pfe.server.model.ProductType;
-import com.pfe.server.model.Shipment;
-import com.pfe.server.model.Stock;
+import com.pfe.shared.model.Location;
+import com.pfe.shared.model.LocationType;
+import com.pfe.shared.model.ProductType;
+import com.pfe.shared.model.Shipment;
+import com.pfe.shared.model.Stock;
 
 @SuppressWarnings("unchecked")
 public class LocationTest {
@@ -28,17 +28,17 @@ public class LocationTest {
 
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"db-config.xml");
-
 		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
 		HibernateTemplate ht = new HibernateTemplate(sf);
-
-		List<LocationType> list = ht
-				.find("from LocationType lt where lt.description = 'warehouse'");
-		LocationType locationType = list.get(0);
+		
+		DetachedCriteria locationTypeCriteria = DetachedCriteria.forClass(LocationType.class);
+		locationTypeCriteria.add(Restrictions.eq("description", "warehouse"));
+		List<LocationType> types = ht.findByCriteria(locationTypeCriteria);
+		LocationType warehouseType = types.get(0);
 
 		Location w = new Location();
 		w.setName("Main warehouse");
-		w.setType(locationType);
+		w.setType(warehouseType);
 		ht.saveOrUpdate(w);
 
 	}
