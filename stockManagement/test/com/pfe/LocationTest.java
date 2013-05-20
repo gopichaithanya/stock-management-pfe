@@ -56,20 +56,23 @@ public class LocationTest {
 		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
 		HibernateTemplate ht = new HibernateTemplate(sf);
 
-		// we move products from the warehouse to location 1
-		// Get the warehouse
-		List<Location> warehouseList = ht
-				.find("from Location l where l.name = 'Main warehouse'");
-		Location warehouse = warehouseList.get(0);
+		// we move products from the warehouse to store 1
+		// Get the warehouse	
+		DetachedCriteria locationCriteria = DetachedCriteria.forClass(Location.class);
+		locationCriteria.add(Restrictions.eq("name", "Main warehouse"));
+		List<Location> warehouses = ht.findByCriteria(locationCriteria);
+		Location warehouse = warehouses.get(0);
 
-		// Get the location 1
-		List<Location> storeList = ht
-				.find("from Location l where l.name = 'Store 1'");
-		Location store = storeList.get(0);
+		// Get location 1
+		locationCriteria = DetachedCriteria.forClass(Location.class);
+		locationCriteria.add(Restrictions.eq("name", "Store 1"));
+		List<Location> stores = ht.findByCriteria(locationCriteria);
+		Location store = stores.get(0);
 
 		// get productType to move
-		List<ProductType> types = ht
-				.find("from ProductType pt where pt.name = 'pen'");
+		DetachedCriteria pTypeCriteria = DetachedCriteria.forClass(ProductType.class);
+		pTypeCriteria.add(Restrictions.eq("name", "pen"));
+		List<ProductType> types = ht.findByCriteria(pTypeCriteria);
 		ProductType type = types.get(0);
 		// quantity to move
 		int quantityToMove = 500;
@@ -86,7 +89,7 @@ public class LocationTest {
 				warehouse.removeProducts(type, quantityToMove);
 
 				// update store quantity
-				store.removeProducts(type, quantityToMove);
+				store.receiveProducts(type, quantityToMove);
 
 				ht.update(warehouse);
 				ht.update(store);
@@ -109,17 +112,17 @@ public class LocationTest {
 
 		// sell some products from the warehouse
 		// Get the warehouse
-		List<Location> warehouseList = ht
-				.find("from Location l where l.name = 'Main warehouse'");
-		Location warehouse = warehouseList.get(0);
+		DetachedCriteria locationCriteria = DetachedCriteria.forClass(Location.class);
+		locationCriteria.add(Restrictions.eq("name", "Main warehouse"));
+		List<Location> warehouses = ht.findByCriteria(locationCriteria);
+		Location warehouse = warehouses.get(0);
 
 		// get productType to sell
 		DetachedCriteria criteriaProductType = DetachedCriteria.forClass(ProductType.class);
 		criteriaProductType.add(Restrictions.eq("name", "pen"));
 		List<ProductType> types = ht.findByCriteria(criteriaProductType);
-		/*List<ProductType> types = ht
-				.find("from ProductType pt where pt.name = 'pen'");*/
 		ProductType type = types.get(0);
+		
 		// quantity to sell
 		int quantityToSell = 50;
 
@@ -135,9 +138,8 @@ public class LocationTest {
 				warehouse.removeProducts(type, quantityToSell);
 
 				// retrieve shipments corresponding to ProductType
-				//String query = "from Shipment s where s.productType = ? order by s.created";
 				DetachedCriteria criteriaShipments = DetachedCriteria.forClass(Shipment.class);
-				criteriaShipments.add(Restrictions.eq("type", type));
+				criteriaShipments.add(Restrictions.eq("productType", type));
 				criteriaShipments.addOrder(Order.asc("created"));
 				List<Shipment> shipments = ht.findByCriteria(criteriaShipments);
 				

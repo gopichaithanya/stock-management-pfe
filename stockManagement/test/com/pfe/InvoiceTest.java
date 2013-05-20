@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,7 +27,7 @@ import com.pfe.shared.model.Supplier;
 public class InvoiceTest {
 
 	/**
-	 * Receive new invoice
+	 * Receive new invoice 
 	 * 
 	 */
 	@Test
@@ -42,7 +44,7 @@ public class InvoiceTest {
 		Invoice i = new Invoice();
 		Date date = Calendar.getInstance().getTime();
 		String paymentType = "onSale";
-		i.setCode(201);
+		i.setCode(200);
 		i.setCreated(date);
 		i.setPaymentType(paymentType);
 		i.setRestToPay(new BigDecimal(0));
@@ -61,24 +63,30 @@ public class InvoiceTest {
 		}
 
 		s1.setUnitPrice(new BigDecimal(20));
-		List<ProductType> types = ht
-				.find("from ProductType pt where pt.name = 'pen'");
+		//set shipment type
+		DetachedCriteria pTypeCriteria = DetachedCriteria.forClass(ProductType.class);
+		pTypeCriteria.add(Restrictions.eq("name", "pen"));
+		List<ProductType> types = ht.findByCriteria(pTypeCriteria);
 		ProductType type = types.get(0);
+	
 		s1.setProductType(type);
 		s1.setInvoice(i);
 		shipments.add(s1);
 		i.setShipments(shipments);
 
 		// Supplier
-		List<Supplier> list = ht
-				.find("from Supplier s where s.name = 'Supplier 1'");
-		Supplier s = list.get(0);
-		i.setSupplier(s);
+		DetachedCriteria supplierCriteria = DetachedCriteria.forClass(Supplier.class);
+		supplierCriteria.add(Restrictions.eq("name", "Supplier 1"));
+		List<Supplier> suppliers = ht.findByCriteria(supplierCriteria);
+		Supplier supplier = suppliers.get(0);
+		i.setSupplier(supplier);
 
 		// Update warehouse stocks
-		List<Location> locations = ht
-				.find("from Location l where l.name = 'Main warehouse'");
-		Location warehouse = locations.get(0);
+		DetachedCriteria locationCriteria = DetachedCriteria.forClass(Location.class);
+		locationCriteria.add(Restrictions.eq("name", "Main warehouse"));
+		List<Location> warehouses = ht.findByCriteria(locationCriteria);
+		Location warehouse = warehouses.get(0);
+		
 		warehouse.receiveProducts(type, qty);
 
 		ht.saveOrUpdate(warehouse);
@@ -100,14 +108,18 @@ public class InvoiceTest {
 		HibernateTemplate ht = new HibernateTemplate(sf);
 
 		// Get the warehouse
-		List<Location> locations = ht
-				.find("from Location l where l.name = 'Main warehouse'");
-		Location warehouse = locations.get(0);
+		DetachedCriteria locationCriteria = DetachedCriteria.forClass(Location.class);
+		locationCriteria.add(Restrictions.eq("name", "Main warehouse"));
+		List<Location> warehouses = ht.findByCriteria(locationCriteria);
+		Location warehouse = warehouses.get(0);
 
 		// Get invoice to delete
-		List<Invoice> list = ht.find("from Invoice i where i.code = 0");
-		if (list.size() > 0) {
-			Invoice i = list.get(0);
+		DetachedCriteria invoiceCriteria = DetachedCriteria.forClass(Invoice.class);
+		invoiceCriteria.add(Restrictions.eq("code", 201));
+		List<Invoice> invoices = ht.findByCriteria(invoiceCriteria);
+		
+		if (invoices.size() > 0) {
+			Invoice i = invoices.get(0);
 
 			List<Shipment> shipments = i.getShipments();
 			// for each shipment to delete, remove products from
