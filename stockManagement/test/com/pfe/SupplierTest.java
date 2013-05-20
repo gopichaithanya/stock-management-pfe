@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.shared.model.Supplier;
 
+
 public class SupplierTest {
 
 	@Test
@@ -22,8 +23,8 @@ public class SupplierTest {
 		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
 		HibernateTemplate ht = new HibernateTemplate(sf);
 		Supplier s = new Supplier();
-		s.setDescription("supplier 1");
-		s.setName("Supplier 1");
+		s.setDescription("supplier 2");
+		s.setName("Supplier 2");
 		ht.saveOrUpdate(s);
 	}
 }

@@ -1,5 +1,6 @@
 package com.pfe.shared.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -10,10 +11,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "ProductTypes")
-public class ProductType {
+public class ProductType implements Serializable {
 
 	private UUID id;
 	private String name;

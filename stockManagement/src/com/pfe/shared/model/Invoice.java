@@ -1,5 +1,6 @@
 package com.pfe.shared.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -18,9 +19,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "Invoices")
-public class Invoice {
+public class Invoice implements Serializable{
 
 	private UUID id;
 	private int code;
