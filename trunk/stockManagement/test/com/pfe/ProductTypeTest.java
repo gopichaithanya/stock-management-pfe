@@ -22,8 +22,8 @@ public class ProductTypeTest {
         HibernateTemplate ht = new HibernateTemplate(sf);
 		
 		ProductType type = new ProductType();
-		type.setName("pencil");
-		type.setDescription("pencil description");
+		type.setName("pen");
+		type.setDescription("pen description");
 		ht.saveOrUpdate(type);
 
 	}

@@ -6,11 +6,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.server.dao.ProductTypeDao;
 import com.pfe.shared.model.ProductType;
 
+@Service("productTypeService") //declares service bean
 public class ProductTypeServiceImpl implements ProductTypeService {
 	
 	@Autowired

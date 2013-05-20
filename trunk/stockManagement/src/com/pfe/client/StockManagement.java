@@ -25,10 +25,11 @@ public class StockManagement implements EntryPoint {
 
 			@Override
 			public void onSuccess(List<ProductType> result) {
+				List<ProductType> l = result;
 				
 				if(result != null){
 					for(ProductType pt:result){
-						System.out.println(pt.getDescription());
+						System.out.println("--------"+pt.getDescription()+"----------");
 					}
 				}
 			}
