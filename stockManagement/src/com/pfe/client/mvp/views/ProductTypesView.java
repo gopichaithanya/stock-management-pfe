@@ -41,4 +41,5 @@ public interface ProductTypesView extends IsWidget {
 	 * Clears the view data
 	 */
 	public void clearData();
+
 }

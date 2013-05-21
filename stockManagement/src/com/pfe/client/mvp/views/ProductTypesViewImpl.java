@@ -3,20 +3,31 @@ package com.pfe.client.mvp.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 import com.pfe.client.mvp.presenters.ProductTypesPresenter;
+import com.pfe.client.mvp.views.properties.ProductTypeProperties;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 import com.sencha.gxt.widget.core.client.container.MarginData;
+import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public class ProductTypesViewImpl implements ProductTypesView {
+	
+	private static final ProductTypeProperties props = GWT
+			.create(ProductTypeProperties.class);
 
 	private ProductTypesPresenter presenter;
 	private List<ProductType> pTypes = new ArrayList<ProductType>();
+	private ListStore<ProductType> store;
+	private Grid<ProductType> grid;
+
 
 	private BorderLayoutContainer con;
 	private ContentPanel west;
@@ -43,9 +54,15 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		
 		con.setEastWidget(west, eastData);
 		con.setCenterWidget(center, centerData);
+		
+		ColumnConfig<ProductType, String> nameCol = new ColumnConfig<ProductType, String>(
+				props.name(), 60, "Name");
+		ColumnConfig<ProductType, String> descCol = new ColumnConfig<ProductType, String>(
+				props.description(), 50, "Description");
 
 	}
 
+	
 	@Override
 	public Widget asWidget() {
 		clearData();
