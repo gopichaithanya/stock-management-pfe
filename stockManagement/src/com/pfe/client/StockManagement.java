@@ -26,7 +26,6 @@ import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class StockManagement implements EntryPoint {
 	
