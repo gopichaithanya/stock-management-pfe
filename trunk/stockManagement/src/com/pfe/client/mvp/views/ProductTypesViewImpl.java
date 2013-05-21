@@ -3,35 +3,60 @@ package com.pfe.client.mvp.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 import com.pfe.client.mvp.presenters.ProductTypesPresenter;
 import com.pfe.shared.model.ProductType;
+import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
+import com.sencha.gxt.widget.core.client.container.MarginData;
 
 public class ProductTypesViewImpl implements ProductTypesView {
-	
+
 	private ProductTypesPresenter presenter;
 	private List<ProductType> pTypes = new ArrayList<ProductType>();
 
-	private VerticalPanel vp;
-	
-	public ProductTypesViewImpl(){
-		vp = new VerticalPanel();
-		vp.setPixelSize(300, 300);
+	private BorderLayoutContainer con;
+	private ContentPanel west;
+	private ContentPanel center;
+
+	public ProductTypesViewImpl() {
+
+		con = new BorderLayoutContainer();
+		con.setResize(true);
+		
+		west = new ContentPanel();
+		center = new ContentPanel();
+
+		west.setBorders(true);
+		center.setBorders(true);
+		
+		MarginData centerData = new MarginData();
+		centerData.setMargins(new Margins(0, 0, 0, 0));
+		
+		BorderLayoutData eastData = new BorderLayoutData(150);
+		eastData.setMargins(new Margins(0, 0, 0, 5));
+		eastData.setSplit(true);
+		eastData.setCollapsible(true);
+		
+		con.setEastWidget(west, eastData);
+		con.setCenterWidget(center, centerData);
+
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		clearData();
-		
-		//TODO replace this with grid
-		for(ProductType p:pTypes){
+
+		// TODO replace this with grid
+		for (ProductType p : pTypes) {
 			TextButton l = new TextButton(p.getDescription());
-			vp.add(l);
+			//west.add(l);
 		}
-		
-		return vp;
+
+		return con;
 	}
 
 	@Override
@@ -53,7 +78,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	@Override
 	public void clearData() {
-		//clear grid store here
+		// clear grid store here
 
 	}
 

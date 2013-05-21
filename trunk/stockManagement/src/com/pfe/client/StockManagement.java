@@ -4,6 +4,8 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
@@ -13,17 +15,29 @@ import com.pfe.client.mvp.AppPlaceHistoryMapper;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.places.ProductTypesPlace;
+import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.container.Viewport;
+import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class StockManagement implements EntryPoint {
 	
+	private ToolBar toolBar;
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public void onModuleLoad() {
-		
+
 		System.out.println("test");
-		
+
 		ClientFactory clientFactory = new ClientFactoryImpl();
 		EventBus eventBus = clientFactory.getEventBus();
 		PlaceController placeController = clientFactory.getPlaceController();
@@ -33,13 +47,16 @@ public class StockManagement implements EntryPoint {
 		ActivityManager activityManager = new ActivityManager(activityMapper,
 				eventBus);
 		
-		//This is the panel that will contain the different views
-		ContentPanel mainPanel = new ContentPanel();
-		activityManager.setDisplay(mainPanel);
-
-		//TODO remove this --> it's only a test
-		ProductTypesPlace testPlace = new ProductTypesPlace();
 		
+		// This is the panel that will contain the different views
+		ContentPanel centerPanel = new ContentPanel();
+		centerPanel.setHeaderVisible(false);
+	
+		activityManager.setDisplay(centerPanel);
+		
+		// TODO remove this
+		ProductTypesPlace testPlace = new ProductTypesPlace();
+
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
 		AppPlaceHistoryMapper historyMapper = GWT
 				.create(AppPlaceHistoryMapper.class);
@@ -49,8 +66,71 @@ public class StockManagement implements EntryPoint {
 		historyHandler.register(placeController, eventBus, testPlace);
 		// handle whatever place arrives when application starts
 		historyHandler.handleCurrentHistory();
+
+		// create the frame of the window
+		Viewport viewport = new Viewport();
+		buildToolbar();
 		
-		RootPanel.get().add(mainPanel);
+		VerticalLayoutContainer con = new VerticalLayoutContainer();
+		con.add(toolBar, new VerticalLayoutData(1, -1));
+
+		//center
+	    con.add(centerPanel,  new VerticalLayoutData(1, 1, new Margins(10)));
+
+	    viewport.add(con);
+		RootPanel.get().add(viewport.asWidget());
+
+	}
+	
+	/**
+	 * Builds the menu
+	 * 
+	 */
+	public void buildToolbar() {
+		
+		SelectionHandler<Item> handler = new SelectionHandler<Item>() {
+			@Override
+			public void onSelection(SelectionEvent<Item> event) {
+				//MenuItem item = (MenuItem) event.getSelectedItem();
+				//String text = item.getText();
+//				if("Stores".equals(text)){
+//					goTo(new StoresListPlace());
+//				} else if("Warehouses".equals(text)){
+//					
+//				} else if("Suppliers".equals(text)){
+//					goTo(new SuppliersListPlace());
+//				} else if("Invoice".equals(text)){
+//					
+//				}
+			}
+		};
+		
+		toolBar = new ToolBar();
+		//toolBar.setLayoutData(new VerticalLayoutData(1, -1));
+		toolBar.setSpacing(5);
+		toolBar.setPadding(new Padding(10));
+		toolBar.setHeight(40);
+
+		Menu storageMenu = new Menu();
+		storageMenu.addSelectionHandler(handler);
+		TextButton storageBtn = new TextButton("Storage");
+		storageBtn.setMenu(storageMenu);
+		MenuItem storeItem = new MenuItem("Stores");
+		MenuItem warehouseItem = new MenuItem("Warehouses");
+		storageMenu.add(storeItem);
+		storageMenu.add(warehouseItem);
+		
+		Menu supplyMenu = new Menu();
+		supplyMenu.addSelectionHandler(handler);
+		TextButton supplyBtn = new TextButton("Supply");
+		supplyBtn.setMenu(supplyMenu);
+		MenuItem suppliersItem = new MenuItem("Suppliers");
+		MenuItem invoiceItem = new MenuItem("Invoice");
+		supplyMenu.add(suppliersItem);
+		supplyMenu.add(invoiceItem);
+
+		toolBar.add(storageBtn);
+		toolBar.add(supplyBtn);
 	}
 
 }
