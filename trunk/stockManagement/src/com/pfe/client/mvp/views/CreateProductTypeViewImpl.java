@@ -28,7 +28,7 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 		setBodyBorder(false);
 		setHeadingText("Add product type");
 		setWidth(550);
-		setHeight(350);
+		setHeight(400);
 		setModal(true);
 		setResizable(false);
 
@@ -38,6 +38,7 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 				getTableMarkup());
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
+		fpanel.setBorders(false);
 
 		nameField = new TextField();
 		nameField.setAllowBlank(false);
@@ -67,6 +68,12 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 
 	}
 	
+	/**
+	 * Save new product type handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
 	private class SubmitBtnHandler implements SelectHandler{
 
 		private Window w;
