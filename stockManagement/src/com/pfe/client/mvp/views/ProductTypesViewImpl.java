@@ -88,10 +88,12 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 		west.add(detailsCon);
 		west.setBorders(true);
-
+		west.setHeadingHtml("Details");
+		
 		// center panel
 		center = new ContentPanel();
 		center.setBorders(true);
+		center.setHeadingHtml("Product Types");
 
 		// center data
 		MarginData centerData = new MarginData();
@@ -156,11 +158,10 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
 		
 		center.add(verticalCon);
-		center.setHeadingHtml("Product Types");
 	}
 
 	/**
-	 * Row click handler
+	 * Click handler on grid row
 	 * 
 	 * @author Alexandra
 	 *

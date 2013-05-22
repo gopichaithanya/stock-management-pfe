@@ -17,8 +17,8 @@ import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.places.ProductTypesPlace;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.container.Viewport;
@@ -48,9 +48,7 @@ public class StockManagement implements EntryPoint {
 		
 		
 		// This is the panel that will contain the different views
-		ContentPanel centerPanel = new ContentPanel();
-		centerPanel.setHeaderVisible(false);
-	
+		SimpleContainer centerPanel = new SimpleContainer();
 		activityManager.setDisplay(centerPanel);
 		
 		// TODO remove this
@@ -72,8 +70,6 @@ public class StockManagement implements EntryPoint {
 		
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.add(toolBar, new VerticalLayoutData(1, -1));
-
-		//center
 	    con.add(centerPanel,  new VerticalLayoutData(1, 1, new Margins(10)));
 
 	    viewport.add(con);
