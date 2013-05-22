@@ -7,19 +7,23 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypesPresenter;
+import com.pfe.client.mvp.views.images.ImageResources;
 import com.pfe.client.mvp.views.properties.ProductTypeProperties;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.ExpandMode;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 import com.sencha.gxt.widget.core.client.container.MarginData;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
@@ -27,6 +31,8 @@ import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class ProductTypesViewImpl implements ProductTypesView {
 
@@ -51,7 +57,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		con.setId("borderlayoutContainer");
 		con.setHeight("100%");
 
-		//West panel
+		// West panel
 		west = new ContentPanel();
 		AccordionLayoutContainer detailsCon = new AccordionLayoutContainer();
 		detailsCon.setExpandMode(ExpandMode.MULTI);
@@ -78,8 +84,8 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 		west.add(detailsCon);
 		west.setBorders(true);
-		
-		//center panel
+
+		// center panel
 		center = new ContentPanel();
 		center.setBorders(true);
 
@@ -126,11 +132,30 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		grid.getView().setAutoFill(true);
 		grid.addRowClickHandler(new GridRowClickHandler());
 
-		center.add(grid);
-
+		// ToolBar
+		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
+		TextButton detailBtn = new TextButton("Details");
+		TextButton deleteBtn = new TextButton("Delete");
+		//addBtn.addSelectHandler(new AddBtnHandler());
+		//detailBtn.addSelectHandler(new DetailsBtnHandler());
+		ToolBar toolbar = new ToolBar();
+		toolbar.setSpacing(5);
+		toolbar.setPadding(new Padding(5));
+		toolbar.add(addBtn);
+		toolbar.add(new SeparatorToolItem());
+		toolbar.add(detailBtn);
+		toolbar.add(new SeparatorToolItem());
+		toolbar.add(deleteBtn);
+		
+		VerticalLayoutContainer verticalCon = new VerticalLayoutContainer();
+		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
+		verticalCon.add(grid, new VerticalLayoutData(1, 1));
+		
+		center.add(verticalCon);
+		center.setHeadingHtml("Product Types");
 	}
 
-	private class GridRowClickHandler implements RowClickHandler{
+	private class GridRowClickHandler implements RowClickHandler {
 
 		@Override
 		public void onRowClick(RowClickEvent event) {
@@ -138,10 +163,10 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			ProductType selected = store.get(row);
 			nameLabel.setText(selected.getName());
 			descriptionLabel.setText(selected.getDescription());
-			
+
 		}
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		clearData();
