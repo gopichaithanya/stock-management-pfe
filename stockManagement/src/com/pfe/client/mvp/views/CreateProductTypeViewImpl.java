@@ -86,6 +86,8 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 			ProductType productType = new ProductType();
 			productType.setName(nameField.getValue());
 			productType.setDescription(descriptionEditor.getValue());
+			//TODO check here for empty name or description + error popup
+			
 			presenter.addProductType(productType);
 			w.hide();
 		}

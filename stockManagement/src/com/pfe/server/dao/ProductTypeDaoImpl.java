@@ -1,9 +1,11 @@
 package com.pfe.server.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,19 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
 
 		return hibernateTemplate.findByCriteria(criteria);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ProductType createProductType(ProductType productType) {
+	
+		Serializable s = hibernateTemplate.save(productType);
+		Long id = (Long) s;
+		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+		criteria.add(Restrictions.eq("id", id));
+		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
+		return l.get(0);
 	}
 
 

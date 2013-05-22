@@ -9,4 +9,7 @@ public interface ProductTypeServiceAsync {
 
 	void getProductTypes(AsyncCallback<List<ProductType>> callback);
 
+	void createProductType(ProductType productType,
+			AsyncCallback<ProductType> callback);
+
 }
