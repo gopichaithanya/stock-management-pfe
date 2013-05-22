@@ -20,10 +20,7 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 		hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	/**
-	 * Get List of product types from database
-	 * @return list of all product types
-	 */
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ProductType> getProductTypes() {
