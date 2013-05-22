@@ -27,6 +27,8 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -49,6 +51,8 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	private BorderLayoutContainer con;
 	private ContentPanel west;
 	private ContentPanel center;
+	
+	private CreateProductTypeViewImpl createDialog;
 
 	public ProductTypesViewImpl() {
 
@@ -136,7 +140,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
 		TextButton detailBtn = new TextButton("Details");
 		TextButton deleteBtn = new TextButton("Delete");
-		//addBtn.addSelectHandler(new AddBtnHandler());
+		addBtn.addSelectHandler(new AddBtnHandler());
 		//detailBtn.addSelectHandler(new DetailsBtnHandler());
 		ToolBar toolbar = new ToolBar();
 		toolbar.setSpacing(5);
@@ -155,6 +159,12 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		center.setHeadingHtml("Product Types");
 	}
 
+	/**
+	 * Row click handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
 	private class GridRowClickHandler implements RowClickHandler {
 
 		@Override
@@ -165,6 +175,26 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			descriptionLabel.setText(selected.getDescription());
 
 		}
+	}
+	
+	/**
+	 * Add new type handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class AddBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if(createDialog == null){
+				createDialog = new CreateProductTypeViewImpl();
+				createDialog.setPresenter(presenter);
+			}
+			createDialog.clearData();
+			createDialog.show();
+		}
+		
 	}
 
 	@Override

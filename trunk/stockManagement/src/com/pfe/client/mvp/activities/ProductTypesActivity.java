@@ -57,4 +57,11 @@ public class ProductTypesActivity extends AbstractActivity implements ProductTyp
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public ProductType addProductType(ProductType productType) {
+		//TODO refresh pTypesView store
+		System.out.println(productType.getDescription()+ " " + productType.getName());
+		return null;
+	}
 }

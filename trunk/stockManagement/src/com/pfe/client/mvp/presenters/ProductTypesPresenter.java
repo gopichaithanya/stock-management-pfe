@@ -1,6 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
 import com.google.gwt.place.shared.Place;
+import com.pfe.shared.model.ProductType;
 
 /**
  * Controls ProductTypesView
@@ -16,4 +17,12 @@ public interface ProductTypesPresenter extends Presenter {
 	 * @param place
 	 */
 	public void goTo(Place place);
+	
+	/**
+	 * Call RPC service to create a new product type
+	 * 
+	 * @param productType
+	 * @return
+	 */
+	public ProductType addProductType(ProductType productType);
 }
