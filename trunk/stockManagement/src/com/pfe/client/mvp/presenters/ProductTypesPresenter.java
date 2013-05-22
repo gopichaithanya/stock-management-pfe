@@ -19,10 +19,9 @@ public interface ProductTypesPresenter extends Presenter {
 	public void goTo(Place place);
 	
 	/**
-	 * Call RPC service to create a new product type
+	 * Calls RPC service to create a new product type
 	 * 
 	 * @param productType
-	 * @return
 	 */
-	public ProductType addProductType(ProductType productType);
+	public void addProductType(ProductType productType);
 }

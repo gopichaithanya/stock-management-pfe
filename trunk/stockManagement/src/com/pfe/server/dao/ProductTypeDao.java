@@ -7,10 +7,17 @@ import com.pfe.shared.model.ProductType;
 public interface ProductTypeDao {
 
 	/**
-	 * Get List of product types from database
+	 * Retrieves all product types from database
 	 * 
 	 * @return list of all product types
 	 */
 	public List<ProductType> getProductTypes();
+	
+	/**
+	 * Adds new product type in database
+	 * 
+	 * @param productType
+	 */
+	public ProductType createProductType(ProductType productType);
 
 }

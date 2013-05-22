@@ -29,4 +29,12 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		return pTypeDao.getProductTypes();
 	}
 
+	@Override
+	public ProductType createProductType(ProductType productType) {
+		
+		//TODO test here name duplication ?
+		return pTypeDao.createProductType(productType);
+		
+	}
+
 }

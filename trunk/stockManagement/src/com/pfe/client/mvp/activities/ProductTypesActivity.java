@@ -13,8 +13,9 @@ import com.pfe.client.mvp.views.ProductTypesView;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.shared.model.ProductType;
 
-public class ProductTypesActivity extends AbstractActivity implements ProductTypesPresenter {
-	
+public class ProductTypesActivity extends AbstractActivity implements
+		ProductTypesPresenter {
+
 	private ClientFactory clientFactory;
 	private ProductTypeServiceAsync rpcService;
 	private ProductTypesView pTypesView;
@@ -29,39 +30,49 @@ public class ProductTypesActivity extends AbstractActivity implements ProductTyp
 		pTypesView = clientFactory.getProductTypesView();
 		bind();
 		rpcService.getProductTypes(new AsyncCallback<List<ProductType>>() {
-			
+
 			@Override
 			public void onSuccess(List<ProductType> result) {
 				pTypesView.setData(result);
 				panel.setWidget(pTypesView.asWidget());
-				
+
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO do something here
-				
+
 			}
 		});
-
 	}
 
 	@Override
 	public void bind() {
 		pTypesView.setPresenter(this);
-		
+
 	}
 
 	@Override
 	public void goTo(Place place) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public ProductType addProductType(ProductType productType) {
-		//TODO refresh pTypesView store
-		System.out.println(productType.getDescription()+ " " + productType.getName());
-		return null;
+	public void addProductType(ProductType productType) {
+
+		rpcService.createProductType(productType, new AsyncCallback<ProductType>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(ProductType result) {
+				pTypesView.addData(result);
+				
+			}
+		});
 	}
 }

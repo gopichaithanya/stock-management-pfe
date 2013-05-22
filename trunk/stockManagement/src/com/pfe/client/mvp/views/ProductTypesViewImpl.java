@@ -228,4 +228,10 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	}
 
+	@Override
+	public void addData(ProductType productType) {
+		store.add(productType);
+		
+	}
+
 }
