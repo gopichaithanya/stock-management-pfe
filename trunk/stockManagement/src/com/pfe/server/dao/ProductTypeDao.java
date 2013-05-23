@@ -22,8 +22,16 @@ public interface ProductTypeDao {
 
 
 	/**
+	 * Updates product type
 	 * 
 	 * @param productType
 	 */
 	public void updateProductType(ProductType productType);
+	
+	/**
+	 * Retrieves product type by name
+	 * 
+	 * @param name
+	 */
+	public List<ProductType> getPTypeByName(String name);
 }

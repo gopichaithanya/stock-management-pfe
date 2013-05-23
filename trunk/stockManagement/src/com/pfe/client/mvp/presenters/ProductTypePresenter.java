@@ -26,7 +26,7 @@ public interface ProductTypePresenter extends Presenter {
 	public void createProductType(ProductType productType);
 	
 	/**
-	 * 
+	 * Updates product type
 	 * 
 	 * @param productType
 	 */

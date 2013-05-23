@@ -35,6 +35,7 @@ public class EditProductTypeViewImpl extends Window implements
 		setHeight(400);
 		setModal(true);
 		setResizable(false);
+		setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
@@ -56,8 +57,8 @@ public class EditProductTypeViewImpl extends Window implements
 
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
-		submitBtn.addSelectHandler(new SubmitBtnHandler(this));
-		// cancelBtn.addSelectHandler(new cancelBtnHandler());
+		submitBtn.addSelectHandler(new SubmitBtnHandler());
+		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
 
 		fpanel.addButton(cancelBtn);
 		fpanel.addButton(submitBtn);
@@ -80,20 +81,33 @@ public class EditProductTypeViewImpl extends Window implements
 	 */
 	private class SubmitBtnHandler implements SelectHandler {
 
-		private Window w;
-
-		public SubmitBtnHandler(Window w) {
-			this.w = w;
-		}
-
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
 				productType.setName(nameField.getValue());
 				productType.setDescription(descriptionEditor.getValue());
 				presenter.updateProductType(productType);
-				w.hide();
 			}
+		}
+	}
+	
+	
+	/**
+	 * Close window
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class CancelBtnHandler implements SelectHandler {
+
+		private Window w;
+		public CancelBtnHandler(Window w){
+			this.w = w;
+		}
+		
+		@Override
+		public void onSelect(SelectEvent event) {
+			w.hide();
 		}
 	}
 
@@ -116,10 +130,14 @@ public class EditProductTypeViewImpl extends Window implements
 	}
 
 	@Override
-	public void setData(ProductType productType) {
-		this.productType = productType;
+	public void setData(ProductType data) {
+		this.productType = data;
 		nameField.setValue(productType.getName());
 		descriptionEditor.setValue(productType.getDescription());
+	}
+
+	public ProductType getProductType() {
+		return productType;
 	}
 
 }

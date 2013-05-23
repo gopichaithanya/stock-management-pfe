@@ -33,7 +33,9 @@ public class CreateProductTypeViewImpl extends Window implements
 		setWidth(550);
 		setHeight(400);
 		setModal(true);
+		setBlinkModal(true);
 		setResizable(false);
+		setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
@@ -55,8 +57,8 @@ public class CreateProductTypeViewImpl extends Window implements
 
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
-		submitBtn.addSelectHandler(new SubmitBtnHandler(this));
-		// cancelBtn.addSelectHandler(new cancelBtnHandler());
+		submitBtn.addSelectHandler(new SubmitBtnHandler());
+		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
 
 		fpanel.addButton(cancelBtn);
 		fpanel.addButton(submitBtn);
@@ -70,6 +72,25 @@ public class CreateProductTypeViewImpl extends Window implements
 		this.add(vp);
 
 	}
+	
+	/**
+	 * Close window
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class CancelBtnHandler implements SelectHandler {
+
+		private Window w;
+		public CancelBtnHandler(Window w){
+			this.w = w;
+		}
+		
+		@Override
+		public void onSelect(SelectEvent event) {
+			w.hide();
+		}
+	}
 
 	/**
 	 * Save new product type handler
@@ -79,12 +100,6 @@ public class CreateProductTypeViewImpl extends Window implements
 	 */
 	private class SubmitBtnHandler implements SelectHandler {
 
-		private Window w;
-
-		public SubmitBtnHandler(Window w) {
-			this.w = w;
-		}
-
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
@@ -92,11 +107,8 @@ public class CreateProductTypeViewImpl extends Window implements
 				productType.setName(nameField.getValue());
 				productType.setDescription(descriptionEditor.getValue());
 				presenter.createProductType(productType);
-				w.hide();
 			}
-
 		}
-
 	}
 
 	/**

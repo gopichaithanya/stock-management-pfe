@@ -3,6 +3,12 @@ package com.pfe.client.mvp.views;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.shared.model.ProductType;
 
+/**
+ * Contains UI components for name and product type description
+ * 
+ * @author Alexandra
+ *
+ */
 public interface EditProductTypeView {
 
 	
