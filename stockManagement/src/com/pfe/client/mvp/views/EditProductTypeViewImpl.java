@@ -84,9 +84,11 @@ public class EditProductTypeViewImpl extends Window implements
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				productType.setName(nameField.getValue());
-				productType.setDescription(descriptionEditor.getValue());
-				presenter.updateProductType(productType);
+				
+				ProductType updated = new ProductType();
+				updated.setDescription(descriptionEditor.getValue());
+				updated.setName(nameField.getValue());
+				presenter.updateProductType(productType, updated);
 			}
 		}
 	}

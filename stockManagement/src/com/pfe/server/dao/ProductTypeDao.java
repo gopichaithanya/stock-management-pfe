@@ -26,12 +26,22 @@ public interface ProductTypeDao {
 	 * 
 	 * @param productType
 	 */
-	public void updateProductType(ProductType productType);
+	public ProductType updateProductType(ProductType productType);
 	
 	/**
 	 * Retrieves product type by name
 	 * 
 	 * @param name
+	 * @return
 	 */
-	public List<ProductType> getPTypeByName(String name);
+	public ProductType getPTypeByName(String name);
+	
+	/**
+	 * Retrieves product type by id
+	 * 
+	 * @param excludedId
+	 * @param name
+	 * @return
+	 */
+	public ProductType getDuplicateName(Long excludedId, String name);
 }

@@ -84,18 +84,19 @@ public class ProductTypeActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void updateProductType(final ProductType productType) {
-		rpcService.updateProductType(productType, new AsyncCallback<Void>() {
+	public void updateProductType(ProductType initial, ProductType updatedBuffer) {
+		rpcService.updateProductType(initial, updatedBuffer, new AsyncCallback<ProductType>() {
 			
 			@Override
-			public void onSuccess(Void result) {
-				pTypesView.updateData(productType);
+			public void onSuccess(ProductType result) {
+				pTypesView.updateData(result);
 				pTypesView.getEditWindow().hide();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 				if (caught instanceof BusinessException) {
+					//List<ProductType> l = pTypesView.getData();
 					BusinessException exp = (BusinessException) caught;
 					MessageBox messageBox = new MessageBox(exp.getMessage());
 					messageBox.show();

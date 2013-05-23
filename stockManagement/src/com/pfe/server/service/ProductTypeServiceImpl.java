@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.server.dao.ProductTypeDaoImpl;
@@ -23,11 +25,12 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ProductType createProductType(ProductType productType)
 			throws BusinessException {
 
-		List<ProductType> l = pTypeDao.getPTypeByName(productType.getName());
-		if (l.size() > 0) {
+		ProductType pt = pTypeDao.getPTypeByName(productType.getName());
+		if (pt != null) {
 			BusinessException ex = new BusinessException();
 			ex.setMessage("The name you chose is already in use.");
 			throw ex;
@@ -37,22 +40,25 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	}
 
 	@Override
-	public void updateProductType(ProductType productType)
-			throws BusinessException {
-		
-		List<ProductType> l = pTypeDao.getPTypeByName(productType.getName());
-		if (l.size() > 0) {
-			ProductType p = l.get(0);
-			//if the type having this name is not the one being updated
-			if(!p.getId().equals(productType.getId())){ 
-				BusinessException ex = new BusinessException();
-				ex.setMessage("The name you chose is already in use.");
-				throw ex;
-			} else {
-				pTypeDao.updateProductType(productType);
-			}
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public ProductType updateProductType(ProductType initial,
+			ProductType updatedBuffer) throws BusinessException {
+
+		ProductType duplicate = pTypeDao.getDuplicateName(initial.getId(),
+				updatedBuffer.getName());
+		if (duplicate != null) {
+
+			BusinessException ex = new BusinessException();
+			ex.setMessage("The name you chose is already in use.");
+			throw ex;
+
 		}
-		
+
+		initial.setDescription(updatedBuffer.getDescription());
+		initial.setName(updatedBuffer.getName());
+
+		return pTypeDao.updateProductType(initial);
+
 	}
 
 }

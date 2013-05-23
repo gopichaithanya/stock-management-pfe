@@ -12,12 +12,14 @@ import org.springframework.stereotype.Repository;
 
 import com.pfe.shared.model.ProductType;
 
-@Repository //declares dao bean
-public class ProductTypeDaoImpl implements ProductTypeDao{
+@Repository
+// declares dao bean
+public class ProductTypeDaoImpl implements ProductTypeDao {
 
 	private HibernateTemplate hibernateTemplate;
 
-	@Autowired // session factory injection
+	@Autowired
+	// session factory injection
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
@@ -25,8 +27,9 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<ProductType> getProductTypes() {
-		
-		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+
+		DetachedCriteria criteria = DetachedCriteria
+				.forClass(ProductType.class);
 
 		return hibernateTemplate.findByCriteria(criteria);
 	}
@@ -34,31 +37,58 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 	@Override
 	@SuppressWarnings("unchecked")
 	public ProductType createProductType(ProductType productType) {
-	
+
 		Serializable s = hibernateTemplate.save(productType);
 		Long id = (Long) s;
-		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+		DetachedCriteria criteria = DetachedCriteria
+				.forClass(ProductType.class);
 		criteria.add(Restrictions.eq("id", id));
 		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
 		return l.get(0);
 	}
 
-
 	@Override
-	public void updateProductType(ProductType productType) {
-		hibernateTemplate.update(productType);
-	}
+	@SuppressWarnings("unchecked")
+	public ProductType updateProductType(ProductType productType) {
 
+		hibernateTemplate.update(productType);
+		DetachedCriteria criteria = DetachedCriteria
+				.forClass(ProductType.class);
+		criteria.add(Restrictions.eq("id", productType.getId()));
+		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
+		return l.get(0);
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<ProductType> getPTypeByName(String name) {
-		
-		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+	public ProductType getPTypeByName(String name) {
+
+		DetachedCriteria criteria = DetachedCriteria
+				.forClass(ProductType.class);
 		criteria.add(Restrictions.eq("name", name));
 		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
-		return l;
+		if (l.size() > 0) {
+			return l.get(0);
+		}
+		return null;
+
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public ProductType getDuplicateName(Long excludedId, String name) {
+
+		DetachedCriteria criteria = DetachedCriteria
+				.forClass(ProductType.class);
+		criteria.add(Restrictions.conjunction()
+				.add(Restrictions.eq("name", name))
+				.add(Restrictions.not(Restrictions.eq("id", excludedId))));
+
+		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
+		if (l.size() > 0) {
+			return l.get(0);
+		}
+		return null;
+	}
 
 }
