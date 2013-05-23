@@ -6,7 +6,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -31,6 +31,7 @@ public class StockManagement implements EntryPoint {
 	
 	private ToolBar toolBar;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onModuleLoad() {
 
