@@ -28,7 +28,8 @@ public interface ProductTypePresenter extends Presenter {
 	/**
 	 * Updates product type
 	 * 
-	 * @param productType
+	 * @param initial
+	 * @param updatedBuffer
 	 */
 	public void updateProductType(ProductType initial, ProductType updatedBuffer);
 }
