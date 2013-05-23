@@ -3,7 +3,7 @@ package com.pfe.client.mvp;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
-import com.pfe.client.mvp.activities.ProductTypesActivity;
+import com.pfe.client.mvp.activities.ProductTypeActivity;
 import com.pfe.client.mvp.places.ProductTypesPlace;
 
 /**
@@ -23,7 +23,7 @@ public class AppActivityMapper implements ActivityMapper {
 
 	public Activity getActivity(Place place) {
 		if(place instanceof ProductTypesPlace){
-			return new ProductTypesActivity(clientFactory);
+			return new ProductTypeActivity(clientFactory);
 		} else
 			return null;
 	}

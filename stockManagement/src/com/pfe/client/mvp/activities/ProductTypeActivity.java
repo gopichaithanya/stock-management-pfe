@@ -8,19 +8,19 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
-import com.pfe.client.mvp.presenters.ProductTypesPresenter;
+import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.ProductTypesView;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.shared.model.ProductType;
 
-public class ProductTypesActivity extends AbstractActivity implements
-		ProductTypesPresenter {
+public class ProductTypeActivity extends AbstractActivity implements
+		ProductTypePresenter {
 
 	private ClientFactory clientFactory;
 	private ProductTypeServiceAsync rpcService;
 	private ProductTypesView pTypesView;
 
-	public ProductTypesActivity(ClientFactory clientFactory) {
+	public ProductTypeActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		this.rpcService = clientFactory.getProductTypeService();
 	}
@@ -59,7 +59,7 @@ public class ProductTypesActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void addProductType(ProductType productType) {
+	public void createProductType(ProductType productType) {
 
 		rpcService.createProductType(productType, new AsyncCallback<ProductType>() {
 
@@ -74,5 +74,24 @@ public class ProductTypesActivity extends AbstractActivity implements
 				
 			}
 		});
+	}
+
+	@Override
+	public void updateProductType(final ProductType productType) {
+		rpcService.updateProductType(productType, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				pTypesView.updateData(productType);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 }

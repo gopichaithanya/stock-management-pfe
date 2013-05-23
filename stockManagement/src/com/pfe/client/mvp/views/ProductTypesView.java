@@ -3,7 +3,7 @@ package com.pfe.client.mvp.views;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.pfe.client.mvp.presenters.ProductTypesPresenter;
+import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.shared.model.ProductType;
 
 /**
@@ -20,7 +20,7 @@ public interface ProductTypesView extends IsWidget {
 	 * 
 	 * @param presenter
 	 */
-	public void setPresenter(ProductTypesPresenter presenter);
+	public void setPresenter(ProductTypePresenter presenter);
 
 
 	/**
@@ -46,5 +46,12 @@ public interface ProductTypesView extends IsWidget {
 	 * Adds data
 	 */
 	public void addData(ProductType productType);
+	
+	/**
+	 * 
+	 * 
+	 * @param productType
+	 */
+	public void updateData(ProductType productType);
 
 }

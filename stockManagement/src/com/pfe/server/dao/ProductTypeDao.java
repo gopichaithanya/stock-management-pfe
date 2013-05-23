@@ -20,4 +20,10 @@ public interface ProductTypeDao {
 	 */
 	public ProductType createProductType(ProductType productType);
 
+
+	/**
+	 * 
+	 * @param productType
+	 */
+	public void updateProductType(ProductType productType);
 }

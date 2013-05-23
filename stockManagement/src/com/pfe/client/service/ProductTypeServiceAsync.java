@@ -12,4 +12,7 @@ public interface ProductTypeServiceAsync {
 	void createProductType(ProductType productType,
 			AsyncCallback<ProductType> callback);
 
+	void updateProductType(ProductType productType,
+			AsyncCallback<Void> callback);
+
 }

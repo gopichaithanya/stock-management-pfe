@@ -1,8 +1,9 @@
 package com.pfe.client.mvp.views;
 
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
+import com.pfe.shared.model.ProductType;
 
-public interface CreateProductTypeView {
+public interface EditProductTypeView {
 
 	
 	/**
@@ -12,9 +13,11 @@ public interface CreateProductTypeView {
 	 */
 	public void setPresenter(ProductTypePresenter presenter);
 	
-	
 	/**
-	 * Clears the view data
+	 * Sets the view data
+	 * 
+	 * @param productType
 	 */
-	public void clearData();
+	public void setData(ProductType productType);
+	
 }

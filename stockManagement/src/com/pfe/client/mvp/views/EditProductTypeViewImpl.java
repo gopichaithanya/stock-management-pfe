@@ -18,13 +18,14 @@ import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.HtmlEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
-public class CreateProductTypeViewImpl extends Window implements CreateProductTypeView {
+public class EditProductTypeViewImpl extends Window implements EditProductTypeView {
 
+	private ProductType productType;
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
 	private ProductTypePresenter presenter;
-
-	public CreateProductTypeViewImpl() {
+	
+	public EditProductTypeViewImpl() {
 		setBodyBorder(false);
 		setHeadingText("Add product type");
 		setWidth(550);
@@ -42,7 +43,6 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 
 		nameField = new TextField();
 		nameField.setAllowBlank(false);
-		nameField.setValue("");
 		container.add(new FieldLabel(nameField, "Name"), new HtmlData(".name"));
 
 		descriptionEditor = new HtmlEditor();
@@ -69,7 +69,7 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 	}
 	
 	/**
-	 * Save new product type handler
+	 * Save updates
 	 * 
 	 * @author Alexandra
 	 *
@@ -83,16 +83,16 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 		
 		@Override
 		public void onSelect(SelectEvent event) {
-			ProductType productType = new ProductType();
 			productType.setName(nameField.getValue());
 			productType.setDescription(descriptionEditor.getValue());
 			//TODO check here for empty name or description + error popup
 			
-			presenter.createProductType(productType);
+			presenter.updateProductType(productType);
 			w.hide();
 		}
 		
 	}
+	
 	
 	/**
 	 * HTML table
@@ -106,18 +106,17 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 
 		].join("");
 	}-*/;
-
+	
 	@Override
 	public void setPresenter(ProductTypePresenter presenter) {
 		this.presenter = presenter;
-		
 	}
-	
+
 	@Override
-	public void clearData() {
-		nameField.clear();
-		descriptionEditor.clear();
-		
+	public void setData(ProductType productType) {
+		this.productType = productType;
+		nameField.setValue(productType.getName());
+		descriptionEditor.setValue(productType.getDescription());
 	}
 
 }

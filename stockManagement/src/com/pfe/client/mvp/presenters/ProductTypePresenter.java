@@ -9,7 +9,7 @@ import com.pfe.shared.model.ProductType;
  * @author Alexandra
  * 
  */
-public interface ProductTypesPresenter extends Presenter {
+public interface ProductTypePresenter extends Presenter {
 
 	/**
 	 * Goes to a new place
@@ -23,5 +23,12 @@ public interface ProductTypesPresenter extends Presenter {
 	 * 
 	 * @param productType
 	 */
-	public void addProductType(ProductType productType);
+	public void createProductType(ProductType productType);
+	
+	/**
+	 * 
+	 * 
+	 * @param productType
+	 */
+	public void updateProductType(ProductType productType);
 }
