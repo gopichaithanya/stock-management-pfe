@@ -17,8 +17,11 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.HtmlEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
+import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 
-public class CreateProductTypeViewImpl extends Window implements CreateProductTypeView {
+public class CreateProductTypeViewImpl extends Window implements
+		CreateProductTypeView {
 
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
@@ -41,8 +44,8 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 		fpanel.setBorders(false);
 
 		nameField = new TextField();
-		nameField.setAllowBlank(false);
-		nameField.setValue("");
+		nameField.addValidator(new MinLengthValidator(2));
+		nameField.addValidator(new EmptyValidator<String>());
 		container.add(new FieldLabel(nameField, "Name"), new HtmlData(".name"));
 
 		descriptionEditor = new HtmlEditor();
@@ -67,33 +70,35 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 		this.add(vp);
 
 	}
-	
+
 	/**
 	 * Save new product type handler
 	 * 
 	 * @author Alexandra
-	 *
+	 * 
 	 */
-	private class SubmitBtnHandler implements SelectHandler{
+	private class SubmitBtnHandler implements SelectHandler {
 
 		private Window w;
-		public SubmitBtnHandler(Window w){
+
+		public SubmitBtnHandler(Window w) {
 			this.w = w;
 		}
-		
+
 		@Override
 		public void onSelect(SelectEvent event) {
-			ProductType productType = new ProductType();
-			productType.setName(nameField.getValue());
-			productType.setDescription(descriptionEditor.getValue());
-			//TODO check here for empty name or description + error popup
-			
-			presenter.createProductType(productType);
-			w.hide();
+			if (nameField.isValid()) {
+				ProductType productType = new ProductType();
+				productType.setName(nameField.getValue());
+				productType.setDescription(descriptionEditor.getValue());
+				presenter.createProductType(productType);
+				w.hide();
+			}
+
 		}
-		
+
 	}
-	
+
 	/**
 	 * HTML table
 	 * 
@@ -110,14 +115,14 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 	@Override
 	public void setPresenter(ProductTypePresenter presenter) {
 		this.presenter = presenter;
-		
+
 	}
-	
+
 	@Override
 	public void clearData() {
 		nameField.clear();
 		descriptionEditor.clear();
-		
+
 	}
 
 }

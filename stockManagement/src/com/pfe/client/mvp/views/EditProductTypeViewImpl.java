@@ -17,14 +17,17 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.HtmlEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
+import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 
-public class EditProductTypeViewImpl extends Window implements EditProductTypeView {
+public class EditProductTypeViewImpl extends Window implements
+		EditProductTypeView {
 
 	private ProductType productType;
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
 	private ProductTypePresenter presenter;
-	
+
 	public EditProductTypeViewImpl() {
 		setBodyBorder(false);
 		setHeadingText("Add product type");
@@ -42,7 +45,8 @@ public class EditProductTypeViewImpl extends Window implements EditProductTypeVi
 		fpanel.setBorders(false);
 
 		nameField = new TextField();
-		nameField.setAllowBlank(false);
+		nameField.addValidator(new MinLengthValidator(2));
+		nameField.addValidator(new EmptyValidator<String>());
 		container.add(new FieldLabel(nameField, "Name"), new HtmlData(".name"));
 
 		descriptionEditor = new HtmlEditor();
@@ -67,33 +71,32 @@ public class EditProductTypeViewImpl extends Window implements EditProductTypeVi
 		this.add(vp);
 
 	}
-	
+
 	/**
 	 * Save updates
 	 * 
 	 * @author Alexandra
-	 *
+	 * 
 	 */
-	private class SubmitBtnHandler implements SelectHandler{
+	private class SubmitBtnHandler implements SelectHandler {
 
 		private Window w;
-		public SubmitBtnHandler(Window w){
+
+		public SubmitBtnHandler(Window w) {
 			this.w = w;
 		}
-		
+
 		@Override
 		public void onSelect(SelectEvent event) {
-			productType.setName(nameField.getValue());
-			productType.setDescription(descriptionEditor.getValue());
-			//TODO check here for empty name or description + error popup
-			
-			presenter.updateProductType(productType);
-			w.hide();
+			if (nameField.isValid()) {
+				productType.setName(nameField.getValue());
+				productType.setDescription(descriptionEditor.getValue());
+				presenter.updateProductType(productType);
+				w.hide();
+			}
 		}
-		
 	}
-	
-	
+
 	/**
 	 * HTML table
 	 * 
@@ -106,7 +109,7 @@ public class EditProductTypeViewImpl extends Window implements EditProductTypeVi
 
 		].join("");
 	}-*/;
-	
+
 	@Override
 	public void setPresenter(ProductTypePresenter presenter) {
 		this.presenter = presenter;
