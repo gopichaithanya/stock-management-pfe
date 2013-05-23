@@ -22,9 +22,8 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 		hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<ProductType> getProductTypes() {
 		
 		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
@@ -32,9 +31,8 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 		return hibernateTemplate.findByCriteria(criteria);
 	}
 
-
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public ProductType createProductType(ProductType productType) {
 	
 		Serializable s = hibernateTemplate.save(productType);
@@ -49,6 +47,17 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 	@Override
 	public void updateProductType(ProductType productType) {
 		hibernateTemplate.update(productType);
+	}
+
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<ProductType> getPTypeByName(String name) {
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+		criteria.add(Restrictions.eq("name", name));
+		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
+		return l;
 	}
 
 

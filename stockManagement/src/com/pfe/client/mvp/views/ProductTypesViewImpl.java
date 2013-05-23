@@ -48,15 +48,15 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	private Label nameLabel;
 
 	private BorderLayoutContainer con;
-	private CreateProductTypeViewImpl createDialog;
-	private EditProductTypeViewImpl editDialog;
+	private CreateProductTypeViewImpl createWindow;
+	private EditProductTypeViewImpl editWindow;
 
 	public ProductTypesViewImpl() {
 
 		con = new BorderLayoutContainer();
 		con.setResize(true);
 		con.setId("borderlayoutContainer");
-		con.setHeight("100%");
+		con.setHeight("200");
 
 		// West panel
 		ContentPanel west = new ContentPanel();
@@ -185,12 +185,12 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if(createDialog == null){
-				createDialog = new CreateProductTypeViewImpl();
-				createDialog.setPresenter(presenter);
+			if(createWindow == null){
+				createWindow = new CreateProductTypeViewImpl();
+				createWindow.setPresenter(presenter);
 			}
-			createDialog.clearData();
-			createDialog.show();
+			createWindow.clearData();
+			createWindow.show();
 		}
 		
 	}
@@ -205,14 +205,14 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if(editDialog == null){
-				editDialog = new EditProductTypeViewImpl();
-				editDialog.setPresenter(presenter);
+			if(editWindow == null){
+				editWindow = new EditProductTypeViewImpl();
+				editWindow.setPresenter(presenter);
 			}
 			ProductType productType = grid.getSelectionModel().getSelectedItem();
 			if(productType != null){
-				editDialog.setData(productType);
-				editDialog.show();
+				editWindow.setData(productType);
+				editWindow.show();
 			}
 		}
 	}
@@ -254,6 +254,16 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	public void updateData(ProductType productType) {
 		store.update(productType);
 		
+	}
+
+	@Override
+	public CreateProductTypeViewImpl getCreateWindow() {
+		return createWindow;
+	}
+
+	@Override
+	public EditProductTypeViewImpl getEditWindow() {
+		return editWindow;
 	}
 
 }

@@ -7,8 +7,7 @@ import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.shared.model.ProductType;
 
 /**
- * Contains UI components whose values are updated by the presenter to display
- * the list of available product types
+ * Displays the gird of product types
  * 
  * @author Alexandra
  *
@@ -43,15 +42,29 @@ public interface ProductTypesView extends IsWidget {
 	public void clearData();
 	
 	/**
-	 * Adds data
+	 * Adds new line in the list
 	 */
 	public void addData(ProductType productType);
 	
 	/**
-	 * 
+	 * Updates a line in the list
 	 * 
 	 * @param productType
 	 */
 	public void updateData(ProductType productType);
+	
+	
+	/**
+	 * Get create product type window
+	 * 
+	 * @return
+	 */
+	public CreateProductTypeViewImpl getCreateWindow();
 
+	/**
+	 * Get edit window
+	 * 
+	 * @return
+	 */
+	public EditProductTypeViewImpl getEditWindow();
 }
