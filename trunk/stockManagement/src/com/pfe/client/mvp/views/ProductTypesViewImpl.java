@@ -42,16 +42,12 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			.create(ProductTypeProperties.class);
 
 	private ProductTypesPresenter presenter;
-	private List<ProductType> pTypes = new ArrayList<ProductType>();
 	private ListStore<ProductType> store;
 	private Grid<ProductType> grid;
 	private Label descriptionLabel;
 	private Label nameLabel;
 
 	private BorderLayoutContainer con;
-	private ContentPanel west;
-	private ContentPanel center;
-	
 	private CreateProductTypeViewImpl createDialog;
 
 	public ProductTypesViewImpl() {
@@ -62,7 +58,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		con.setHeight("100%");
 
 		// West panel
-		west = new ContentPanel();
+		ContentPanel west = new ContentPanel();
 		AccordionLayoutContainer detailsCon = new AccordionLayoutContainer();
 		detailsCon.setExpandMode(ExpandMode.MULTI);
 		AccordionLayoutAppearance appearance = GWT
@@ -91,7 +87,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		west.setHeadingHtml("Details");
 		
 		// center panel
-		center = new ContentPanel();
+		ContentPanel center = new ContentPanel();
 		center.setBorders(true);
 		center.setHeadingHtml("Product Types");
 
@@ -200,8 +196,6 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	@Override
 	public Widget asWidget() {
-		clearData();
-		store.addAll(pTypes);
 		return con;
 	}
 
@@ -213,13 +207,13 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	@Override
 	public void setData(List<ProductType> productTypes) {
-		this.pTypes = productTypes;
+		this.store.addAll(productTypes);
 
 	}
 
 	@Override
 	public List<ProductType> getData() {
-		return this.pTypes;
+		return this.store.getAll();
 	}
 
 	@Override
