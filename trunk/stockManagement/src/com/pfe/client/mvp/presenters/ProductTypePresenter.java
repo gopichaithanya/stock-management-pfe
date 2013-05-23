@@ -30,5 +30,5 @@ public interface ProductTypePresenter extends Presenter {
 	 * 
 	 * @param productType
 	 */
-	public void updateProductType(ProductType productType);
+	public void updateProductType(ProductType initial, ProductType updatedBuffer);
 }

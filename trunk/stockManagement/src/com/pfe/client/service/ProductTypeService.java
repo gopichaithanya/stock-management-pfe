@@ -39,6 +39,6 @@ public interface ProductTypeService extends RemoteService {
 	 * @param productType
 	 * @throws BusinessException
 	 */
-	public void updateProductType(ProductType productType)
+	public ProductType updateProductType(ProductType initial, ProductType updatedBuffer)
 			throws BusinessException;
 }
