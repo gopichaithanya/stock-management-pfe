@@ -12,7 +12,7 @@ public interface ProductTypeDao {
 	 * @return list of all product types
 	 */
 	public List<ProductType> getProductTypes();
-	
+
 	/**
 	 * Adds new product type in database
 	 * 
@@ -20,14 +20,13 @@ public interface ProductTypeDao {
 	 */
 	public ProductType createProductType(ProductType productType);
 
-
 	/**
 	 * Updates product type
 	 * 
 	 * @param productType
 	 */
 	public ProductType updateProductType(ProductType productType);
-	
+
 	/**
 	 * Retrieves product type by name
 	 * 
@@ -35,9 +34,9 @@ public interface ProductTypeDao {
 	 * @return
 	 */
 	public ProductType getPTypeByName(String name);
-	
+
 	/**
-	 * Retrieves product type by id
+	 * Retrieves product type with given name where id different from excludedId
 	 * 
 	 * @param excludedId
 	 * @param name
