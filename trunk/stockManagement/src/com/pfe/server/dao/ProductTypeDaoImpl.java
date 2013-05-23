@@ -46,4 +46,10 @@ public class ProductTypeDaoImpl implements ProductTypeDao{
 	}
 
 
+	@Override
+	public void updateProductType(ProductType productType) {
+		hibernateTemplate.update(productType);
+	}
+
+
 }

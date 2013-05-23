@@ -28,4 +28,12 @@ public interface ProductTypeService extends RemoteService {
 	 * @param productType
 	 */
 	public ProductType createProductType(ProductType productType);
+	
+	/**
+	 * 
+	 * 
+	 * @param productType
+	 * 
+	 */
+	public void updateProductType(ProductType productType);
 }

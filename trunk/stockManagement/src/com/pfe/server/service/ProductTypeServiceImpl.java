@@ -37,4 +37,9 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		
 	}
 
+	@Override
+	public void updateProductType(ProductType productType) {
+		pTypeDao.updateProductType(productType);
+	}
+
 }

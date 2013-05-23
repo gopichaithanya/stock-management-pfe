@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.pfe.client.mvp.presenters.ProductTypesPresenter;
+import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.images.ImageResources;
 import com.pfe.client.mvp.views.properties.ProductTypeProperties;
 import com.pfe.shared.model.ProductType;
@@ -41,7 +41,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	private static final ProductTypeProperties props = GWT
 			.create(ProductTypeProperties.class);
 
-	private ProductTypesPresenter presenter;
+	private ProductTypePresenter presenter;
 	private ListStore<ProductType> store;
 	private Grid<ProductType> grid;
 	private Label descriptionLabel;
@@ -49,6 +49,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	private BorderLayoutContainer con;
 	private CreateProductTypeViewImpl createDialog;
+	private EditProductTypeViewImpl editDialog;
 
 	public ProductTypesViewImpl() {
 
@@ -136,16 +137,16 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 		// ToolBar
 		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
-		TextButton detailBtn = new TextButton("Details");
+		TextButton edit = new TextButton("Edit");
 		TextButton deleteBtn = new TextButton("Delete");
 		addBtn.addSelectHandler(new AddBtnHandler());
-		//detailBtn.addSelectHandler(new DetailsBtnHandler());
+		edit.addSelectHandler(new EditBtnHandler());
 		ToolBar toolbar = new ToolBar();
 		toolbar.setSpacing(5);
 		toolbar.setPadding(new Padding(5));
 		toolbar.add(addBtn);
 		toolbar.add(new SeparatorToolItem());
-		toolbar.add(detailBtn);
+		toolbar.add(edit);
 		toolbar.add(new SeparatorToolItem());
 		toolbar.add(deleteBtn);
 		
@@ -193,6 +194,28 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		}
 		
 	}
+	
+	/**
+	 * Edit type handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class EditBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if(editDialog == null){
+				editDialog = new EditProductTypeViewImpl();
+				editDialog.setPresenter(presenter);
+			}
+			ProductType productType = grid.getSelectionModel().getSelectedItem();
+			if(productType != null){
+				editDialog.setData(productType);
+				editDialog.show();
+			}
+		}
+	}
 
 	@Override
 	public Widget asWidget() {
@@ -200,7 +223,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	}
 
 	@Override
-	public void setPresenter(ProductTypesPresenter presenter) {
+	public void setPresenter(ProductTypePresenter presenter) {
 		this.presenter = presenter;
 
 	}
@@ -225,6 +248,11 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	@Override
 	public void addData(ProductType productType) {
 		store.add(productType);
+	}
+
+	@Override
+	public void updateData(ProductType productType) {
+		store.update(productType);
 		
 	}
 
