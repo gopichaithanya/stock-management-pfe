@@ -1,9 +1,15 @@
 package com.pfe.client.mvp.views;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.pfe.client.mvp.views.images.ImageResources;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
@@ -15,12 +21,13 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 /**
  * Generic layout consisting of a BorderLayoutContainer with two panels: center
- * and west and a tool bar. The center panel contains a grid. The west panel has
+ * and west and a tool bar. The center panel contains a paging grid. The west panel has
  * a container to display details
  * 
  * @author Alexandra
@@ -34,7 +41,9 @@ public class GridBorderLayout<T> {
 	private AccordionLayoutContainer detailsCon;
 
 	private Grid<T> grid;
-
+	private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
+	private PagingToolBar pagingToolBar;
+	
 	private TextButton addBtn;
 	private TextButton editBtn;
 	private TextButton deleteBtn;
@@ -72,7 +81,18 @@ public class GridBorderLayout<T> {
 		con.setCenterWidget(center, centerData);
 
 		// grid
-		grid = new Grid<T>(store, cm);
+		grid = new Grid<T>(store, cm){
+			 @Override
+		      protected void onAfterFirstAttach() {
+		        super.onAfterFirstAttach();
+		        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+		          @Override
+		          public void execute() {
+		            loader.load();
+		          }
+		        });
+		      }
+		};
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(false);
@@ -81,6 +101,7 @@ public class GridBorderLayout<T> {
 		grid.setStateful(true);
 		grid.setLayoutData(new VerticalLayoutData(1, 1));
 		grid.getView().setAutoFill(true);
+		pagingToolBar = new PagingToolBar(2);
 
 		// tool bar
 		addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
@@ -100,72 +121,66 @@ public class GridBorderLayout<T> {
 		VerticalLayoutContainer verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
+		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
 
 		center.add(verticalCon);
 	}
 
+	/**
+	 * Adds tabs to the details container
+	 * 
+	 * @param tab
+	 */
+	public void addDetailsTab(IsWidget tab){
+		detailsCon.add(tab);
+	}
+	
+	public void maskGrid(){
+		grid.mask("Please wait...");
+	}
+	
+	public void unmaskGrid(){
+		grid.unmask();
+	}
+	
 	public BorderLayoutContainer getCon() {
 		return con;
-	}
-
-	public void setCon(BorderLayoutContainer con) {
-		this.con = con;
 	}
 
 	public ContentPanel getWest() {
 		return west;
 	}
 
-	public void setWest(ContentPanel west) {
-		this.west = west;
-	}
-
 	public ContentPanel getCenter() {
 		return center;
 	}
-
-	public void setCenter(ContentPanel center) {
-		this.center = center;
-	}
-
-	public AccordionLayoutContainer getDetailsCon() {
-		return detailsCon;
-	}
-
-	public void setDetailsCon(AccordionLayoutContainer detailsCon) {
-		this.detailsCon = detailsCon;
-	}
-
+	
 	public Grid<T> getGrid() {
 		return grid;
-	}
-
-	public void setGrid(Grid<T> grid) {
-		this.grid = grid;
 	}
 
 	public TextButton getAddBtn() {
 		return addBtn;
 	}
 
-	public void setAddBtn(TextButton addBtn) {
-		this.addBtn = addBtn;
-	}
-
 	public TextButton getEditBtn() {
 		return editBtn;
-	}
-
-	public void setEditBtn(TextButton editBtn) {
-		this.editBtn = editBtn;
 	}
 
 	public TextButton getDeleteBtn() {
 		return deleteBtn;
 	}
 
-	public void setDeleteBtn(TextButton deleteBtn) {
-		this.deleteBtn = deleteBtn;
+	public void setLoader(
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader) {
+		this.loader = loader;
 	}
 
+	public void bindPagingToolBar() {
+		pagingToolBar.bind(loader);
+	}
+
+	public void refreshGrid(){
+		pagingToolBar.refresh();
+	}
 }

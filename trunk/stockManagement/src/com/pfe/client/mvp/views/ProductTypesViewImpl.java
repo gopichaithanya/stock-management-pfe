@@ -28,7 +28,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			.create(ProductTypeProperties.class);
 
 	private ProductTypePresenter presenter;
-	
+
 	private GridBorderLayout<ProductType> layout;
 	private ListStore<ProductType> store;
 	private Label descriptionLabel;
@@ -39,10 +39,8 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	public ProductTypesViewImpl() {
 
-		//Details 
 		AccordionLayoutAppearance appearance = GWT
 				.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
-
 		// details : Name tab
 		descriptionLabel = new Label();
 		nameLabel = new Label();
@@ -51,17 +49,18 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		namePanel.setHeadingText("Product Type");
 		namePanel.add(nameLabel);
 		namePanel.setExpanded(true);
-		
+
 		// details : Description tab
 		ContentPanel descPanel = new ContentPanel(appearance);
 		descPanel.setBodyStyleName("rawText");
 		descPanel.setHeadingText("Description");
 		descPanel.add(descriptionLabel);
 		descPanel.setExpanded(true);
-	
+
 		// check box selection model
 		IdentityValueProvider<ProductType> identity = new IdentityValueProvider<ProductType>();
-		CheckBoxSelectionModel<ProductType> sm = new CheckBoxSelectionModel<ProductType>(identity);
+		CheckBoxSelectionModel<ProductType> sm = new CheckBoxSelectionModel<ProductType>(
+				identity);
 		sm.setSelectionMode(SelectionMode.SINGLE);
 
 		// column configuration
@@ -75,21 +74,20 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
 		columnConfigList.add(descCol);
-		
-		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(columnConfigList);
+		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(
+				columnConfigList);
 		store = new ListStore<ProductType>(props.key());
 
 		layout = new GridBorderLayout<ProductType>(store, cm);
 		layout.getGrid().addRowClickHandler(new GridRowClickHandler());
-		
 		layout.getWest().setHeadingHtml("Details");
 		layout.getCenter().setHeadingHtml("Product Types");
-		layout.getDetailsCon().add(namePanel);
-		layout.getDetailsCon().add(descPanel);
-	
+		layout.addDetailsTab(namePanel);
+		layout.addDetailsTab(descPanel);
 		layout.getAddBtn().addSelectHandler(new AddBtnHandler());
 		layout.getEditBtn().addSelectHandler(new EditBtnHandler());
 		layout.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+
 	}
 
 	/**
@@ -127,7 +125,6 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			createWindow.clearData();
 			createWindow.show();
 		}
-
 	}
 
 	/**
@@ -167,6 +164,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			ProductType productType = layout.getGrid().getSelectionModel()
 					.getSelectedItem();
 			if (productType != null) {
+				layout.maskGrid();
 				presenter.deleteProductType(productType);
 			}
 		}
@@ -180,24 +178,21 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	@Override
 	public void setPresenter(ProductTypePresenter presenter) {
 		this.presenter = presenter;
-
 	}
 
 	@Override
 	public void setData(List<ProductType> productTypes) {
 		this.store.addAll(productTypes);
-
 	}
 
 	@Override
-	public List<ProductType> getData() {
-		return this.store.getAll();
+	public ListStore<ProductType> getData() {
+		return this.store;
 	}
 
 	@Override
 	public void clearData() {
 		store.clear();
-
 	}
 
 	@Override
@@ -208,13 +203,11 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	@Override
 	public void updateData(ProductType productType) {
 		store.update(productType);
-
 	}
 
 	@Override
 	public void deleteData(ProductType productType) {
 		store.remove(productType);
-
 	}
 
 	@Override
@@ -225,6 +218,11 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	@Override
 	public EditProductTypeViewImpl getEditWindow() {
 		return editWindow;
+	}
+
+	@Override
+	public GridBorderLayout<ProductType> getLayout() {
+		return layout;
 	}
 
 }
