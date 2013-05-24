@@ -32,4 +32,11 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param updatedBuffer
 	 */
 	public void updateProductType(ProductType initial, ProductType updatedBuffer);
+	
+	/**
+	 * Deletes type
+	 * 
+	 * @param productType
+	 */
+	public void deleteProductType(ProductType productType);
 }

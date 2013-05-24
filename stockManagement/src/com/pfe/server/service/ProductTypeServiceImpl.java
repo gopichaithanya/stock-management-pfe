@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ProductTypeService;
-import com.pfe.server.dao.ProductTypeDaoImpl;
+import com.pfe.server.dao.ProductTypeDao;
 import com.pfe.shared.model.BusinessException;
 import com.pfe.shared.model.ProductType;
 
@@ -17,7 +17,7 @@ import com.pfe.shared.model.ProductType;
 public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Autowired
-	private ProductTypeDaoImpl pTypeDao;
+	private ProductTypeDao pTypeDao;
 
 	@Override
 	public List<ProductType> getProductTypes() {
@@ -29,7 +29,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	public ProductType createProductType(ProductType productType)
 			throws BusinessException {
 
-		ProductType pt = pTypeDao.getPTypeByName(productType.getName());
+		ProductType pt = pTypeDao.getProductTypeByName(productType.getName());
 		if (pt != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
@@ -46,8 +46,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 				updatedBuffer.getName());
 		if (duplicate != null) {
 
-			BusinessException ex = new BusinessException();
-			ex.setMessage("The name you chose is already in use.");
+			BusinessException ex = new BusinessException("The name you chose is already in use.");
 			throw ex;
 
 		}
@@ -57,6 +56,15 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 		return pTypeDao.updateProductType(initial);
 
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteProductType(ProductType productType)
+			throws BusinessException {
+		//TODO check if at least one shipment with this type in DB and throw exception
+		pTypeDao.deleteProductType(productType);
+		
 	}
 
 }

@@ -106,4 +106,23 @@ public class ProductTypeActivity extends AbstractActivity implements
 		});
 		
 	}
+
+	@Override
+	public void deleteProductType(final ProductType productType) {
+		rpcService.deleteProductType(productType, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				pTypesView.deleteData(productType);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
 }
