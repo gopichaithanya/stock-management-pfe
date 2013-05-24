@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ProductTypeService;
-import com.pfe.server.dao.ProductTypeDao;
+import com.pfe.server.dao.producttype.ProductTypeDao;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
@@ -25,7 +25,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	public List<ProductType> getProductTypes() {
-		return pTypeDao.getProductTypes();
+		return pTypeDao.findAll();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		if (pt != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
-		return pTypeDao.createProductType(productType);
+		return pTypeDao.merge(productType);
 
 	}
 
@@ -59,7 +59,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		initial.setDescription(updatedBuffer.getDescription());
 		initial.setName(updatedBuffer.getName());
 
-		return pTypeDao.updateProductType(initial);
+		return pTypeDao.merge(initial);
 
 	}
 
@@ -76,7 +76,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	@Override
 	public PagingLoadResult<ProductType> getTypesWithPaging(PagingLoadConfig config) {
 		
-		List<ProductType> list = pTypeDao.getProductTypes();
+		List<ProductType> list = pTypeDao.findAll();
 
 		List<ProductType> sublist = new ArrayList<ProductType>();
 		int start = config.getOffset();
