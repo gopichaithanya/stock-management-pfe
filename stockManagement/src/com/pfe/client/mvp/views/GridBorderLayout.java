@@ -52,9 +52,6 @@ public class GridBorderLayout<T> {
 
 		con = new BorderLayoutContainer();
 		con.setResize(true);
-		
-		//TODO fix this hard coded height
-		con.setHeight("200");
 
 		// West panel
 		west = new ContentPanel();
