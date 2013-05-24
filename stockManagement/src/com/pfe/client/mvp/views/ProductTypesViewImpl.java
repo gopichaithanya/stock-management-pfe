@@ -13,8 +13,12 @@ import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
+import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
@@ -33,6 +37,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	private ListStore<ProductType> store;
 	private Label descriptionLabel;
 	private Label nameLabel;
+	private ConfirmMessageBox confirmBox;
 
 	private CreateProductTypeViewImpl createWindow;
 	private EditProductTypeViewImpl editWindow;
@@ -161,12 +166,31 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		@Override
 		public void onSelect(SelectEvent event) {
 
-			ProductType productType = layout.getGrid().getSelectionModel()
-					.getSelectedItem();
-			if (productType != null) {
-				layout.maskGrid();
-				presenter.deleteProductType(productType);
-			}
+			confirmBox = new ConfirmMessageBox("Quit",
+					"Are you sure you want to delete the type?");
+			final HideHandler hideHandler = new HideHandler() {
+
+				@Override
+				public void onHide(HideEvent event) {
+					Dialog btn = (Dialog) event.getSource();
+					String msg = btn.getHideButton().getText();
+					if (msg.equals("Yes")) {
+						
+						ProductType productType = layout.getGrid()
+								.getSelectionModel().getSelectedItem();
+						if (productType != null) {
+							layout.maskGrid();
+							presenter.deleteProductType(productType);
+						}
+						
+					} else if (msg.equals("No")) {
+						confirmBox.hide();
+					}
+				}
+			};
+			confirmBox.addHideHandler(hideHandler);
+			confirmBox.show();
+
 		}
 	}
 
