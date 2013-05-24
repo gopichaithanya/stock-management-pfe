@@ -137,8 +137,8 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 		// ToolBar
 		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
-		TextButton edit = new TextButton("Edit");
-		TextButton deleteBtn = new TextButton("Delete");
+		TextButton edit = new TextButton("Edit", ImageResources.INSTANCE.addEditItcon());
+		TextButton deleteBtn = new TextButton("Delete", ImageResources.INSTANCE.addDeleteIcon());
 		addBtn.addSelectHandler(new AddBtnHandler());
 		edit.addSelectHandler(new EditBtnHandler());
 		ToolBar toolbar = new ToolBar();
