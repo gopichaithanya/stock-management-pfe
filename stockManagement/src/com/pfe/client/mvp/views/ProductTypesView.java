@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.shared.model.ProductType;
+import com.sencha.gxt.data.shared.ListStore;
 
 /**
  * Displays a list of product types
@@ -34,7 +35,7 @@ public interface ProductTypesView extends IsWidget {
 	 * 
 	 * @return
 	 */
-	public List<ProductType> getData();
+	public ListStore<ProductType> getData();
 
 	/**
 	 * Clears the view components
@@ -73,4 +74,12 @@ public interface ProductTypesView extends IsWidget {
 	 * @return
 	 */
 	public EditProductTypeViewImpl getEditWindow();
+	
+	/**
+	 * Gets layout frame
+	 * 
+	 * @return
+	 */
+	public GridBorderLayout<ProductType> getLayout();
+
 }

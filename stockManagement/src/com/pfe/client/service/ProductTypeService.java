@@ -6,6 +6,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
+import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 /**
  * RPC Service that handles product type CRUD
@@ -51,4 +53,13 @@ public interface ProductTypeService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public void deleteProductType(ProductType productType) throws BusinessException;
+	
+	
+	/**
+	 * Retrieves product types from database 
+	 * 
+	 * @param config
+	 * @return
+	 */
+	public PagingLoadResult<ProductType> getTypesWithPaging(PagingLoadConfig config);
 }
