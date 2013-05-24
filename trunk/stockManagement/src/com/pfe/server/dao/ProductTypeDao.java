@@ -31,16 +31,23 @@ public interface ProductTypeDao {
 	 * Retrieves product type by name
 	 * 
 	 * @param name
-	 * @return
+	 * @return type with given name
 	 */
-	public ProductType getPTypeByName(String name);
+	public ProductType getProductTypeByName(String name);
 
 	/**
 	 * Retrieves product type with given name where id different from excludedId
 	 * 
 	 * @param excludedId
 	 * @param name
-	 * @return
+	 * @return type with given name and id different from excludedId
 	 */
 	public ProductType getDuplicateName(Long excludedId, String name);
+	
+	/**
+	 * Deletes type from database
+	 * 
+	 * @param productType
+	 */
+	public void deleteProductType(ProductType productType);
 }

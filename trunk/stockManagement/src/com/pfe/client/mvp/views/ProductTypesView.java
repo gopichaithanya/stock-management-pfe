@@ -7,7 +7,7 @@ import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.shared.model.ProductType;
 
 /**
- * Displays the gird of product types
+ * Displays a list of product types
  * 
  * @author Alexandra
  *
@@ -37,7 +37,7 @@ public interface ProductTypesView extends IsWidget {
 	public List<ProductType> getData();
 
 	/**
-	 * Clears the view data
+	 * Clears the view components
 	 */
 	public void clearData();
 	
@@ -53,9 +53,15 @@ public interface ProductTypesView extends IsWidget {
 	 */
 	public void updateData(ProductType productType);
 	
+	/**
+	 * Deletes type from the displayed list
+	 * 
+	 * @param productType
+	 */
+	public void deleteData(ProductType productType);
 	
 	/**
-	 * Get create product type window
+	 * Get the window for product type creation
 	 * 
 	 * @return
 	 */

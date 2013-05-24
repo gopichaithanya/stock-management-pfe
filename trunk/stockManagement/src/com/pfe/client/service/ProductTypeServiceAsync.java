@@ -15,4 +15,6 @@ public interface ProductTypeServiceAsync {
 	void updateProductType(ProductType initial, ProductType updatedBuffer,
 			AsyncCallback<ProductType> callback);
 
+	void deleteProductType(ProductType productType, AsyncCallback<Void> callback);
+
 }

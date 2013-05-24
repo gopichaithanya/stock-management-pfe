@@ -61,7 +61,7 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public ProductType getPTypeByName(String name) {
+	public ProductType getProductTypeByName(String name) {
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
 		criteria.add(Restrictions.eq("name", name).ignoreCase());
@@ -88,6 +88,12 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
 			return l.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public void deleteProductType(ProductType productType) {
+		hibernateTemplate.delete(productType);
+		
 	}
 
 }
