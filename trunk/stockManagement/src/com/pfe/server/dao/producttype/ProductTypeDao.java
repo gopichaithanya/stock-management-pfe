@@ -1,31 +1,10 @@
-package com.pfe.server.dao;
+package com.pfe.server.dao.producttype;
 
-import java.util.List;
-
+import com.pfe.server.dao.IBaseDao;
 import com.pfe.shared.model.ProductType;
 
-public interface ProductTypeDao {
+public interface ProductTypeDao extends IBaseDao<Long, ProductType>{
 
-	/**
-	 * Retrieves all product types from database
-	 * 
-	 * @return list of all product types
-	 */
-	public List<ProductType> getProductTypes();
-
-	/**
-	 * Adds new product type in database
-	 * 
-	 * @param productType
-	 */
-	public ProductType createProductType(ProductType productType);
-
-	/**
-	 * Updates product type
-	 * 
-	 * @param productType
-	 */
-	public ProductType updateProductType(ProductType productType);
 
 	/**
 	 * Retrieves product type by name
