@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.pfe.shared.model.BusinessException;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
 
 /**
