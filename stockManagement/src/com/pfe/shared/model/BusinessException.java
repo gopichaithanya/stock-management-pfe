@@ -12,6 +12,14 @@ import java.io.Serializable;
 public class BusinessException extends Exception implements Serializable {
 
 	private String message;
+	
+	public BusinessException() {
+	}
+	
+	public BusinessException(String msg) {
+		this.message = msg;
+		
+	}
 
 	public String getMessage() {
 		return message;

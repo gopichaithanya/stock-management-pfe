@@ -31,9 +31,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 		ProductType pt = pTypeDao.getPTypeByName(productType.getName());
 		if (pt != null) {
-			BusinessException ex = new BusinessException();
-			ex.setMessage("The name you chose is already in use.");
-			throw ex;
+			throw new BusinessException("The name you chose is already in use.");
 		}
 		return pTypeDao.createProductType(productType);
 
