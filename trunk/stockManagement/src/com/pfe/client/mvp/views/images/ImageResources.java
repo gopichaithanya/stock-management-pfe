@@ -8,7 +8,13 @@ public interface ImageResources extends ClientBundle {
 
 	  public ImageResources INSTANCE = GWT.create(ImageResources.class);
 
-	  @Source("create.png")
+	  @Source("btn_add.png")
 	  ImageResource addCreateIcon();
+	  
+	  @Source("btn_delete.png")
+	  ImageResource addDeleteIcon();
+	  
+	  @Source("btn_edit.png")
+	  ImageResource addEditItcon();
 
 }
