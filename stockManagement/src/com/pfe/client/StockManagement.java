@@ -15,6 +15,7 @@ import com.pfe.client.mvp.AppPlaceHistoryMapper;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.places.ProductTypesPlace;
+import com.pfe.client.mvp.views.images.ImageResources;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -28,7 +29,7 @@ import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class StockManagement implements EntryPoint {
-	
+
 	private ToolBar toolBar;
 
 	@SuppressWarnings("deprecation")
@@ -45,12 +46,11 @@ public class StockManagement implements EntryPoint {
 		ActivityMapper activityMapper = new AppActivityMapper(clientFactory);
 		ActivityManager activityManager = new ActivityManager(activityMapper,
 				eventBus);
-		
-		
+
 		// This is the panel that will contain the different views
 		SimpleContainer centerPanel = new SimpleContainer();
 		activityManager.setDisplay(centerPanel);
-		
+
 		// TODO remove this
 		ProductTypesPlace testPlace = new ProductTypesPlace();
 
@@ -67,65 +67,73 @@ public class StockManagement implements EntryPoint {
 		// create the frame of the window
 		Viewport viewport = new Viewport();
 		buildToolbar();
-		
+
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.add(toolBar, new VerticalLayoutData(1, -1));
-	    con.add(centerPanel,  new VerticalLayoutData(1, 1, new Margins(10)));
+		con.add(centerPanel, new VerticalLayoutData(1, 1, new Margins(10)));
 
-	    viewport.add(con);
+		viewport.add(con);
 		RootPanel.get().add(viewport.asWidget());
 
 	}
-	
+
 	/**
 	 * Builds the menu
 	 * 
 	 */
 	public void buildToolbar() {
-		
+
 		SelectionHandler<Item> handler = new SelectionHandler<Item>() {
 			@Override
 			public void onSelection(SelectionEvent<Item> event) {
-				//MenuItem item = (MenuItem) event.getSelectedItem();
-				//String text = item.getText();
-//				if("Stores".equals(text)){
-//					goTo(new StoresListPlace());
-//				} else if("Warehouses".equals(text)){
-//					
-//				} else if("Suppliers".equals(text)){
-//					goTo(new SuppliersListPlace());
-//				} else if("Invoice".equals(text)){
-//					
-//				}
+				// MenuItem item = (MenuItem) event.getSelectedItem();
+				// String text = item.getText();
+				// if("Stores".equals(text)){
+				// goTo(new StoresListPlace());
+				// } else if("Warehouses".equals(text)){
+				//
+				// } else if("Suppliers".equals(text)){
+				// goTo(new SuppliersListPlace());
+				// } else if("Invoice".equals(text)){
+				//
+				// }
 			}
 		};
-		
+
 		toolBar = new ToolBar();
-		//toolBar.setLayoutData(new VerticalLayoutData(1, -1));
 		toolBar.setSpacing(5);
 		toolBar.setPadding(new Padding(10));
 		toolBar.setHeight(40);
 
+		Menu productMenu = new Menu();
+		productMenu.addSelectionHandler(handler);
+		TextButton productBtn = new TextButton("Products",
+				ImageResources.INSTANCE.addProductIcon());
+		productBtn.setMenu(productMenu);
+		MenuItem pTypeItem = new MenuItem("Product Types");
+		MenuItem stockItem = new MenuItem("Stocks");
+		productMenu.add(pTypeItem);
+		productMenu.add(stockItem);
+
 		Menu storageMenu = new Menu();
 		storageMenu.addSelectionHandler(handler);
-		TextButton storageBtn = new TextButton("Storage");
+		TextButton storageBtn = new TextButton("Storage",
+				ImageResources.INSTANCE.addStoreItcon());
 		storageBtn.setMenu(storageMenu);
-		MenuItem storeItem = new MenuItem("Stores");
-		MenuItem warehouseItem = new MenuItem("Warehouses");
-		storageMenu.add(storeItem);
-		storageMenu.add(warehouseItem);
-		
-		Menu supplyMenu = new Menu();
-		supplyMenu.addSelectionHandler(handler);
-		TextButton supplyBtn = new TextButton("Supply");
-		supplyBtn.setMenu(supplyMenu);
-		MenuItem suppliersItem = new MenuItem("Suppliers");
-		MenuItem invoiceItem = new MenuItem("Invoice");
-		supplyMenu.add(suppliersItem);
-		supplyMenu.add(invoiceItem);
+		MenuItem lTypeItem = new MenuItem("Location Types");
+		MenuItem locationItem = new MenuItem("Locations");
+		storageMenu.add(lTypeItem);
+		storageMenu.add(locationItem);
 
+		TextButton supplierBtn = new TextButton("Suppliers",
+				ImageResources.INSTANCE.addSupplierIcon());
+		TextButton invoiceBtn = new TextButton("Invoices",
+				ImageResources.INSTANCE.addInvoiceIcon());
+
+		toolBar.add(productBtn);
 		toolBar.add(storageBtn);
-		toolBar.add(supplyBtn);
+		toolBar.add(supplierBtn);
+		toolBar.add(invoiceBtn);
 	}
 
 }
