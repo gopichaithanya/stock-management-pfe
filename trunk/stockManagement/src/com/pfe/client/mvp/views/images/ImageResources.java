@@ -15,6 +15,17 @@ public interface ImageResources extends ClientBundle {
 	  ImageResource addDeleteIcon();
 	  
 	  @Source("btn_edit.png")
-	  ImageResource addEditItcon();
+	  ImageResource addEditIcon();
 
+	  @Source("product.jpg")
+	  ImageResource addProductIcon();
+	  
+	  @Source("store.png")
+	  ImageResource addStoreItcon();
+	  
+	  @Source("supplier.png")
+	  ImageResource addSupplierIcon();
+	  
+	  @Source("invoice.jpg")
+	  ImageResource addInvoiceIcon();
 }

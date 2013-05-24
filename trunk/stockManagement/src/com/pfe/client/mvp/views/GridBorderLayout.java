@@ -102,7 +102,7 @@ public class GridBorderLayout<T> {
 
 		// tool bar
 		addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
-		editBtn = new TextButton("Edit", ImageResources.INSTANCE.addEditItcon());
+		editBtn = new TextButton("Edit", ImageResources.INSTANCE.addEditIcon());
 		deleteBtn = new TextButton("Delete",
 				ImageResources.INSTANCE.addDeleteIcon());
 
