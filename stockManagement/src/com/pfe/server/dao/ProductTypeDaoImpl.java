@@ -63,9 +63,8 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
 	@SuppressWarnings("unchecked")
 	public ProductType getPTypeByName(String name) {
 
-		DetachedCriteria criteria = DetachedCriteria
-				.forClass(ProductType.class);
-		criteria.add(Restrictions.eq("name", name));
+		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+		criteria.add(Restrictions.eq("name", name).ignoreCase());
 		List<ProductType> l = hibernateTemplate.findByCriteria(criteria);
 		if (l.size() > 0) {
 			return l.get(0);
