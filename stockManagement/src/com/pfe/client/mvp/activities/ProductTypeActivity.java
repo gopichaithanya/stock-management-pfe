@@ -11,7 +11,7 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.ProductTypesView;
 import com.pfe.client.service.ProductTypeServiceAsync;
-import com.pfe.shared.model.BusinessException;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.widget.core.client.box.MessageBox;
 

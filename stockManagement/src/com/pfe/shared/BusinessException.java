@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.shared;
 
 import java.io.Serializable;
 

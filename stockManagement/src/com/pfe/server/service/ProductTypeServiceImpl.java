@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.server.dao.ProductTypeDao;
-import com.pfe.shared.model.BusinessException;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
 
 @Service("productTypeService")
