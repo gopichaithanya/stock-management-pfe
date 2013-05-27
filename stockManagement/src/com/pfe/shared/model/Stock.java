@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -17,6 +18,7 @@ public class Stock implements Serializable{
 	private Long id;
 	private int quantity;
 	private ProductType type;
+	private Location location;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -43,5 +45,15 @@ public class Stock implements Serializable{
 
 	public void setType(ProductType type) {
 		this.type = type;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "location_id")
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }

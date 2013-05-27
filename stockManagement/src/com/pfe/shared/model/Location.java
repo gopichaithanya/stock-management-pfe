@@ -52,67 +52,13 @@ public class Location implements Serializable{
 		this.type = type;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
 	public List<Stock> getStocks() {
 		return stocks;
 	}
 
 	public void setStocks(List<Stock> stocks) {
 		this.stocks = stocks;
-	}
-	
-	/**
-	 * Returns stock by product type
-	 * 
-	 * @param pType
-	 * @return
-	 */
-	public Stock getStockByType(ProductType pType){
-		int i = 0;
-		Boolean found = false;
-		int size = stocks.size();
-		Stock s = null;
-		
-		while(!found && i < size){
-			Stock currentStock = stocks.get(i);
-			if(currentStock.getType().getId().equals(pType.getId())){
-				found = true;
-				s = currentStock;
-			}
-			i++;
-		}
-		return s;
-	}
-	
-	/**
-	 * 
-	 * @param pType
-	 * @param quantity
-	 */
-	public void receiveProducts(ProductType pType, int quantity){
-		Stock stock = getStockByType(pType);
-		if(stock == null){
-			stock = new Stock();
-			stock.setType(pType);
-			stock.setQuantity(quantity);
-			getStocks().add(stock);
-		} else{
-			int newStoreQty = stock.getQuantity() + quantity;
-			stock.setQuantity(newStoreQty);
-		}
-	}
-	
-	/**
-	 * Contract: the stock of the given type exists in the
-	 * location and its quantity is sufficient
-	 * 
-	 * @param pType
-	 * @param quantity
-	 */
-	public void removeProducts(ProductType pType, int quantity){
-		Stock stock = getStockByType(pType);
-		int newQuantity = stock.getQuantity() - quantity;
-		stock.setQuantity(newQuantity);
 	}
 
 }

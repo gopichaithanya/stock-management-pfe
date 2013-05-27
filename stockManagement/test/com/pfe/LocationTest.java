@@ -3,6 +3,7 @@ package com.pfe;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -75,24 +76,49 @@ public class LocationTest {
 		List<ProductType> types = ht.findByCriteria(pTypeCriteria);
 		ProductType type = types.get(0);
 		// quantity to move
-		int quantityToMove = 500;
+		int quantityToMove = 200;
 
-		Stock warehouseStock = warehouse.getStockByType(type);
-		if (warehouseStock == null) {
+		DetachedCriteria stockCriteria = DetachedCriteria.forClass(Stock.class);
+		Criterion criterion1 = Restrictions.eq("location", warehouse);
+		Criterion criterion2 = Restrictions.eq("type", type);
+		stockCriteria.add(criterion1); stockCriteria.add(criterion2);
+		List<Stock> list = ht.findByCriteria(stockCriteria);
+		
+		if (list.size() == 0) {
 			// throw exception; not enough goods
 		} else {
+			Stock warehouseStock = list.get(0);
 			int availableQty = warehouseStock.getQuantity();
 			if (quantityToMove > availableQty) {
 				// throw exception; not enough goods
 			} else {
 				// update warehouse quantity
-				warehouse.removeProducts(type, quantityToMove);
-
+				int newWarehouseQty = warehouseStock.getQuantity() - quantityToMove;
+				warehouseStock.setQuantity(newWarehouseQty);
+			
 				// update store quantity
-				store.receiveProducts(type, quantityToMove);
+				stockCriteria = DetachedCriteria.forClass(Stock.class);
+				criterion1 = Restrictions.eq("location", store);
+				criterion2 = Restrictions.eq("type", type);
+				stockCriteria.add(criterion1); stockCriteria.add(criterion2);
+				list = ht.findByCriteria(stockCriteria);
+				
+				Stock storeStock;
+				//if no stocks of this type in store 1
+				if(list.size() == 0){
+					storeStock = new Stock();
+					storeStock.setLocation(store);
+					storeStock.setQuantity(quantityToMove);
+					storeStock.setType(type);
+					ht.persist(storeStock);
+				} else{
+					storeStock = list.get(0);
+					int newStoreQty = storeStock.getQuantity() + quantityToMove;
+					storeStock.setQuantity(newStoreQty);
+					ht.merge(storeStock);
+				}
 
-				ht.update(warehouse);
-				ht.update(store);
+				ht.merge(warehouseStock);
 			}
 		}
 	}
@@ -126,16 +152,24 @@ public class LocationTest {
 		// quantity to sell
 		int quantityToSell = 50;
 
-		Stock warehouseStock = warehouse.getStockByType(type);
-		if (warehouseStock == null) {
+		//check stocks
+		DetachedCriteria stockCriteria = DetachedCriteria.forClass(Stock.class);
+		Criterion criterion1 = Restrictions.eq("location", warehouse);
+		Criterion criterion2 = Restrictions.eq("type", type);
+		stockCriteria.add(criterion1); stockCriteria.add(criterion2);
+		List<Stock> list = ht.findByCriteria(stockCriteria);
+	
+		if (list.size() == 0) {
 			// throw exception; not enough goods
 		} else {
+			Stock warehouseStock = list.get(0);
 			int availableQty = warehouseStock.getQuantity();
 			if (quantityToSell > availableQty) {
 				// throw exception; not enough goods
 			} else {
 				// update warehouse quantity
-				warehouse.removeProducts(type, quantityToSell);
+				int newWarehouseQty = warehouseStock.getQuantity() - quantityToSell;
+				warehouseStock.setQuantity(newWarehouseQty);
 
 				// retrieve shipments corresponding to ProductType
 				DetachedCriteria criteriaShipments = DetachedCriteria.forClass(Shipment.class);
@@ -160,7 +194,7 @@ public class LocationTest {
 					ht.update(s);
 					i++;
 				}
-				ht.update(warehouse);
+				ht.update(warehouseStock);
 			}
 		}
 	}
