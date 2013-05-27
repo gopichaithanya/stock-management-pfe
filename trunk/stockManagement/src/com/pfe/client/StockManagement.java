@@ -14,12 +14,16 @@ import com.pfe.client.mvp.AppActivityMapper;
 import com.pfe.client.mvp.AppPlaceHistoryMapper;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
+import com.pfe.client.mvp.DetailsActivityMapper;
 import com.pfe.client.mvp.places.ProductTypesPlace;
 import com.pfe.client.mvp.views.images.ImageResources;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
+import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.container.Viewport;
@@ -36,20 +40,45 @@ public class StockManagement implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		System.out.println("test");
-
 		ClientFactory clientFactory = new ClientFactoryImpl();
 		EventBus eventBus = clientFactory.getEventBus();
 		PlaceController placeController = clientFactory.getPlaceController();
 
-		// Start ActivityManager for the main widget with our ActivityMapper
-		ActivityMapper activityMapper = new AppActivityMapper(clientFactory);
-		ActivityManager activityManager = new ActivityManager(activityMapper,
-				eventBus);
+		BorderLayoutContainer borderLayoutContainer = new BorderLayoutContainer();
+		ContentPanel east = new ContentPanel();
+		east.setBorders(true);
+		east.setHeadingHtml("Details");
+		ContentPanel center = new ContentPanel();
+		center.setBorders(true);
+		center.setHeadingHtml("Records");
+		
+		// center data
+		MarginData centerData = new MarginData();
+		centerData.setMargins(new Margins(0, 0, 0, 0));
 
-		// This is the panel that will contain the different views
-		SimpleContainer centerPanel = new SimpleContainer();
-		activityManager.setDisplay(centerPanel);
+		// west data
+		BorderLayoutData eastData = new BorderLayoutData(400);
+		eastData.setMargins(new Margins(0, 0, 0, 5));
+		eastData.setSplit(true);
+		eastData.setCollapsible(true);
+
+		borderLayoutContainer.setEastWidget(east, eastData);
+		borderLayoutContainer.setCenterWidget(center, centerData);
+
+		// Start ActivityManager for the central widget with our ActivityMapper
+		ActivityMapper mainActivityMapper = new AppActivityMapper(clientFactory);
+		ActivityManager mainActivityManager = new ActivityManager(
+				mainActivityMapper, eventBus);
+
+		//Center panel
+		mainActivityManager.setDisplay(center);
+
+		// Start ActivityManager for the details panel
+		DetailsActivityMapper detailsActivityMapper = new DetailsActivityMapper(
+				clientFactory);
+		ActivityManager detailsActivityManager = new ActivityManager(
+				detailsActivityMapper, eventBus);
+		detailsActivityManager.setDisplay(east);
 
 		// TODO remove this
 		ProductTypesPlace testPlace = new ProductTypesPlace();
@@ -70,7 +99,8 @@ public class StockManagement implements EntryPoint {
 
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.add(toolBar, new VerticalLayoutData(1, -1));
-		con.add(centerPanel, new VerticalLayoutData(1, 1, new Margins(10)));
+		con.add(borderLayoutContainer, new VerticalLayoutData(1, 1,
+				new Margins(10)));
 
 		viewport.add(con);
 		RootPanel.get().add(viewport.asWidget());

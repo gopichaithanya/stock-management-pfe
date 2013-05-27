@@ -3,8 +3,9 @@ package com.pfe.client.mvp.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.properties.ProductTypeProperties;
@@ -12,19 +13,24 @@ import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
-import com.sencha.gxt.widget.core.client.event.RowClickEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
+import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 
 public class ProductTypesViewImpl implements ProductTypesView {
 
@@ -32,35 +38,18 @@ public class ProductTypesViewImpl implements ProductTypesView {
 			.create(ProductTypeProperties.class);
 
 	private ProductTypePresenter presenter;
-
-	private GridBorderLayout<ProductType> layout;
+	private Grid<ProductType> grid;
+	private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader;
+	private PagingToolBar pagingToolBar;
 	private ListStore<ProductType> store;
-	private Label descriptionLabel;
-	private Label nameLabel;
-	private ConfirmMessageBox confirmBox;
 
+	private ConfirmMessageBox confirmBox;
+	private VerticalLayoutContainer verticalCon;
+	
 	private CreateProductTypeViewImpl createWindow;
 	private EditProductTypeViewImpl editWindow;
 
 	public ProductTypesViewImpl() {
-
-		AccordionLayoutAppearance appearance = GWT
-				.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
-		// details : Name tab
-		descriptionLabel = new Label();
-		nameLabel = new Label();
-		ContentPanel namePanel = new ContentPanel(appearance);
-		namePanel.setBodyStyleName("rawText");
-		namePanel.setHeadingText("Product Type");
-		namePanel.add(nameLabel);
-		namePanel.setExpanded(true);
-
-		// details : Description tab
-		ContentPanel descPanel = new ContentPanel(appearance);
-		descPanel.setBodyStyleName("rawText");
-		descPanel.setHeadingText("Description");
-		descPanel.add(descriptionLabel);
-		descPanel.setExpanded(true);
 
 		// check box selection model
 		IdentityValueProvider<ProductType> identity = new IdentityValueProvider<ProductType>();
@@ -82,16 +71,39 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(
 				columnConfigList);
 		store = new ListStore<ProductType>(props.key());
+			
+		grid = new Grid<ProductType>(store, cm){
+			 @Override
+		      protected void onAfterFirstAttach() {
+		        super.onAfterFirstAttach();
+		        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+		          @Override
+		          public void execute() {
+		            loader.load();
+		          }
+		        });
+		      }
+		};
+		grid.getView().setStripeRows(true);
+		grid.getView().setColumnLines(true);
+		grid.getView().setAutoFill(false);
+		grid.setBorders(false);
+		grid.setColumnReordering(true);
+		grid.setStateful(true);
+		grid.setLayoutData(new VerticalLayoutData(1, 1));
+		grid.getView().setAutoFill(true);
+		grid.addRowClickHandler(new GridRowClickHandler());
+		pagingToolBar = new PagingToolBar(2);
 
-		layout = new GridBorderLayout<ProductType>(store, cm);
-		layout.getGrid().addRowClickHandler(new GridRowClickHandler());
-		layout.getWest().setHeadingHtml("Details");
-		layout.getCenter().setHeadingHtml("Product Types");
-		layout.addDetailsTab(namePanel);
-		layout.addDetailsTab(descPanel);
-		layout.getAddBtn().addSelectHandler(new AddBtnHandler());
-		layout.getEditBtn().addSelectHandler(new EditBtnHandler());
-		layout.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+		GridToolbar toolbar = new GridToolbar();
+		verticalCon = new VerticalLayoutContainer();
+		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
+		verticalCon.add(grid, new VerticalLayoutData(1, 1));
+		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
+
+		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 
 	}
 
@@ -107,8 +119,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 		public void onRowClick(RowClickEvent event) {
 			int row = event.getRowIndex();
 			ProductType selected = store.get(row);
-			nameLabel.setText(selected.getName());
-			descriptionLabel.setText(selected.getDescription());
+			presenter.displayDetailsView(selected);
 
 		}
 	}
@@ -146,7 +157,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 				editWindow = new EditProductTypeViewImpl();
 				editWindow.setPresenter(presenter);
 			}
-			ProductType productType = layout.getGrid().getSelectionModel()
+			ProductType productType = grid.getSelectionModel()
 					.getSelectedItem();
 			if (productType != null) {
 				editWindow.setData(productType);
@@ -176,10 +187,10 @@ public class ProductTypesViewImpl implements ProductTypesView {
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
 						
-						ProductType productType = layout.getGrid()
+						ProductType productType = grid
 								.getSelectionModel().getSelectedItem();
 						if (productType != null) {
-							layout.maskGrid();
+							//layout.maskGrid();
 							presenter.deleteProductType(productType);
 						}
 						
@@ -196,7 +207,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 
 	@Override
 	public Widget asWidget() {
-		return layout.getCon();
+		return verticalCon;
 	}
 
 	@Override
@@ -243,10 +254,18 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	public EditProductTypeViewImpl getEditWindow() {
 		return editWindow;
 	}
+	
+	public void setLoader(
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader) {
+		this.loader = loader;
+	}
 
-	@Override
-	public GridBorderLayout<ProductType> getLayout() {
-		return layout;
+	public void bindPagingToolBar() {
+		pagingToolBar.bind(loader);
+	}
+
+	public void refreshGrid(){
+		pagingToolBar.refresh();
 	}
 
 }

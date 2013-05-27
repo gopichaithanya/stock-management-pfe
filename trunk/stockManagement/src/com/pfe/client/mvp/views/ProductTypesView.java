@@ -6,6 +6,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoader;
 
 /**
  * Displays a list of product types
@@ -75,11 +78,14 @@ public interface ProductTypesView extends IsWidget {
 	 */
 	public EditProductTypeViewImpl getEditWindow();
 	
-	/**
-	 * Gets layout frame
-	 * 
-	 * @return
-	 */
-	public GridBorderLayout<ProductType> getLayout();
+	
+	public void setLoader(
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader);
+	
+	
+	public void bindPagingToolBar();
+
+	public void refreshGrid();
+
 
 }

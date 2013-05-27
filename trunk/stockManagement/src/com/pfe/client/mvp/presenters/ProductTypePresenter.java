@@ -39,4 +39,11 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param productType
 	 */
 	public void deleteProductType(ProductType productType);
+	
+	/**
+	 * 
+	 * 
+	 * @param productType
+	 */
+	public void displayDetailsView(ProductType productType);
 }
