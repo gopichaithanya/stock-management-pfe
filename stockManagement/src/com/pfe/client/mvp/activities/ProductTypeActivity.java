@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
+import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.ProductTypesView;
 import com.pfe.client.service.ProductTypeServiceAsync;
@@ -59,8 +60,8 @@ public class ProductTypeActivity extends AbstractActivity implements
 				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
 						pTypesView.getData()));
 	  
-	    pTypesView.getLayout().setLoader(remoteLoader);
-	    pTypesView.getLayout().bindPagingToolBar();
+	    pTypesView.setLoader(remoteLoader);
+	    pTypesView.bindPagingToolBar();
 		panel.setWidget(pTypesView.asWidget());
 		
 //		rpcService.getProductTypes(new AsyncCallback<List<ProductType>>() {
@@ -88,7 +89,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 
 	@Override
 	public void goTo(Place place) {
-		// TODO Auto-generated method stub
+		clientFactory.getPlaceController().goTo(place);
 
 	}
 
@@ -112,7 +113,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 					public void onSuccess(ProductType result) {
 						pTypesView.addData(result);
 						pTypesView.getCreateWindow().hide();
-						pTypesView.getLayout().refreshGrid();
+						pTypesView.refreshGrid();
 					}
 				});
 	}
@@ -150,8 +151,8 @@ public class ProductTypeActivity extends AbstractActivity implements
 			@Override
 			public void onSuccess(Void result) {
 				pTypesView.deleteData(productType);
-				pTypesView.getLayout().refreshGrid();
-				pTypesView.getLayout().unmaskGrid();
+				pTypesView.refreshGrid();
+				//pTypesView.unmaskGrid();
 			}
 
 			@Override
@@ -161,5 +162,12 @@ public class ProductTypeActivity extends AbstractActivity implements
 			}
 		});
 
+	}
+
+	@Override
+	public void displayDetailsView(ProductType productType) {
+		String token = productType.getName() + " \t\n\r\f" + productType.getDescription(); 
+		goTo(new ProductTypeDetailsPlace(token));
+		
 	}
 }

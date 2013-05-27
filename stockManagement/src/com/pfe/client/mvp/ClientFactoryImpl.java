@@ -4,6 +4,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.pfe.client.mvp.views.ProductTypeView;
+import com.pfe.client.mvp.views.ProductTypeViewImpl;
 import com.pfe.client.mvp.views.ProductTypesView;
 import com.pfe.client.mvp.views.ProductTypesViewImpl;
 import com.pfe.client.service.ProductTypeService;
@@ -17,6 +19,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static ProductTypeServiceAsync productTypeService;
 
 	private static ProductTypesView productTypesView;
+	private static ProductTypeView productTypeView;
 
 	@Override
 	public EventBus getEventBus() {
@@ -25,6 +28,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		return eventBus;
 	}
 
+	
 	@Override
 	@SuppressWarnings("deprecation")
 	public PlaceController getPlaceController() {
@@ -47,6 +51,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			productTypesView = new ProductTypesViewImpl();
 		}
 		return productTypesView;
+	}
+
+	@Override
+	public ProductTypeView getProductTypeView() {
+		if (productTypeView == null) {
+			productTypeView = new ProductTypeViewImpl();
+		}
+		return productTypeView;
 	}
 
 }
