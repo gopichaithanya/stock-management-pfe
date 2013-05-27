@@ -23,10 +23,4 @@ public interface ProductTypeDao extends IBaseDao<Long, ProductType>{
 	 */
 	public ProductType getDuplicateName(Long excludedId, String name);
 	
-	/**
-	 * Deletes type from database
-	 * 
-	 * @param productType
-	 */
-	public void deleteProductType(ProductType productType);
 }
