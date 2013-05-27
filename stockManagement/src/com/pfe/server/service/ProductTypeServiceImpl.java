@@ -33,7 +33,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	public ProductType createProductType(ProductType productType)
 			throws BusinessException {
 
-		ProductType pt = pTypeDao.getProductTypeByName(productType.getName());
+		ProductType pt = pTypeDao.search(productType.getName());
 		if (pt != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
@@ -85,8 +85,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		for (int i = config.getOffset(); i < limit; i++) {
 			sublist.add(list.get(i));
 		}
-		return new PagingLoadResultBean<ProductType>(sublist, list.size(),
-				config.getOffset());
+		return new PagingLoadResultBean<ProductType>(sublist, list.size(),	config.getOffset());
 
 	}
 
