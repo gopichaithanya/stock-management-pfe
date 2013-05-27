@@ -48,17 +48,15 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 		ProductType duplicate = pTypeDao.getDuplicateName(initial.getId(),
 				updatedBuffer.getName());
+		
 		if (duplicate != null) {
-
 			BusinessException ex = new BusinessException(
 					"The name you chose is already in use.");
 			throw ex;
-
 		}
 
 		initial.setDescription(updatedBuffer.getDescription());
 		initial.setName(updatedBuffer.getName());
-
 		return pTypeDao.merge(initial);
 
 	}
@@ -69,7 +67,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 			throws BusinessException {
 		// TODO check if at least one shipment with this type in DB and throw
 		// exception
-		pTypeDao.deleteProductType(productType);
+		pTypeDao.delete(productType);
 
 	}
 
