@@ -32,7 +32,7 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 
-public class ProductTypesViewImpl implements ProductTypesView {
+public class ProductTypeListViewImpl implements ProductTypeListView {
 
 	private static final ProductTypeProperties props = GWT
 			.create(ProductTypeProperties.class);
@@ -49,7 +49,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 	private CreateProductTypeViewImpl createWindow;
 	private EditProductTypeViewImpl editWindow;
 
-	public ProductTypesViewImpl() {
+	public ProductTypeListViewImpl() {
 
 		// check box selection model
 		IdentityValueProvider<ProductType> identity = new IdentityValueProvider<ProductType>();

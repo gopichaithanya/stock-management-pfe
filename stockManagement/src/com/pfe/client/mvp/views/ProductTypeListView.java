@@ -16,7 +16,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoader;
  * @author Alexandra
  *
  */
-public interface ProductTypesView extends IsWidget {
+public interface ProductTypeListView extends IsWidget {
 
 	/**
 	 * Sets the presenter of this view

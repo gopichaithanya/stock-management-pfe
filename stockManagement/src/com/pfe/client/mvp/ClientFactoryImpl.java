@@ -4,10 +4,10 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
-import com.pfe.client.mvp.views.ProductTypeView;
-import com.pfe.client.mvp.views.ProductTypeViewImpl;
-import com.pfe.client.mvp.views.ProductTypesView;
-import com.pfe.client.mvp.views.ProductTypesViewImpl;
+import com.pfe.client.mvp.views.ProductTypeDetailView;
+import com.pfe.client.mvp.views.ProductTypeDetailViewImpl;
+import com.pfe.client.mvp.views.ProductTypeListView;
+import com.pfe.client.mvp.views.ProductTypeListViewImpl;
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.client.service.ProductTypeServiceAsync;
 
@@ -18,8 +18,8 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private static ProductTypeServiceAsync productTypeService;
 
-	private static ProductTypesView productTypesView;
-	private static ProductTypeView productTypeView;
+	private static ProductTypeListView productTypesView;
+	private static ProductTypeDetailView productTypeView;
 
 	@Override
 	public EventBus getEventBus() {
@@ -46,17 +46,17 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public ProductTypesView getProductTypesView() {
+	public ProductTypeListView getProductTypesView() {
 		if (productTypesView == null) {
-			productTypesView = new ProductTypesViewImpl();
+			productTypesView = new ProductTypeListViewImpl();
 		}
 		return productTypesView;
 	}
 
 	@Override
-	public ProductTypeView getProductTypeView() {
+	public ProductTypeDetailView getProductTypeView() {
 		if (productTypeView == null) {
-			productTypeView = new ProductTypeViewImpl();
+			productTypeView = new ProductTypeDetailViewImpl();
 		}
 		return productTypeView;
 	}

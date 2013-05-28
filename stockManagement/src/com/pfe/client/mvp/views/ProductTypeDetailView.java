@@ -2,7 +2,7 @@ package com.pfe.client.mvp.views;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-public interface ProductTypeView extends IsWidget {
+public interface ProductTypeDetailView extends IsWidget {
 	
 	
 	/**
