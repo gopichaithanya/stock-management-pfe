@@ -37,7 +37,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 		
 		pTypesView = clientFactory.getProductTypesView();
 		bind();
-
+		
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -63,22 +63,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 	    pTypesView.setLoader(remoteLoader);
 	    pTypesView.bindPagingToolBar();
 		panel.setWidget(pTypesView.asWidget());
-		
-//		rpcService.getProductTypes(new AsyncCallback<List<ProductType>>() {
-//
-//			@Override
-//			public void onSuccess(List<ProductType> result) {
-//				pTypesView.setData(result);
-//				panel.setWidget(pTypesView.asWidget());
-//
-//			}
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				// TODO do something here
-//
-//			}
-//		});
+
 	}
 
 	@Override
@@ -94,9 +79,9 @@ public class ProductTypeActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void createProductType(ProductType productType) {
+	public void create(ProductType productType) {
 
-		rpcService.createProductType(productType,
+		rpcService.create(productType,
 				new AsyncCallback<ProductType>() {
 
 					@Override
@@ -119,8 +104,8 @@ public class ProductTypeActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void updateProductType(ProductType initial, ProductType updatedBuffer) {
-		rpcService.updateProductType(initial, updatedBuffer,
+	public void update(ProductType initial, ProductType updatedBuffer) {
+		rpcService.update(initial, updatedBuffer,
 				new AsyncCallback<ProductType>() {
 
 					@Override
@@ -145,8 +130,8 @@ public class ProductTypeActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void deleteProductType(final ProductType productType) {
-		rpcService.deleteProductType(productType, new AsyncCallback<Void>() {
+	public void delete(final ProductType productType) {
+		rpcService.delete(productType, new AsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {

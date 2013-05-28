@@ -191,7 +191,7 @@ public class ProductTypesViewImpl implements ProductTypesView {
 								.getSelectionModel().getSelectedItem();
 						if (productType != null) {
 							//layout.maskGrid();
-							presenter.deleteProductType(productType);
+							presenter.delete(productType);
 						}
 						
 					} else if (msg.equals("No")) {
