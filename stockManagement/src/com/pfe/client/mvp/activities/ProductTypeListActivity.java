@@ -38,7 +38,16 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		pTypesView = clientFactory.getProductTypesView();
 		pTypesView.maskGrid();
 		bind();
-		
+		loadList();
+	    pTypesView.unmaskGrid();
+		panel.setWidget(pTypesView.asWidget());
+
+	}
+	
+	/**
+	 * Sets paging parameters and loads pages
+	 */
+	private void loadList(){
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -62,9 +71,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 						pTypesView.getData()));
 	  
 	    pTypesView.setPagingInfo(remoteLoader);
-	    pTypesView.unmaskGrid();
-		panel.setWidget(pTypesView.asWidget());
-
 	}
 
 	@Override

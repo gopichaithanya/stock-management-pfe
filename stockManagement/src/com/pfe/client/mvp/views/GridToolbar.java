@@ -14,6 +14,7 @@ public class GridToolbar extends ToolBar {
 	private TextButton deleteBtn;
 	private TextButton filterBtn;
 	private TextField filterText;
+	private TextButton clearFilterBtn;
 	
 	public GridToolbar(){
 		super();
@@ -24,6 +25,7 @@ public class GridToolbar extends ToolBar {
 				ImageResources.INSTANCE.addDeleteIcon());
 		filterBtn = new TextButton("Find");
 		filterText = new TextField();
+		clearFilterBtn = new TextButton("Clear filter");
 		
 		setSpacing(5);
 		setPadding(new Padding(5));
@@ -35,6 +37,8 @@ public class GridToolbar extends ToolBar {
 		add(new SeparatorToolItem());
 		add(filterBtn);
 		add(filterText);
+		add(new SeparatorToolItem());
+		add(clearFilterBtn);
 
 	}
 	
@@ -76,6 +80,14 @@ public class GridToolbar extends ToolBar {
 
 	public void setFilterText(TextField filterText) {
 		this.filterText = filterText;
+	}
+
+	public TextButton getClearFilterBtn() {
+		return clearFilterBtn;
+	}
+
+	public void setClearFilterBtn(TextButton clearFilterBtn) {
+		this.clearFilterBtn = clearFilterBtn;
 	}
 	
 }
