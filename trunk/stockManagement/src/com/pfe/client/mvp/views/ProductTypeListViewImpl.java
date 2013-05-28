@@ -92,6 +92,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		grid.setStateful(true);
 		grid.setLayoutData(new VerticalLayoutData(1, 1));
 		grid.getView().setAutoFill(true);
+		grid.setHeight("100%");
 		grid.addRowClickHandler(new GridRowClickHandler());
 		pagingToolBar = new PagingToolBar(2);
 
@@ -190,7 +191,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 						ProductType productType = grid
 								.getSelectionModel().getSelectedItem();
 						if (productType != null) {
-							//layout.maskGrid();
+							maskGrid();
 							presenter.delete(productType);
 						}
 						
@@ -255,17 +256,32 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		return editWindow;
 	}
 	
+	@Override
 	public void setLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader) {
 		this.loader = loader;
 	}
 
+	@Override
 	public void bindPagingToolBar() {
 		pagingToolBar.bind(loader);
 	}
 
+	@Override
 	public void refreshGrid(){
 		pagingToolBar.refresh();
+	}
+
+	@Override
+	public void maskGrid() {
+		grid.mask("Loading... Please wait.");
+		
+	}
+
+	@Override
+	public void unmaskGrid() {
+		grid.unmask();
+		
 	}
 
 }

@@ -20,14 +20,14 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.MessageBox;
 
-public class ProductTypeActivity extends AbstractActivity implements
+public class ProductTypeListActivity extends AbstractActivity implements
 		ProductTypePresenter {
 
 	private ClientFactory clientFactory;
 	private ProductTypeServiceAsync rpcService;
 	private ProductTypeListView pTypesView;
 
-	public ProductTypeActivity(ClientFactory clientFactory) {
+	public ProductTypeListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		this.rpcService = clientFactory.getProductTypeService();
 	}
@@ -36,6 +36,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
 		
 		pTypesView = clientFactory.getProductTypesView();
+		pTypesView.maskGrid();
 		bind();
 		
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
@@ -62,6 +63,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 	  
 	    pTypesView.setLoader(remoteLoader);
 	    pTypesView.bindPagingToolBar();
+	    pTypesView.unmaskGrid();
 		panel.setWidget(pTypesView.asWidget());
 
 	}
@@ -69,12 +71,6 @@ public class ProductTypeActivity extends AbstractActivity implements
 	@Override
 	public void bind() {
 		pTypesView.setPresenter(this);
-
-	}
-
-	@Override
-	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
 
 	}
 
@@ -137,7 +133,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 			public void onSuccess(Void result) {
 				pTypesView.deleteData(productType);
 				pTypesView.refreshGrid();
-				//pTypesView.unmaskGrid();
+				pTypesView.unmaskGrid();
 			}
 
 			@Override
@@ -154,5 +150,11 @@ public class ProductTypeActivity extends AbstractActivity implements
 		String token = productType.getName() + " \t\n\r\f" + productType.getDescription(); 
 		goTo(new ProductTypeDetailsPlace(token));
 		
+	}
+	
+	@Override
+	public void goTo(Place place) {
+		clientFactory.getPlaceController().goTo(place);
+
 	}
 }

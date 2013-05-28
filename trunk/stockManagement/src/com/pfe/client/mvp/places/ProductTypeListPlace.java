@@ -9,7 +9,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
  * @author Alexandra
  * 
  */
-public class ProductTypesPlace extends Place {
+public class ProductTypeListPlace extends Place {
 
 	/**
 	 * Translates the ProductTypeListPlace POJO to the corresponding URL and vice
@@ -18,16 +18,16 @@ public class ProductTypesPlace extends Place {
 	 * @author Alexandra
 	 * 
 	 */
-	public static class Tokenizer implements PlaceTokenizer<ProductTypesPlace> {
+	public static class Tokenizer implements PlaceTokenizer<ProductTypeListPlace> {
 
 		/**
 		 * Creates the place
 		 */
-		public ProductTypesPlace getPlace(String token) {
-			return new ProductTypesPlace();
+		public ProductTypeListPlace getPlace(String token) {
+			return new ProductTypeListPlace();
 		}
 
-		public String getToken(ProductTypesPlace place) {
+		public String getToken(ProductTypeListPlace place) {
 			return null;
 		}
 	}

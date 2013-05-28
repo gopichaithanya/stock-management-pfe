@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -15,7 +16,8 @@ import com.pfe.client.mvp.AppPlaceHistoryMapper;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.DetailsActivityMapper;
-import com.pfe.client.mvp.places.ProductTypesPlace;
+import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.WelcomePlace;
 import com.pfe.client.mvp.views.images.ImageResources;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
@@ -35,12 +37,13 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 public class StockManagement implements EntryPoint {
 
 	private ToolBar toolBar;
+	private ClientFactory clientFactory;
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onModuleLoad() {
 
-		ClientFactory clientFactory = new ClientFactoryImpl();
+		clientFactory = new ClientFactoryImpl();
 		EventBus eventBus = clientFactory.getEventBus();
 		PlaceController placeController = clientFactory.getPlaceController();
 
@@ -51,7 +54,7 @@ public class StockManagement implements EntryPoint {
 		ContentPanel center = new ContentPanel();
 		center.setBorders(true);
 		center.setHeadingHtml("Records");
-		
+
 		// center data
 		MarginData centerData = new MarginData();
 		centerData.setMargins(new Margins(0, 0, 0, 0));
@@ -70,7 +73,7 @@ public class StockManagement implements EntryPoint {
 		ActivityManager mainActivityManager = new ActivityManager(
 				mainActivityMapper, eventBus);
 
-		//Center panel
+		// Center panel
 		mainActivityManager.setDisplay(center);
 
 		// Start ActivityManager for the details panel
@@ -80,8 +83,8 @@ public class StockManagement implements EntryPoint {
 				detailsActivityMapper, eventBus);
 		detailsActivityManager.setDisplay(east);
 
-		// TODO remove this
-		ProductTypesPlace testPlace = new ProductTypesPlace();
+		// Start with welcome place
+		WelcomePlace welcomePlace = new WelcomePlace();
 
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
 		AppPlaceHistoryMapper historyMapper = GWT
@@ -89,7 +92,7 @@ public class StockManagement implements EntryPoint {
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(
 				historyMapper);
 		// register controller with place history handler
-		historyHandler.register(placeController, eventBus, testPlace);
+		historyHandler.register(placeController, eventBus, welcomePlace);
 		// handle whatever place arrives when application starts
 		historyHandler.handleCurrentHistory();
 
@@ -116,17 +119,17 @@ public class StockManagement implements EntryPoint {
 		SelectionHandler<Item> handler = new SelectionHandler<Item>() {
 			@Override
 			public void onSelection(SelectionEvent<Item> event) {
-				// MenuItem item = (MenuItem) event.getSelectedItem();
-				// String text = item.getText();
-				// if("Stores".equals(text)){
-				// goTo(new StoresListPlace());
-				// } else if("Warehouses".equals(text)){
-				//
-				// } else if("Suppliers".equals(text)){
-				// goTo(new SuppliersListPlace());
-				// } else if("Invoice".equals(text)){
-				//
-				// }
+				MenuItem item = (MenuItem) event.getSelectedItem();
+				String text = item.getText();
+				if ("Product Types".equals(text)) {
+					goTo(new ProductTypeListPlace());
+				} else if ("Stocks".equals(text)) {
+
+				} else if ("Suppliers".equals(text)) {
+					
+				} else if ("Invoice".equals(text)) {
+
+				}
 			}
 		};
 
@@ -166,4 +169,7 @@ public class StockManagement implements EntryPoint {
 		toolBar.add(invoiceBtn);
 	}
 
+	public void goTo(Place place) {
+		clientFactory.getPlaceController().goTo(place);
+	}
 }
