@@ -19,7 +19,7 @@ public interface ProductTypeServiceAsync {
 
 	void deleteProductType(ProductType productType, AsyncCallback<Void> callback);
 
-	void getTypesWithPaging(PagingLoadConfig config,
+	void search(PagingLoadConfig config,
 			AsyncCallback<PagingLoadResult<ProductType>> callback);
 
 }

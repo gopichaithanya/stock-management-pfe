@@ -23,12 +23,6 @@ public class ProductTypeDaoImpl extends BaseDaoImpl<Long, ProductType>
 	}
 
 	@Override
-	public List<ProductType> findByCriteria(int firstResult, int maxResults,
-			Criterion... criterions) {
-		return super.findByCriteria(firstResult, maxResults, criterions);
-	}
-
-	@Override
 	public ProductType getDuplicateName(Long excludedId, String name) {
 		Criterion criterion1 = Restrictions.eq("name", name).ignoreCase();
 		Criterion criterion2 = Restrictions.not(Restrictions.eq("id", excludedId));

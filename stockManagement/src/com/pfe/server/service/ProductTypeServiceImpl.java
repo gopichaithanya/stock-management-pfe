@@ -1,6 +1,5 @@
 package com.pfe.server.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,20 +71,14 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	}
 
 	@Override
-	public PagingLoadResult<ProductType> getTypesWithPaging(PagingLoadConfig config) {
-		
-		List<ProductType> list = pTypeDao.findAll();
+	public PagingLoadResult<ProductType> search(PagingLoadConfig config) {
 
-		List<ProductType> sublist = new ArrayList<ProductType>();
+		int size = (int) pTypeDao.count();
 		int start = config.getOffset();
-		int limit = list.size();
-		if (config.getLimit() > 0) {
-			limit = Math.min(start + config.getLimit(), limit);
-		}
-		for (int i = config.getOffset(); i < limit; i++) {
-			sublist.add(list.get(i));
-		}
-		return new PagingLoadResultBean<ProductType>(sublist, list.size(),	config.getOffset());
+		int limit = config.getLimit();
+		List<ProductType> sublist = pTypeDao.search(start, limit, null);
+		
+		return new PagingLoadResultBean<ProductType>(sublist, size,	config.getOffset());
 
 	}
 

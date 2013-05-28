@@ -43,7 +43,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig,
 					AsyncCallback<PagingLoadResult<ProductType>> callback) {
-				rpcService.getTypesWithPaging(loadConfig, callback);
+				rpcService.search(loadConfig, callback);
 
 			}
 
