@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
-import com.pfe.client.mvp.views.ProductTypesView;
+import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
@@ -25,7 +25,7 @@ public class ProductTypeActivity extends AbstractActivity implements
 
 	private ClientFactory clientFactory;
 	private ProductTypeServiceAsync rpcService;
-	private ProductTypesView pTypesView;
+	private ProductTypeListView pTypesView;
 
 	public ProductTypeActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;

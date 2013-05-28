@@ -8,14 +8,14 @@ import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.ExpandMode;
 
-public class ProductTypeViewImpl implements ProductTypeView {
+public class ProductTypeDetailViewImpl implements ProductTypeDetailView {
 	
 	private AccordionLayoutContainer detailsCon;
 	private String data;
 	private Label descriptionLabel;
 	private Label nameLabel;
 	
-	public ProductTypeViewImpl(){
+	public ProductTypeDetailViewImpl(){
 		
 		detailsCon = new AccordionLayoutContainer();
 		AccordionLayoutAppearance appearance = GWT

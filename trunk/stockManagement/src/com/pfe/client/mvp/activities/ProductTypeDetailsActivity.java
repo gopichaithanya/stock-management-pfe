@@ -5,12 +5,12 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
-import com.pfe.client.mvp.views.ProductTypeView;
+import com.pfe.client.mvp.views.ProductTypeDetailView;
 
 public class ProductTypeDetailsActivity extends AbstractActivity {
 
 	private ClientFactory clientFactory;
-	private ProductTypeView pTypeView;
+	private ProductTypeDetailView pTypeView;
 	private String token;
 	
 	public ProductTypeDetailsActivity(ClientFactory clientFactory, ProductTypeDetailsPlace place){

@@ -2,8 +2,8 @@ package com.pfe.client.mvp;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
-import com.pfe.client.mvp.views.ProductTypeView;
-import com.pfe.client.mvp.views.ProductTypesView;
+import com.pfe.client.mvp.views.ProductTypeDetailView;
+import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.service.ProductTypeServiceAsync;
 
 /**
@@ -29,9 +29,9 @@ public interface ClientFactory {
 	public PlaceController getPlaceController();
 
 	// VIEWS
-	public ProductTypesView getProductTypesView();
+	public ProductTypeListView getProductTypesView();
 
-	public ProductTypeView getProductTypeView();
+	public ProductTypeDetailView getProductTypeView();
 
 	// SERVICES
 
