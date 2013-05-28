@@ -61,5 +61,5 @@ public interface ProductTypeService extends RemoteService {
 	 * @param config
 	 * @return
 	 */
-	public PagingLoadResult<ProductType> getTypesWithPaging(PagingLoadConfig config);
+	public PagingLoadResult<ProductType> search(PagingLoadConfig config);
 }
