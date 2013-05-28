@@ -53,4 +53,6 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param productType
 	 */
 	public void displayDetailsView(ProductType productType);
+	
+	public void clearFilter();
 }
