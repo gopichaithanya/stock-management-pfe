@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,26 @@ public class ProductTypeDaoImpl extends BaseDaoImpl<Long, ProductType>
 		
 		List<ProductType> results = findByCriteria(start, limit, criterion);
 		return results;
+	}
+
+	@Override
+	public List<ProductType> searchLike(int start, int limit, String likeName) {
+		Criterion criterion = null;
+		if (StringUtils.isNotBlank(likeName)){
+			criterion = Restrictions.ilike("name", "%"+likeName+"%");
+		}
+		
+		List<ProductType> results = findByCriteria(start, limit, criterion);
+		return results;
+	}
+
+	@Override
+	public long countLike(String likeName) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(ProductType.class);
+		Criterion criterion = Restrictions.ilike("name", "%"+likeName+"%");
+		criteria.add(criterion);
+		
+		return countByCriteria(criteria);
 	}
 
 }

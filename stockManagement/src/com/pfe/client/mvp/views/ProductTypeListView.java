@@ -84,15 +84,9 @@ public interface ProductTypeListView extends IsWidget {
 	 * 
 	 * @param loader
 	 */
-	public void setLoader(
+	public void setPagingInfo(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader);
 	
-	
-	/**
-	 * Bind paging toolbar with grid
-	 * 
-	 */
-	public void bindPagingToolBar();
 
 	/**
 	 * Refresh the grid view

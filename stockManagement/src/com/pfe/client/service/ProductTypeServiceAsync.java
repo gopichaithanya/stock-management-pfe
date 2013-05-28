@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.pfe.shared.model.ProductType;
-import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 public interface ProductTypeServiceAsync {
@@ -19,7 +19,10 @@ public interface ProductTypeServiceAsync {
 
 	void delete(ProductType productType, AsyncCallback<Void> callback);
 
-	void search(PagingLoadConfig config,
+	void search(FilterPagingLoadConfig config,
+			AsyncCallback<PagingLoadResult<ProductType>> callback);
+
+	void filter(FilterPagingLoadConfig config, String name,
 			AsyncCallback<PagingLoadResult<ProductType>> callback);
 
 }

@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.model.ProductType;
-import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 /**
@@ -61,5 +61,7 @@ public interface ProductTypeService extends RemoteService {
 	 * @param config
 	 * @return
 	 */
-	public PagingLoadResult<ProductType> search(PagingLoadConfig config);
+	public PagingLoadResult<ProductType> search(FilterPagingLoadConfig config);
+	
+	public PagingLoadResult<ProductType> filter(FilterPagingLoadConfig config, String name);
 }
