@@ -2,7 +2,7 @@ package com.pfe.client.mvp;
 
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
-import com.pfe.client.mvp.places.ProductTypesPlace;
+import com.pfe.client.mvp.places.ProductTypeListPlace;
 
 /**
  * Maps a URL to a place and encodes/decodes data into tokens in that URL. Adds
@@ -11,7 +11,7 @@ import com.pfe.client.mvp.places.ProductTypesPlace;
  * @author Alexandra
  * 
  */
-@WithTokenizers({ ProductTypesPlace.Tokenizer.class })
+@WithTokenizers({ ProductTypeListPlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 
 }

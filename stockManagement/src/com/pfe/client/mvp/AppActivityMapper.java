@@ -3,9 +3,11 @@ package com.pfe.client.mvp;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
-import com.pfe.client.mvp.activities.ProductTypeActivity;
+import com.pfe.client.mvp.activities.ProductTypeListActivity;
+import com.pfe.client.mvp.activities.WelcomeActivity;
 import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
-import com.pfe.client.mvp.places.ProductTypesPlace;
+import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.WelcomePlace;
 
 /**
  * Maps places to activities, i.e. tells what activity to start for each place.
@@ -19,7 +21,7 @@ public class AppActivityMapper implements ActivityMapper {
 	private ClientFactory clientFactory;
 	
 	//ACTIVITIES
-	private ProductTypeActivity productTypeActivity;
+	private ProductTypeListActivity productTypeActivity;
 
 	public AppActivityMapper(ClientFactory clientFactory) {
 		super();
@@ -27,11 +29,16 @@ public class AppActivityMapper implements ActivityMapper {
 	}
 
 	public Activity getActivity(Place place) {
-		if(place instanceof ProductTypesPlace){
-			productTypeActivity = new ProductTypeActivity(clientFactory);
+		if(place instanceof WelcomePlace){
+			return new WelcomeActivity(clientFactory);
+			
+		} else if(place instanceof ProductTypeListPlace){
+			productTypeActivity = new ProductTypeListActivity(clientFactory);
 			return productTypeActivity;
+			
 		} else if(place instanceof ProductTypeDetailsPlace){
 			return productTypeActivity;
+			
 		} else
 			return null;
 	}

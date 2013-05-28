@@ -8,6 +8,8 @@ import com.pfe.client.mvp.views.ProductTypeDetailView;
 import com.pfe.client.mvp.views.ProductTypeDetailViewImpl;
 import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.mvp.views.ProductTypeListViewImpl;
+import com.pfe.client.mvp.views.WelcomeView;
+import com.pfe.client.mvp.views.WelcomeViewImpl;
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.client.service.ProductTypeServiceAsync;
 
@@ -20,6 +22,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private static ProductTypeListView productTypesView;
 	private static ProductTypeDetailView productTypeView;
+	private static WelcomeView welcomeView;
 
 	@Override
 	public EventBus getEventBus() {
@@ -59,6 +62,15 @@ public class ClientFactoryImpl implements ClientFactory {
 			productTypeView = new ProductTypeDetailViewImpl();
 		}
 		return productTypeView;
+	}
+
+
+	@Override
+	public WelcomeView getWelcomeView() {
+		if (welcomeView == null) {
+			welcomeView = new WelcomeViewImpl();
+		}
+		return welcomeView;
 	}
 
 }

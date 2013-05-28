@@ -79,13 +79,29 @@ public interface ProductTypeListView extends IsWidget {
 	public EditProductTypeViewImpl getEditWindow();
 	
 	
+	/**
+	 * Set loader for paging
+	 * 
+	 * @param loader
+	 */
 	public void setLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader);
 	
 	
+	/**
+	 * Bind paging toolbar with grid
+	 * 
+	 */
 	public void bindPagingToolBar();
 
+	/**
+	 * Refresh the grid view
+	 * 
+	 */
 	public void refreshGrid();
 
+	public void maskGrid();
+	
+	public void unmaskGrid();
 
 }

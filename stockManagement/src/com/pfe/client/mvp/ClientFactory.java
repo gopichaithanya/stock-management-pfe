@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.pfe.client.mvp.views.ProductTypeDetailView;
 import com.pfe.client.mvp.views.ProductTypeListView;
+import com.pfe.client.mvp.views.WelcomeView;
 import com.pfe.client.service.ProductTypeServiceAsync;
 
 /**
@@ -33,6 +34,8 @@ public interface ClientFactory {
 
 	public ProductTypeDetailView getProductTypeView();
 
+	public WelcomeView getWelcomeView();
+	
 	// SERVICES
 
 	/**
