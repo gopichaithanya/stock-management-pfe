@@ -34,4 +34,22 @@ public interface ProductTypeDao extends IBaseDao<Long, ProductType>{
 	 */
 	public List<ProductType> search(int start, int limit, String name); 
 	
+	/**
+	 * Retrieves records where name like parameter
+	 * 
+	 * @param start
+	 * @param limit
+	 * @param likeName
+	 * @return
+	 */
+	public List<ProductType> searchLike(int start, int limit, String likeName); 
+	
+	/**
+	 * Counts records with name like parameter
+	 * 
+	 * @param likeName
+	 * @return
+	 */
+	public long countLike(String likeName);  
+	
 }

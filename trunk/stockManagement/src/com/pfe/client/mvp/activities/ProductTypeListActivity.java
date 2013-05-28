@@ -61,8 +61,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
 						pTypesView.getData()));
 	  
-	    pTypesView.setLoader(remoteLoader);
-	    pTypesView.bindPagingToolBar();
+	    pTypesView.setPagingInfo(remoteLoader);
 	    pTypesView.unmaskGrid();
 		panel.setWidget(pTypesView.asWidget());
 
@@ -156,5 +155,38 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
 
+	}
+
+	@Override
+	public void filter(final String name) {
+		
+		pTypesView = clientFactory.getProductTypesView();
+		pTypesView.maskGrid();
+		
+		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
+
+			@Override
+			public void load(FilterPagingLoadConfig loadConfig,
+					AsyncCallback<PagingLoadResult<ProductType>> callback) {
+				rpcService.filter(loadConfig, name, callback);
+
+			}
+
+		};
+		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>>(
+				proxy) {
+			@Override
+			protected FilterPagingLoadConfig newLoadConfig() {
+				return new FilterPagingLoadConfigBean();
+			}
+		};
+		remoteLoader.setRemoteSort(true);
+		remoteLoader
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
+						pTypesView.getData()));
+	  
+	    pTypesView.setPagingInfo(remoteLoader);
+	    pTypesView.refreshGrid();
+	    pTypesView.unmaskGrid();
 	}
 }

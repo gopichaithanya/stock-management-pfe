@@ -45,7 +45,8 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 	private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
-	
+	private GridToolbar toolbar;
+
 	private CreateProductTypeViewImpl createWindow;
 	private EditProductTypeViewImpl editWindow;
 
@@ -71,18 +72,19 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(
 				columnConfigList);
 		store = new ListStore<ProductType>(props.key());
-			
-		grid = new Grid<ProductType>(store, cm){
-			 @Override
-		      protected void onAfterFirstAttach() {
-		        super.onAfterFirstAttach();
-		        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-		          @Override
-		          public void execute() {
-		            loader.load();
-		          }
-		        });
-		      }
+
+		//Grid
+		grid = new Grid<ProductType>(store, cm) {
+			@Override
+			protected void onAfterFirstAttach() {
+				super.onAfterFirstAttach();
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						loader.load();
+					}
+				});
+			}
 		};
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
@@ -96,7 +98,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		grid.addRowClickHandler(new GridRowClickHandler());
 		pagingToolBar = new PagingToolBar(2);
 
-		GridToolbar toolbar = new GridToolbar();
+		toolbar = new GridToolbar();
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
@@ -105,7 +107,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
-
+		toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 	}
 
 	/**
@@ -187,14 +189,14 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 					Dialog btn = (Dialog) event.getSource();
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
-						
-						ProductType productType = grid
-								.getSelectionModel().getSelectedItem();
+
+						ProductType productType = grid.getSelectionModel()
+								.getSelectedItem();
 						if (productType != null) {
 							maskGrid();
 							presenter.delete(productType);
 						}
-						
+
 					} else if (msg.equals("No")) {
 						confirmBox.hide();
 					}
@@ -206,6 +208,26 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		}
 	}
 
+	/**
+	 * Filter handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class FilterBtnHandler implements SelectHandler {	
+		
+		@Override
+		public void onSelect(SelectEvent event) {
+			
+			String value = toolbar.getFilterText().getValue();
+			if(value != null && !value.isEmpty() && !value.trim().isEmpty()){
+				String trimmed = value.trim();
+				presenter.filter(trimmed);
+			}
+			
+		}
+	}
+	
 	@Override
 	public Widget asWidget() {
 		return verticalCon;
@@ -255,33 +277,29 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	public EditProductTypeViewImpl getEditWindow() {
 		return editWindow;
 	}
-	
-	@Override
-	public void setLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader) {
-		this.loader = loader;
-	}
 
 	@Override
-	public void bindPagingToolBar() {
+	public void setPagingInfo(
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> remoteLoader) {
+		loader = remoteLoader;
 		pagingToolBar.bind(loader);
 	}
 
 	@Override
-	public void refreshGrid(){
+	public void refreshGrid() {
 		pagingToolBar.refresh();
 	}
 
 	@Override
 	public void maskGrid() {
 		grid.mask("Loading... Please wait.");
-		
+
 	}
 
 	@Override
 	public void unmaskGrid() {
 		grid.unmask();
-		
+
 	}
 
 }

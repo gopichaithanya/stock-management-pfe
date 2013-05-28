@@ -41,6 +41,13 @@ public interface ProductTypePresenter extends Presenter {
 	public void delete(ProductType productType);
 	
 	/**
+	 * Filters list by name
+	 * 
+	 * @param name
+	 */
+	public void filter(String name);
+	
+	/**
 	 * 
 	 * 
 	 * @param productType
