@@ -9,15 +9,15 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 public interface ProductTypeServiceAsync {
 
-	void getProductTypes(AsyncCallback<List<ProductType>> callback);
+	void getAll(AsyncCallback<List<ProductType>> callback);
 
-	void createProductType(ProductType productType,
+	void create(ProductType productType,
 			AsyncCallback<ProductType> callback);
 
-	void updateProductType(ProductType initial, ProductType updatedBuffer,
+	void update(ProductType initial, ProductType updatedBuffer,
 			AsyncCallback<ProductType> callback);
 
-	void deleteProductType(ProductType productType, AsyncCallback<Void> callback);
+	void delete(ProductType productType, AsyncCallback<Void> callback);
 
 	void search(PagingLoadConfig config,
 			AsyncCallback<PagingLoadResult<ProductType>> callback);

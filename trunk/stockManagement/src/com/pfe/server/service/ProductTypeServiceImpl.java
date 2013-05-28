@@ -23,13 +23,13 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	private ProductTypeDao pTypeDao;
 
 	@Override
-	public List<ProductType> getProductTypes() {
+	public List<ProductType> getAll() {
 		return pTypeDao.findAll();
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public ProductType createProductType(ProductType productType)
+	public ProductType create(ProductType productType)
 			throws BusinessException {
 
 		ProductType pt = pTypeDao.search(productType.getName());
@@ -42,7 +42,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public ProductType updateProductType(ProductType initial,
+	public ProductType update(ProductType initial,
 			ProductType updatedBuffer) throws BusinessException {
 
 		ProductType duplicate = pTypeDao.getDuplicateName(initial.getId(),
@@ -62,7 +62,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteProductType(ProductType productType)
+	public void delete(ProductType productType)
 			throws BusinessException {
 		// TODO check if at least one shipment with this type in DB and throw
 		// exception

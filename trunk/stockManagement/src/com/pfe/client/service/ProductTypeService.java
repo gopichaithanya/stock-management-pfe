@@ -23,7 +23,7 @@ public interface ProductTypeService extends RemoteService {
 	 * 
 	 * @return list of all types
 	 */
-	public List<ProductType> getProductTypes();
+	public List<ProductType> getAll();
 
 	/**
 	 * Adds new product type in database
@@ -32,7 +32,7 @@ public interface ProductTypeService extends RemoteService {
 	 * @return 
 	 * @throws BusinessException
 	 */
-	public ProductType createProductType(ProductType productType)
+	public ProductType create(ProductType productType)
 			throws BusinessException;
 
 	/**
@@ -43,7 +43,7 @@ public interface ProductTypeService extends RemoteService {
 	 * @return updated type retrieved from database
 	 * @throws BusinessException
 	 */
-	public ProductType updateProductType(ProductType initial, ProductType updatedBuffer)
+	public ProductType update(ProductType initial, ProductType updatedBuffer)
 			throws BusinessException;
 	
 	/**
@@ -52,11 +52,11 @@ public interface ProductTypeService extends RemoteService {
 	 * @param productType
 	 * @throws BusinessException
 	 */
-	public void deleteProductType(ProductType productType) throws BusinessException;
+	public void delete(ProductType productType) throws BusinessException;
 	
 	
 	/**
-	 * Retrieves product types from database 
+	 * Retrieves paged product types from database 
 	 * 
 	 * @param config
 	 * @return

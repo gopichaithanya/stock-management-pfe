@@ -23,7 +23,7 @@ public interface ProductTypePresenter extends Presenter {
 	 * 
 	 * @param productType
 	 */
-	public void createProductType(ProductType productType);
+	public void create(ProductType productType);
 	
 	/**
 	 * Updates product type
@@ -31,14 +31,14 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param initial
 	 * @param updatedBuffer
 	 */
-	public void updateProductType(ProductType initial, ProductType updatedBuffer);
+	public void update(ProductType initial, ProductType updatedBuffer);
 	
 	/**
 	 * Deletes type
 	 * 
 	 * @param productType
 	 */
-	public void deleteProductType(ProductType productType);
+	public void delete(ProductType productType);
 	
 	/**
 	 * 

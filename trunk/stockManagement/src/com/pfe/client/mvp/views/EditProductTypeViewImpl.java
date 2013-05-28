@@ -88,7 +88,7 @@ public class EditProductTypeViewImpl extends Window implements
 				ProductType updated = new ProductType();
 				updated.setDescription(descriptionEditor.getValue());
 				updated.setName(nameField.getValue());
-				presenter.updateProductType(productType, updated);
+				presenter.update(productType, updated);
 			}
 		}
 	}

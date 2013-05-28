@@ -106,7 +106,7 @@ public class CreateProductTypeViewImpl extends Window implements
 				ProductType productType = new ProductType();
 				productType.setName(nameField.getValue());
 				productType.setDescription(descriptionEditor.getValue());
-				presenter.createProductType(productType);
+				presenter.create(productType);
 			}
 		}
 	}
