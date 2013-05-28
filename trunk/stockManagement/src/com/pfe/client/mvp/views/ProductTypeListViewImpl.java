@@ -108,6 +108,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
+		toolbar.getClearFilterBtn().addSelectHandler(new ClearFilterBtnHandler());
 	}
 
 	/**
@@ -225,6 +226,21 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 				presenter.filter(trimmed);
 			}
 			
+		}
+	}
+	
+	/**
+	 * Clear Filter handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class ClearFilterBtnHandler implements SelectHandler {	
+		
+		@Override
+		public void onSelect(SelectEvent event) {
+			toolbar.getFilterText().clear();
+			presenter.clearFilter();		
 		}
 	}
 	

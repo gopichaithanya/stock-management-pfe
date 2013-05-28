@@ -195,4 +195,15 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	    pTypesView.refreshGrid();
 	    pTypesView.unmaskGrid();
 	}
+	
+	@Override
+	public void clearFilter() {
+		
+		pTypesView = clientFactory.getProductTypesView();
+		pTypesView.maskGrid();
+		loadList();
+	    pTypesView.refreshGrid();
+	    pTypesView.unmaskGrid();
+	}
+	
 }
