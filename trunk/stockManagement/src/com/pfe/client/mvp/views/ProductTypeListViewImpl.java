@@ -295,10 +295,12 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	@Override
-	public void setPagingInfo(
+	public void setPagingLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> remoteLoader) {
 		loader = remoteLoader;
 		pagingToolBar.bind(loader);
+		pagingToolBar.first();
+		pagingToolBar.enable();
 	}
 
 	@Override
