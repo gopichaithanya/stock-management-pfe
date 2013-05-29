@@ -18,7 +18,7 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
-import com.sencha.gxt.widget.core.client.box.MessageBox;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class ProductTypeListActivity extends AbstractActivity implements
 		ProductTypePresenter {
@@ -82,8 +82,8 @@ public class ProductTypeListActivity extends AbstractActivity implements
 			public void onFailure(Throwable caught) {
 				if (caught instanceof BusinessException) {
 					BusinessException exp = (BusinessException) caught;
-					MessageBox messageBox = new MessageBox(exp.getMessage());
-					messageBox.show();
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
 				}
 			}
 
@@ -111,9 +111,8 @@ public class ProductTypeListActivity extends AbstractActivity implements
 					public void onFailure(Throwable caught) {
 						if (caught instanceof BusinessException) {
 							BusinessException exp = (BusinessException) caught;
-							MessageBox messageBox = new MessageBox(exp
-									.getMessage());
-							messageBox.show();
+							AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+							alertBox.show();
 						}
 
 					}
