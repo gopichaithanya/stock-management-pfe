@@ -50,7 +50,7 @@ public class Supplier implements Serializable{
 		this.description = description;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "supplier")
 	public List<Invoice> getInvoices() {
 		return invoices;
 	}
