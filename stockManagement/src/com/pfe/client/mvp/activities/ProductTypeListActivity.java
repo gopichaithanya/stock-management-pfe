@@ -34,20 +34,20 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		
+
 		pTypesView = clientFactory.getProductTypesView();
 		pTypesView.maskGrid();
 		bind();
-		loadList();
-	    pTypesView.unmaskGrid();
+		loadPages();
+		pTypesView.unmaskGrid();
 		panel.setWidget(pTypesView.asWidget());
 
 	}
-	
+
 	/**
-	 * Sets paging parameters and loads pages
+	 * Sets paging parameters and loads list pages
 	 */
-	private void loadList(){
+	private void loadPages() {
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -69,39 +69,31 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		remoteLoader
 				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
 						pTypesView.getData()));
-	  
-	    pTypesView.setPagingInfo(remoteLoader);
-	}
 
-	@Override
-	public void bind() {
-		pTypesView.setPresenter(this);
-
+		pTypesView.setPagingLoader(remoteLoader);
 	}
 
 	@Override
 	public void create(ProductType productType) {
 
-		rpcService.create(productType,
-				new AsyncCallback<ProductType>() {
+		rpcService.create(productType, new AsyncCallback<ProductType>() {
 
-					@Override
-					public void onFailure(Throwable caught) {
-						if (caught instanceof BusinessException) {
-							BusinessException exp = (BusinessException) caught;
-							MessageBox messageBox = new MessageBox(exp
-									.getMessage());
-							messageBox.show();
-						}
-					}
+			@Override
+			public void onFailure(Throwable caught) {
+				if (caught instanceof BusinessException) {
+					BusinessException exp = (BusinessException) caught;
+					MessageBox messageBox = new MessageBox(exp.getMessage());
+					messageBox.show();
+				}
+			}
 
-					@Override
-					public void onSuccess(ProductType result) {
-						pTypesView.addData(result);
-						pTypesView.getCreateWindow().hide();
-						pTypesView.refreshGrid();
-					}
-				});
+			@Override
+			public void onSuccess(ProductType result) {
+				pTypesView.addData(result);
+				pTypesView.getCreateWindow().hide();
+				pTypesView.refreshGrid();
+			}
+		});
 	}
 
 	@Override
@@ -118,7 +110,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 					@Override
 					public void onFailure(Throwable caught) {
 						if (caught instanceof BusinessException) {
-							// List<ProductType> l = pTypesView.getData();
 							BusinessException exp = (BusinessException) caught;
 							MessageBox messageBox = new MessageBox(exp
 									.getMessage());
@@ -151,24 +142,11 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void displayDetailsView(ProductType productType) {
-		String token = productType.getName() + " \t\n\r\f" + productType.getDescription(); 
-		goTo(new ProductTypeDetailsPlace(token));
-		
-	}
-	
-	@Override
-	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
-
-	}
-
-	@Override
 	public void filter(final String name) {
-		
+
 		pTypesView = clientFactory.getProductTypesView();
 		pTypesView.maskGrid();
-		
+
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -190,20 +168,40 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		remoteLoader
 				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
 						pTypesView.getData()));
-	  
-	    pTypesView.setPagingInfo(remoteLoader);
-	    pTypesView.refreshGrid();
-	    pTypesView.unmaskGrid();
+
+		pTypesView.setPagingLoader(remoteLoader);
+		pTypesView.refreshGrid();
+		pTypesView.unmaskGrid();
 	}
-	
+
 	@Override
 	public void clearFilter() {
-		
+
 		pTypesView = clientFactory.getProductTypesView();
 		pTypesView.maskGrid();
-		loadList();
-	    pTypesView.refreshGrid();
-	    pTypesView.unmaskGrid();
+		loadPages();
+		pTypesView.refreshGrid();
+		pTypesView.unmaskGrid();
 	}
-	
+
+	@Override
+	public void displayDetailsView(ProductType productType) {
+		String token = productType.getName() + " \t\n\r\f"
+				+ productType.getDescription();
+		goTo(new ProductTypeDetailsPlace(token));
+
+	}
+
+	@Override
+	public void goTo(Place place) {
+		clientFactory.getPlaceController().goTo(place);
+
+	}
+
+	@Override
+	public void bind() {
+		pTypesView.setPresenter(this);
+
+	}
+
 }

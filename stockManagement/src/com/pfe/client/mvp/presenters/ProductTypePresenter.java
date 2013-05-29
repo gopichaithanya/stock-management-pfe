@@ -17,14 +17,14 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param place
 	 */
 	public void goTo(Place place);
-	
+
 	/**
 	 * Calls RPC service to create a new product type
 	 * 
 	 * @param productType
 	 */
 	public void create(ProductType productType);
-	
+
 	/**
 	 * Updates product type
 	 * 
@@ -32,27 +32,33 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param updatedBuffer
 	 */
 	public void update(ProductType initial, ProductType updatedBuffer);
-	
+
 	/**
 	 * Deletes type
 	 * 
 	 * @param productType
 	 */
 	public void delete(ProductType productType);
-	
+
 	/**
-	 * Filters list by name
+	 * Filters list by name. Creates new paging load configuration corresponding
+	 * to the filtered data
 	 * 
 	 * @param name
 	 */
 	public void filter(String name);
-	
+
 	/**
+	 * Clears filters. Loads pages without filters
 	 * 
+	 */
+	public void clearFilter();
+
+	/**
+	 * Loads selected type data in details panel
 	 * 
 	 * @param productType
 	 */
 	public void displayDetailsView(ProductType productType);
-	
-	public void clearFilter();
+
 }

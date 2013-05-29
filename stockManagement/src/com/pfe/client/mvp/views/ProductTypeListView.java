@@ -84,7 +84,7 @@ public interface ProductTypeListView extends IsWidget {
 	 * 
 	 * @param loader
 	 */
-	public void setPagingInfo(
+	public void setPagingLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader);
 	
 

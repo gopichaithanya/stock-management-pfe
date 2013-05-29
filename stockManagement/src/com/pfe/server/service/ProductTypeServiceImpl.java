@@ -75,7 +75,6 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		int start = config.getOffset();
 		int limit = config.getLimit();
 		List<ProductType> sublist = pTypeDao.search(start, limit, null);
-
 		return new PagingLoadResultBean<ProductType>(sublist, size,
 				config.getOffset());
 
