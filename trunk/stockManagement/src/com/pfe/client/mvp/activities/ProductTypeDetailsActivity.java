@@ -20,7 +20,7 @@ public class ProductTypeDetailsActivity extends AbstractActivity {
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		pTypeView = clientFactory.getProductTypeView();
+		pTypeView = clientFactory.getProductTypeDetailView();
 		pTypeView.setData(token);
 		panel.setWidget(pTypeView.asWidget());
 

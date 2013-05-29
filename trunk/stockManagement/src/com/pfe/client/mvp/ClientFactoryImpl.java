@@ -23,8 +23,8 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static ProductTypeServiceAsync productTypeService;
 
 	private static WelcomeView welcomeView;
-	private static ProductTypeListView productTypesView;
-	private static ProductTypeDetailView productTypeView;
+	private static ProductTypeListView productTypeListView;
+	private static ProductTypeDetailView productTypeDetailView;
 	private static SupplierListView supplierListView;
 	
 
@@ -53,19 +53,19 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public ProductTypeListView getProductTypesView() {
-		if (productTypesView == null) {
-			productTypesView = new ProductTypeListViewImpl();
+	public ProductTypeListView getProductTypeListView() {
+		if (productTypeListView == null) {
+			productTypeListView = new ProductTypeListViewImpl();
 		}
-		return productTypesView;
+		return productTypeListView;
 	}
 
 	@Override
-	public ProductTypeDetailView getProductTypeView() {
-		if (productTypeView == null) {
-			productTypeView = new ProductTypeDetailViewImpl();
+	public ProductTypeDetailView getProductTypeDetailView() {
+		if (productTypeDetailView == null) {
+			productTypeDetailView = new ProductTypeDetailViewImpl();
 		}
-		return productTypeView;
+		return productTypeDetailView;
 	}
 
 

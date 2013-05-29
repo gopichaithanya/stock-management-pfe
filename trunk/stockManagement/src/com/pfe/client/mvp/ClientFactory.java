@@ -33,9 +33,9 @@ public interface ClientFactory {
 	// VIEWS
 	public WelcomeView getWelcomeView();
 	
-	public ProductTypeListView getProductTypesView();
+	public ProductTypeListView getProductTypeListView();
 
-	public ProductTypeDetailView getProductTypeView();
+	public ProductTypeDetailView getProductTypeDetailView();
 
 	public SupplierListView getSupplierListView();
 	
