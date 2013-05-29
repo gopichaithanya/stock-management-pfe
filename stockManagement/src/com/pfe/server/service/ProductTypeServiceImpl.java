@@ -20,22 +20,22 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Autowired
-	private ProductTypeDao pTypeDao;
+	private ProductTypeDao dao;
 
 	@Override
 	public List<ProductType> getAll() {
-		return pTypeDao.findAll();
+		return dao.findAll();
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ProductType create(ProductType productType) throws BusinessException {
 
-		ProductType pt = pTypeDao.search(productType.getName());
+		ProductType pt = dao.search(productType.getName());
 		if (pt != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
-		return pTypeDao.merge(productType);
+		return dao.merge(productType);
 
 	}
 
@@ -44,7 +44,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	public ProductType update(ProductType initial, ProductType updatedBuffer)
 			throws BusinessException {
 
-		ProductType duplicate = pTypeDao.getDuplicateName(initial.getId(),
+		ProductType duplicate = dao.getDuplicateName(initial.getId(),
 				updatedBuffer.getName());
 
 		if (duplicate != null) {
@@ -55,7 +55,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 		initial.setDescription(updatedBuffer.getDescription());
 		initial.setName(updatedBuffer.getName());
-		return pTypeDao.merge(initial);
+		return dao.merge(initial);
 
 	}
 
@@ -64,17 +64,17 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	public void delete(ProductType productType) throws BusinessException {
 		// TODO check if at least one shipment with this type in DB and throw
 		// exception
-		pTypeDao.delete(productType);
+		dao.delete(productType);
 
 	}
 
 	@Override
 	public PagingLoadResult<ProductType> search(FilterPagingLoadConfig config) {
 
-		int size = (int) pTypeDao.count();
+		int size = (int) dao.count();
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<ProductType> sublist = pTypeDao.search(start, limit, null);
+		List<ProductType> sublist = dao.search(start, limit, null);
 		return new PagingLoadResultBean<ProductType>(sublist, size,
 				config.getOffset());
 
@@ -86,9 +86,9 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<ProductType> sublist = pTypeDao.searchLike(start, limit,
+		List<ProductType> sublist = dao.searchLike(start, limit,
 				filterValue);
-		int size = (int) pTypeDao.countLike(filterValue);
+		int size = (int) dao.countLike(filterValue);
 		return new PagingLoadResultBean<ProductType>(sublist, size,
 				config.getOffset());
 	}
