@@ -17,6 +17,7 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.DetailsActivityMapper;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.SupplierListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
 import com.pfe.client.ui.CustomContentPanel;
 import com.pfe.client.ui.images.ImageResources;
@@ -30,6 +31,8 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.container.Viewport;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -124,13 +127,7 @@ public class StockManagement implements EntryPoint {
 				String text = item.getText();
 				if ("Product Types".equals(text)) {
 					goTo(new ProductTypeListPlace());
-				} else if ("Stocks".equals(text)) {
-
-				} else if ("Suppliers".equals(text)) {
-					
-				} else if ("Invoice".equals(text)) {
-
-				}
+				} else if ("Stocks".equals(text)) {}
 			}
 		};
 
@@ -163,7 +160,14 @@ public class StockManagement implements EntryPoint {
 				ImageResources.INSTANCE.addSupplierIcon());
 		TextButton invoiceBtn = new TextButton("Invoices",
 				ImageResources.INSTANCE.addInvoiceIcon());
-
+		supplierBtn.addSelectHandler(new SelectHandler(){
+			@Override
+			public void onSelect(SelectEvent event) {
+				goTo(new SupplierListPlace());
+			}
+			
+		});
+		
 		toolBar.add(productBtn);
 		toolBar.add(storageBtn);
 		toolBar.add(supplierBtn);

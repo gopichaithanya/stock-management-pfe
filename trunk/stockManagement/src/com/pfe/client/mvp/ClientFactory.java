@@ -7,6 +7,7 @@ import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.mvp.views.WelcomeView;
 import com.pfe.client.service.ProductTypeServiceAsync;
+import com.pfe.client.service.SupplierServiceAsync;
 
 /**
  * Gives access to the application event bus, the views and the RPC services
@@ -31,6 +32,7 @@ public interface ClientFactory {
 	public PlaceController getPlaceController();
 
 	// VIEWS
+	
 	public WelcomeView getWelcomeView();
 	
 	public ProductTypeListView getProductTypeListView();
@@ -47,5 +49,12 @@ public interface ClientFactory {
 	 * @return
 	 */
 	public ProductTypeServiceAsync getProductTypeService();
+	
+	/**
+	 * Creates the RPC supplier service
+	 * 
+	 * @return
+	 */
+	public SupplierServiceAsync getSupplierService();
 
 }

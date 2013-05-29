@@ -10,7 +10,7 @@ import com.pfe.client.mvp.views.ProductTypeDetailView;
 public class ProductTypeDetailsActivity extends AbstractActivity {
 
 	private ClientFactory clientFactory;
-	private ProductTypeDetailView pTypeView;
+	private ProductTypeDetailView view;
 	private String token;
 	
 	public ProductTypeDetailsActivity(ClientFactory clientFactory, ProductTypeDetailsPlace place){
@@ -20,9 +20,9 @@ public class ProductTypeDetailsActivity extends AbstractActivity {
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		pTypeView = clientFactory.getProductTypeDetailView();
-		pTypeView.setData(token);
-		panel.setWidget(pTypeView.asWidget());
+		view = clientFactory.getProductTypeDetailView();
+		view.setData(token);
+		panel.setWidget(view.asWidget());
 
 	}
 

@@ -25,7 +25,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 	private ClientFactory clientFactory;
 	private ProductTypeServiceAsync rpcService;
-	private ProductTypeListView pTypesView;
+	private ProductTypeListView view;
 
 	public ProductTypeListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -35,12 +35,12 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
 
-		pTypesView = clientFactory.getProductTypeListView();
-		pTypesView.maskGrid();
+		view = clientFactory.getProductTypeListView();
+		view.maskGrid();
 		bind();
 		loadPages();
-		pTypesView.unmaskGrid();
-		panel.setWidget(pTypesView.asWidget());
+		view.unmaskGrid();
+		panel.setWidget(view.asWidget());
 
 	}
 
@@ -68,9 +68,9 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		remoteLoader.setRemoteSort(true);
 		remoteLoader
 				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
-						pTypesView.getData()));
+						view.getData()));
 
-		pTypesView.setPagingLoader(remoteLoader);
+		view.setPagingLoader(remoteLoader);
 	}
 
 	@Override
@@ -89,9 +89,9 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 			@Override
 			public void onSuccess(ProductType result) {
-				pTypesView.addData(result);
-				pTypesView.getCreateWindow().hide();
-				pTypesView.refreshGrid();
+				view.addData(result);
+				view.getCreateWindow().hide();
+				view.refreshGrid();
 			}
 		});
 	}
@@ -103,8 +103,8 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 					@Override
 					public void onSuccess(ProductType result) {
-						pTypesView.updateData(result);
-						pTypesView.getEditWindow().hide();
+						view.updateData(result);
+						view.getEditWindow().hide();
 					}
 
 					@Override
@@ -126,9 +126,9 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 			@Override
 			public void onSuccess(Void result) {
-				pTypesView.deleteData(productType);
-				pTypesView.refreshGrid();
-				pTypesView.unmaskGrid();
+				view.deleteData(productType);
+				view.refreshGrid();
+				view.unmaskGrid();
 			}
 
 			@Override
@@ -143,7 +143,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void filter(final String name) {
 
-		pTypesView = clientFactory.getProductTypeListView();
+		view = clientFactory.getProductTypeListView();
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -164,20 +164,20 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		remoteLoader.setRemoteSort(true);
 		remoteLoader
 				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
-						pTypesView.getData()));
+						view.getData()));
 
-		pTypesView.setPagingLoader(remoteLoader);
-		pTypesView.refreshGrid();
-		pTypesView.unmaskGrid();
+		view.setPagingLoader(remoteLoader);
+		view.refreshGrid();
+		view.unmaskGrid();
 	}
 
 	@Override
 	public void clearFilter() {
 
-		pTypesView = clientFactory.getProductTypeListView();
+		view = clientFactory.getProductTypeListView();
 		loadPages();
-		pTypesView.refreshGrid();
-		pTypesView.unmaskGrid();
+		view.refreshGrid();
+		view.unmaskGrid();
 	}
 
 	@Override
@@ -196,7 +196,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 	@Override
 	public void bind() {
-		pTypesView.setPresenter(this);
+		view.setPresenter(this);
 
 	}
 

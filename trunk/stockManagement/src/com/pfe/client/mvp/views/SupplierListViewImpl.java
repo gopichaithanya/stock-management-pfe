@@ -5,6 +5,8 @@ import com.pfe.client.mvp.presenters.SupplierPresenter;
 
 public class SupplierListViewImpl implements SupplierListView {
 	
+	private SupplierPresenter presenter;
+	
 	public SupplierListViewImpl(){
 		
 	}
@@ -17,7 +19,7 @@ public class SupplierListViewImpl implements SupplierListView {
 
 	@Override
 	public void setPresenter(SupplierPresenter presenter) {
-		// TODO Auto-generated method stub
+		this.presenter = presenter;
 
 	}
 
