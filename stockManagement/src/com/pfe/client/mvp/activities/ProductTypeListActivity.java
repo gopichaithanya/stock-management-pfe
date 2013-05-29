@@ -35,7 +35,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
 
-		pTypesView = clientFactory.getProductTypesView();
+		pTypesView = clientFactory.getProductTypeListView();
 		pTypesView.maskGrid();
 		bind();
 		loadPages();
@@ -143,7 +143,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void filter(final String name) {
 
-		pTypesView = clientFactory.getProductTypesView();
+		pTypesView = clientFactory.getProductTypeListView();
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -174,7 +174,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void clearFilter() {
 
-		pTypesView = clientFactory.getProductTypesView();
+		pTypesView = clientFactory.getProductTypeListView();
 		loadPages();
 		pTypesView.refreshGrid();
 		pTypesView.unmaskGrid();

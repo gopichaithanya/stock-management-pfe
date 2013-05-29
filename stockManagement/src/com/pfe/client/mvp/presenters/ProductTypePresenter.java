@@ -4,7 +4,7 @@ import com.google.gwt.place.shared.Place;
 import com.pfe.shared.model.ProductType;
 
 /**
- * Controls ProductTypesView
+ * Controls ProductTypeListView
  * 
  * @author Alexandra
  * 
