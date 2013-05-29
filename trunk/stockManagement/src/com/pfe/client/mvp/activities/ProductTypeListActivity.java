@@ -144,8 +144,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	public void filter(final String name) {
 
 		pTypesView = clientFactory.getProductTypesView();
-		pTypesView.maskGrid();
-
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
@@ -177,7 +175,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	public void clearFilter() {
 
 		pTypesView = clientFactory.getProductTypesView();
-		pTypesView.maskGrid();
 		loadPages();
 		pTypesView.refreshGrid();
 		pTypesView.unmaskGrid();

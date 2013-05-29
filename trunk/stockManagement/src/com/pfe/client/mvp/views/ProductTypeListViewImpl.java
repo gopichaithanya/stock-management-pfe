@@ -222,6 +222,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 			
 			String value = toolbar.getFilterText().getValue();
 			if(value != null && !value.isEmpty() && !value.trim().isEmpty()){
+				maskGrid();
 				String trimmed = value.trim();
 				presenter.filter(trimmed);
 			}
@@ -240,6 +241,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			toolbar.getFilterText().clear();
+			maskGrid();
 			presenter.clearFilter();		
 		}
 	}

@@ -18,6 +18,7 @@ import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.DetailsActivityMapper;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
+import com.pfe.client.mvp.views.CustomContentPanel;
 import com.pfe.client.mvp.views.images.ImageResources;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
@@ -51,7 +52,7 @@ public class StockManagement implements EntryPoint {
 		ContentPanel east = new ContentPanel();
 		east.setBorders(true);
 		east.setHeadingHtml("Details");
-		ContentPanel center = new ContentPanel();
+		CustomContentPanel center = new CustomContentPanel();
 		center.setBorders(true);
 		center.setHeadingHtml("Records");
 
