@@ -1,4 +1,4 @@
-package com.pfe.client.mvp.views.properties;
+package com.pfe.client.ui.properties;
 
 import com.google.gwt.editor.client.Editor.Path;
 import com.pfe.shared.model.ProductType;
