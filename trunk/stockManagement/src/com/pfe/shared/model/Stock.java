@@ -10,11 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "Stocks")
 public class Stock implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7504325518351447362L;
 	private Long id;
 	private int quantity;
 	private ProductType type;

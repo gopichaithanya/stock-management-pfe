@@ -16,11 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "Invoices")
 public class Invoice implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4084206672442119994L;
 	private Long id;
 	private int code;
 	private Supplier supplier;
