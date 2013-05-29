@@ -8,11 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "LocationTypes")
 public class LocationType implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7116461845966072872L;
 	private Long id;
 	private String description;
 

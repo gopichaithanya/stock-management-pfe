@@ -14,11 +14,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "Locations")
 public class Location implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5698122348547121174L;
 	private Long id;
 	private String name;
 	private LocationType type;
