@@ -17,7 +17,8 @@
 	<!-- Configures Hibernate - Database Config -->
 	<import resource="db-config.xml" />
 
-	<bean id="mapper" class="org.dozer.DozerBeanMapper">
+	<!-- Dozer bean mapper -->
+	<bean id="dozerMapper" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>
 				<value>dozerMapping.xml</value>

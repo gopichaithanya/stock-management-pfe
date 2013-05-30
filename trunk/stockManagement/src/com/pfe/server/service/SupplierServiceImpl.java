@@ -20,17 +20,17 @@ public class SupplierServiceImpl implements SupplierService {
 	@Autowired
 	private SupplierDao dao;
 	@Autowired 
-	private DozerBeanMapper mapper;
+	private DozerBeanMapper dozerMapper;
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public List<SupplierDto> getAll() {
 		List<Supplier> suppliers = dao.findAll();
 		List<SupplierDto> dtos = new ArrayList<SupplierDto>();
-
+	
 		if (suppliers.size() > 0) {
 			for (Supplier supplier : suppliers) {
-				dtos.add(mapper.map(
+				dtos.add(dozerMapper.map(
 						supplier, SupplierDto.class));
 			}
 		}
