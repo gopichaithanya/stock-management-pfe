@@ -105,7 +105,7 @@ public class StockManagement implements EntryPoint {
 		buildToolbar();
 
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
-		con.add(toolBar, new VerticalLayoutData(1, -1));
+		con.add(toolBar, new VerticalLayoutData(1, 45));
 		con.add(borderLayoutContainer, new VerticalLayoutData(1, 1,
 				new Margins(10)));
 
