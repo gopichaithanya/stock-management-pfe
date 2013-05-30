@@ -17,15 +17,15 @@ public interface ImageResources extends ClientBundle {
 	  @Source("btn_edit.png")
 	  ImageResource addEditIcon();
 
-	  @Source("product.jpg")
+	  @Source("product.png")
 	  ImageResource addProductIcon();
 	  
-	  @Source("store.png")
+	  @Source("storage.png")
 	  ImageResource addStoreItcon();
 	  
 	  @Source("supplier.png")
 	  ImageResource addSupplierIcon();
 	  
-	  @Source("invoice.jpg")
+	  @Source("invoice.png")
 	  ImageResource addInvoiceIcon();
 }
