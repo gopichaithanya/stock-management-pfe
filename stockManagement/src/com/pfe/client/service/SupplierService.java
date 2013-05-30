@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.pfe.shared.model.Supplier;
+import com.pfe.shared.dto.SupplierDto;
 
 /**
  * RPC Service that handles supplier CRUD
@@ -20,6 +20,6 @@ public interface SupplierService extends RemoteService {
 	 * 
 	 * @return
 	 */
-	public List<Supplier> getAll();
+	public List<SupplierDto> getAll();
 
 }
