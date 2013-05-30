@@ -10,6 +10,7 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
+import com.pfe.shared.dto.SupplierDto;
 import com.pfe.shared.model.Supplier;
 
 public class SupplierListActivity extends AbstractActivity implements
@@ -33,11 +34,11 @@ public class SupplierListActivity extends AbstractActivity implements
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		
-		rpcService.getAll(new AsyncCallback<List<Supplier>>() {
+		rpcService.getAll(new AsyncCallback<List<SupplierDto>>() {
 			
 			@Override
-			public void onSuccess(List<Supplier> result) {
-				List<Supplier> l = result;
+			public void onSuccess(List<SupplierDto> result) {
+				List<SupplierDto> l = result;
 				
 			}
 			
