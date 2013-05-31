@@ -135,4 +135,23 @@ public class SupplierListActivity extends AbstractActivity implements
 		
 	}
 
+	@Override
+	public void find(Long id) {
+		rpcService.find(id, new AsyncCallback<SupplierDto>() {
+			
+			@Override
+			public void onSuccess(SupplierDto result) {
+				view.getEditView().setData(result);
+				view.getEditView().show();
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
 }

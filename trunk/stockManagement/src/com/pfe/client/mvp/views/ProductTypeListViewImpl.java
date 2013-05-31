@@ -89,11 +89,9 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		};
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
-		grid.getView().setAutoFill(false);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.setStateful(true);
-		grid.setLayoutData(new VerticalLayoutData(1, 1));
 		grid.getView().setAutoFill(true);
 		grid.setHeight("100%");
 		grid.addRowClickHandler(new GridRowClickHandler());
