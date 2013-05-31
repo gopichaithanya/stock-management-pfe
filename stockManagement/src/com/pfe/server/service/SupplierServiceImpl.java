@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.SupplierService;
 import com.pfe.server.dao.supplier.SupplierDao;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.SupplierDto;
 import com.pfe.shared.model.Supplier;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -55,9 +56,6 @@ public class SupplierServiceImpl implements SupplierService {
 						supplier, SupplierDto.class, "miniSupplier"));
 			}
 		}	
-		
-		System.out.println(dtos.get(0).getName());
-		
 		return new PagingLoadResultBean<SupplierDto>(dtos, size,config.getOffset());
 	}
 
@@ -67,8 +65,19 @@ public class SupplierServiceImpl implements SupplierService {
 		Supplier supplier = dao.get(id);
 		if(supplier != null){
 			return dozerMapper.map(supplier, SupplierDto.class, "fullSupplier");
-		}
+		}	
+		return null;
+	}
+
+	@Override
+	public SupplierDto create(SupplierDto supplier) throws BusinessException {
 		
+		//here the supplier has no invoices
+		Supplier entity = dozerMapper.map(supplier, Supplier.class, "miniSupplier");
+		Supplier merged = dao.merge(entity);
+		if(merged != null){
+			return dozerMapper.map(merged, SupplierDto.class, "miniSupplier");
+		}
 		return null;
 	}
 

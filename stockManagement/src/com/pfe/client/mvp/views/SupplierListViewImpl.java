@@ -20,7 +20,9 @@ import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -41,6 +43,9 @@ public class SupplierListViewImpl implements SupplierListView {
 	//private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
+	
+	private CreateSupplierView createView;
+	//private EditProductTypeViewImpl editWindow;
 
 	public SupplierListViewImpl() {
 
@@ -96,13 +101,32 @@ public class SupplierListViewImpl implements SupplierListView {
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
 
-		//toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
+		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		//toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		//toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		//toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		//toolbar.getClearFilterBtn().addSelectHandler(
 				//new ClearFilterBtnHandler());
 
+	}
+	
+	/**
+	 * Add new supplier handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class AddBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (createView == null) {
+				createView = new CreateSupplierViewImpl();
+				createView.setPresenter(presenter);
+			}
+			createView.clearData();
+			createView.show();
+		}
 	}
 	
 	/**
@@ -117,7 +141,6 @@ public class SupplierListViewImpl implements SupplierListView {
 		public void onRowClick(RowClickEvent event) {
 			int row = event.getRowIndex();
 			SupplierDto selected = store.get(row);
-			System.out.println(selected.getName());
 			presenter.displayDetailsView(selected);
 
 		}
@@ -188,6 +211,17 @@ public class SupplierListViewImpl implements SupplierListView {
 	@Override
 	public void unmaskGrid() {
 		grid.unmask();
+		
+	}
+
+	@Override
+	public CreateSupplierView getCreateView() {
+		return createView;
+	}
+
+	@Override
+	public void refreshGrid() {
+		pagingToolBar.refresh();
 		
 	}
 

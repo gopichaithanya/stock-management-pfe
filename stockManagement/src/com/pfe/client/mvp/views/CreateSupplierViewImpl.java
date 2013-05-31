@@ -3,8 +3,8 @@ package com.pfe.client.mvp.views;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.pfe.client.mvp.presenters.ProductTypePresenter;
-import com.pfe.shared.model.ProductType;
+import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.shared.dto.SupplierDto;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -20,17 +20,17 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 
-public class CreateProductTypeViewImpl extends Window implements
-		CreateProductTypeView {
+public class CreateSupplierViewImpl extends Window implements
+		CreateSupplierView {
 
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
-	private ProductTypePresenter presenter;
-
-	public CreateProductTypeViewImpl() {
+	private SupplierPresenter presenter;
+	
+	public CreateSupplierViewImpl(){
 		
 		setBodyBorder(false);
-		setHeadingText("Add product type");
+		setHeadingText("Add supplier");
 		setWidth(550);
 		setHeight(400);
 		setModal(true);
@@ -71,9 +71,10 @@ public class CreateProductTypeViewImpl extends Window implements
 
 		vp.add(fpanel);
 		this.add(vp);
-
+		
 	}
-
+	
+	
 	/**
 	 * Close window
 	 * 
@@ -83,17 +84,16 @@ public class CreateProductTypeViewImpl extends Window implements
 	private class CancelBtnHandler implements SelectHandler {
 
 		private Window w;
-
-		public CancelBtnHandler(Window w) {
+		public CancelBtnHandler(Window w){
 			this.w = w;
 		}
-
+		
 		@Override
 		public void onSelect(SelectEvent event) {
 			w.hide();
 		}
 	}
-
+	
 	/**
 	 * Save new product type handler
 	 * 
@@ -105,14 +105,14 @@ public class CreateProductTypeViewImpl extends Window implements
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				ProductType productType = new ProductType();
-				productType.setName(nameField.getValue());
-				productType.setDescription(descriptionEditor.getValue());
-				presenter.create(productType);
+				SupplierDto supplier = new SupplierDto();
+				supplier.setName(nameField.getValue());
+				supplier.setDescription(descriptionEditor.getValue());
+				presenter.create(supplier);
 			}
 		}
 	}
-
+	
 	/**
 	 * HTML table
 	 * 
@@ -127,7 +127,7 @@ public class CreateProductTypeViewImpl extends Window implements
 	}-*/;
 
 	@Override
-	public void setPresenter(ProductTypePresenter presenter) {
+	public void setPresenter(SupplierPresenter presenter) {
 		this.presenter = presenter;
 
 	}
