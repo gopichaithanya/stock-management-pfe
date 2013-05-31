@@ -3,14 +3,12 @@ package com.pfe.shared.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.pfe.shared.model.Invoice;
-
 public class SupplierDto implements Serializable {
 
 	private Long id;
 	private String name;
 	private String description;
-	private List<Invoice> invoices;
+	private List<InvoiceDto> invoices;
 	
 	public Long getId() {
 		return id;
@@ -30,10 +28,10 @@ public class SupplierDto implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<Invoice> getInvoices() {
+	public List<InvoiceDto> getInvoices() {
 		return invoices;
 	}
-	public void setInvoices(List<Invoice> invoices) {
+	public void setInvoices(List<InvoiceDto> invoices) {
 		this.invoices = invoices;
 	}
 }

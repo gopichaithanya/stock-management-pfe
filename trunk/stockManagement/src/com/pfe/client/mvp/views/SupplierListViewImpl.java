@@ -85,7 +85,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		};
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
-		grid.getView().setAutoFill(false);
+		grid.getView().setAutoFill(true);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.setStateful(true);
