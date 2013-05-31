@@ -41,6 +41,7 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public PagingLoadResult<SupplierDto> search(FilterPagingLoadConfig config) {
 		int size = (int) dao.count();
 		int start = config.getOffset();
@@ -51,9 +52,12 @@ public class SupplierServiceImpl implements SupplierService {
 		if (sublist.size() > 0) {
 			for (Supplier supplier : sublist) {
 				dtos.add(dozerMapper.map(
-						supplier, SupplierDto.class));
+						supplier, SupplierDto.class, "fullSupplier"));
 			}
 		}	
+		
+		System.out.println(dtos.get(0).getName());
+		
 		return new PagingLoadResultBean<SupplierDto>(dtos, size,config.getOffset());
 	}
 
