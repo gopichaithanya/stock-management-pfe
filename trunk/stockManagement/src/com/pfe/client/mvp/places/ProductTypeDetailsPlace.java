@@ -4,22 +4,23 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
 /**
- * URL for ProductTypeDetails Panel. he specific token for this place is a ProductType id
+ * URL for ProductTypeDetails Panel. The specific token of this place contains
+ * the type details, name and description
  * 
  * @author Alexandra
  * 
  */
 public class ProductTypeDetailsPlace extends Place {
 	
-	private String typeDetails;
+	private String details;
 	 
-	public String getTypeDetails() {
-		return typeDetails;
+	public String getDetails() {
+		return details;
 	}
 
 
 	public ProductTypeDetailsPlace(String token){
-		this.typeDetails = token;
+		this.details = token;
 	}
 	
 
@@ -40,7 +41,7 @@ public class ProductTypeDetailsPlace extends Place {
 		}
 
 		public String getToken(ProductTypeDetailsPlace place) {
-			return null;
+			return place.getDetails();
 		}
 	}
 }

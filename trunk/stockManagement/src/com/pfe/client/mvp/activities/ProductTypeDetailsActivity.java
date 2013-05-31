@@ -15,7 +15,7 @@ public class ProductTypeDetailsActivity extends AbstractActivity {
 	
 	public ProductTypeDetailsActivity(ClientFactory clientFactory, ProductTypeDetailsPlace place){
 		this.clientFactory = clientFactory;
-		this.token = place.getTypeDetails();
+		this.token = place.getDetails();
 	}
 	
 	@Override
