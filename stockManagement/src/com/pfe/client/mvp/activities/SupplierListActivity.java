@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
+import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
@@ -107,7 +108,8 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void displayDetailsView(Supplier supplier) {
-		// TODO Auto-generated method stub
+		String token = supplier.getId().toString();
+		//goTo(new SupplierDetailsPlace(token));
 
 	}
 
