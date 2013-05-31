@@ -2,10 +2,11 @@ package com.pfe.client.mvp.activities;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
-import com.pfe.client.mvp.places.ProductTypeDetailPlace;
+import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
@@ -107,10 +108,16 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void displayDetailsView(Supplier supplier) {
+	public void displayDetailsView(SupplierDto supplier) {
 		String token = supplier.getId().toString();
-		//goTo(new SupplierDetailsPlace(token));
+		goTo(new SupplierDetailPlace(token));
 
+	}
+
+	@Override
+	public void goTo(Place place) {
+		clientFactory.getPlaceController().goTo(place);
+		
 	}
 
 }

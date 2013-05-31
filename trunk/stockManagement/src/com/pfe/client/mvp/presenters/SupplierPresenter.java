@@ -1,5 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
+import com.google.gwt.place.shared.Place;
+import com.pfe.shared.dto.SupplierDto;
 import com.pfe.shared.model.Supplier;
 
 /**
@@ -9,6 +11,13 @@ import com.pfe.shared.model.Supplier;
  *
  */
 public interface SupplierPresenter extends Presenter {
+	
+	/**
+	 * Goes to a new place
+	 * 
+	 * @param place
+	 */
+	public void goTo(Place place);
 	
 	/**
 	 * Calls RPC service to add new supplier
@@ -52,6 +61,6 @@ public interface SupplierPresenter extends Presenter {
 	 * 
 	 * @param productType
 	 */
-	public void displayDetailsView(Supplier supplier);
+	public void displayDetailsView(SupplierDto supplier);
 
 }

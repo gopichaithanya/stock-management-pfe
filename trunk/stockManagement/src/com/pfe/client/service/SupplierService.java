@@ -32,5 +32,12 @@ public interface SupplierService extends RemoteService {
 	 * @return
 	 */
 	public PagingLoadResult<SupplierDto> search(FilterPagingLoadConfig config);
-
+	
+	/**
+	 * Retrieves supplier by id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public SupplierDto find(Long id);
 }

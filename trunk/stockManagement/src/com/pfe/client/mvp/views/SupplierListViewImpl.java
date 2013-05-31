@@ -17,7 +17,6 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
-import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
@@ -39,7 +38,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	private PagingToolBar pagingToolBar;
 	private ListStore<SupplierDto> store;
 
-	private ConfirmMessageBox confirmBox;
+	//private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
 
@@ -118,8 +117,8 @@ public class SupplierListViewImpl implements SupplierListView {
 		public void onRowClick(RowClickEvent event) {
 			int row = event.getRowIndex();
 			SupplierDto selected = store.get(row);
-			//presenter.displayDetailsView(selected);
 			System.out.println(selected.getName());
+			presenter.displayDetailsView(selected);
 
 		}
 	}

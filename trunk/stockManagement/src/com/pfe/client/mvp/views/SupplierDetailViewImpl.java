@@ -1,9 +1,8 @@
-package com.pfe.client.mvp.presenters;
+package com.pfe.client.mvp.views;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.pfe.client.mvp.views.SupplierDetailView;
 import com.pfe.shared.dto.SupplierDto;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
@@ -46,7 +45,8 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 	@Override
 	public Widget asWidget() {
 		nameLabel.setText(supplier.getName());
-		
+		descriptionLabel.setText(supplier.getDescription());
+		//TODO add debt and invoice info
 		return detailsCon;
 	}
 
