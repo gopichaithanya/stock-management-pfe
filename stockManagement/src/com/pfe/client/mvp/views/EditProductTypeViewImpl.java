@@ -138,8 +138,4 @@ public class EditProductTypeViewImpl extends Window implements
 		descriptionEditor.setValue(productType.getDescription());
 	}
 
-	public ProductType getProductType() {
-		return productType;
-	}
-
 }

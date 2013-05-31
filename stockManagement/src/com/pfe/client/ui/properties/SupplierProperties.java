@@ -8,7 +8,6 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
 public interface SupplierProperties extends PropertyAccess<SupplierDto> {
-
 	
 	@Path("id")
 	ModelKeyProvider<SupplierDto> key();
