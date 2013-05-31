@@ -6,7 +6,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
-import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
+import com.pfe.client.mvp.places.ProductTypeDetailPlace;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.service.ProductTypeServiceAsync;
@@ -184,7 +184,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	public void displayDetailsView(ProductType productType) {
 		String token = productType.getName() + " \t\n\r\f"
 				+ productType.getDescription();
-		goTo(new ProductTypeDetailsPlace(token));
+		goTo(new ProductTypeDetailPlace(token));
 
 	}
 
