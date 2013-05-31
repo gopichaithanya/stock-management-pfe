@@ -25,7 +25,6 @@ public class Invoice implements Serializable{
 	 */
 	private static final long serialVersionUID = -4084206672442119994L;
 	private Long id;
-	
 	private int code;
 	private Supplier supplier;
 	private String paymentType;
