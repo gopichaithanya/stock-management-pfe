@@ -44,6 +44,7 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	//@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public PagingLoadResult<SupplierDto> search(FilterPagingLoadConfig config) {
+		
 		int size = (int) dao.count();
 		int start = config.getOffset();
 		int limit = config.getLimit();
