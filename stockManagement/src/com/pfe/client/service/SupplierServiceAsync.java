@@ -18,4 +18,9 @@ public interface SupplierServiceAsync {
 
 	void create(SupplierDto supplier, AsyncCallback<SupplierDto> callback);
 
+	void update(SupplierDto initial, SupplierDto buffer,
+			AsyncCallback<SupplierDto> callback);
+
+	
+
 }

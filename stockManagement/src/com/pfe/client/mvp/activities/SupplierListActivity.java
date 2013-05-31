@@ -100,7 +100,21 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void update(SupplierDto initial, SupplierDto updatedBuffer) {
-		// TODO Auto-generated method stub
+		rpcService.update(initial, updatedBuffer, new AsyncCallback<SupplierDto>() {
+			
+			@Override
+			public void onSuccess(SupplierDto result) {
+				view.getEditView().hide();
+				view.updateData(result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 	}
 

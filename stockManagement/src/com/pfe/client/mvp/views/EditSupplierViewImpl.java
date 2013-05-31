@@ -61,7 +61,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		CheckBoxSelectionModel<InvoiceDto> sm = new CheckBoxSelectionModel<InvoiceDto>(
 				identity);
 		sm.setSelectionMode(SelectionMode.SINGLE);
-
 		// column configuration
 		int ratio = 1;
 		ColumnConfig<InvoiceDto, Integer> codeCol = new ColumnConfig<InvoiceDto, Integer>(
@@ -97,12 +96,10 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
-
 		nameField = new TextField();
 		nameField.addValidator(new MinLengthValidator(2));
 		nameField.addValidator(new EmptyValidator<String>());
 		container.add(new FieldLabel(nameField, "Name"), new HtmlData(".name"));
-
 		descriptionEditor = new HtmlEditor();
 		descriptionEditor.setHeight(150);
 		FieldLabel descriptor = new FieldLabel(descriptionEditor, "Description");
@@ -113,19 +110,36 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
-		//submitBtn.addSelectHandler(new SubmitBtnHandler());
+		submitBtn.addSelectHandler(new SubmitBtnHandler());
 		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
 
-		fpanel.addButton(cancelBtn);
 		fpanel.addButton(submitBtn);
+		fpanel.addButton(cancelBtn);
 		List<FieldLabel> labels = FormPanelHelper.getFieldLabels(fpanel);
 		for (FieldLabel lbl : labels) {
 			lbl.setLabelAlign(LabelAlign.TOP);
 		}
-
 		vp.add(fpanel);
 		this.add(vp);
+	}
+	
+	/**
+	 * Save updates
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class SubmitBtnHandler implements SelectHandler {
 
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (nameField.isValid()) {
+				SupplierDto updated = new SupplierDto();
+				updated.setDescription(descriptionEditor.getValue());
+				updated.setName(nameField.getValue());
+				presenter.update(supplier, updated);
+			}
+		}
 	}
 	
 	/**
@@ -146,6 +160,8 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 			w.hide();
 		}
 	}
+	
+	
 
 	/**
 	 * HTML table
