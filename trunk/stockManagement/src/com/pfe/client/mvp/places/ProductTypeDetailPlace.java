@@ -10,7 +10,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
  * @author Alexandra
  * 
  */
-public class ProductTypeDetailsPlace extends Place {
+public class ProductTypeDetailPlace extends Place {
 	
 	private String details;
 	 
@@ -19,7 +19,7 @@ public class ProductTypeDetailsPlace extends Place {
 	}
 
 
-	public ProductTypeDetailsPlace(String token){
+	public ProductTypeDetailPlace(String token){
 		this.details = token;
 	}
 	
@@ -31,16 +31,16 @@ public class ProductTypeDetailsPlace extends Place {
 	 * @author Alexandra
 	 * 
 	 */
-	public static class Tokenizer implements PlaceTokenizer<ProductTypeDetailsPlace> {
+	public static class Tokenizer implements PlaceTokenizer<ProductTypeDetailPlace> {
 
 		/**
 		 * Creates the place
 		 */
-		public ProductTypeDetailsPlace getPlace(String token) {
-			return new ProductTypeDetailsPlace(token);
+		public ProductTypeDetailPlace getPlace(String token) {
+			return new ProductTypeDetailPlace(token);
 		}
 
-		public String getToken(ProductTypeDetailsPlace place) {
+		public String getToken(ProductTypeDetailPlace place) {
 			return place.getDetails();
 		}
 	}

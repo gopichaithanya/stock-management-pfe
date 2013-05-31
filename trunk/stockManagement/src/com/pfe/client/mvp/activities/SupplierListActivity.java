@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
-import com.pfe.client.mvp.places.ProductTypeDetailsPlace;
+import com.pfe.client.mvp.places.ProductTypeDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
