@@ -26,6 +26,7 @@ public interface ProductTypeDao extends IBaseDao<Long, ProductType>{
 	public ProductType getDuplicateName(Long excludedId, String name);
 	
 	/**
+	 * Retrieves records from start to limit index where name like parameter
 	 * 
 	 * @param start
 	 * @param limit
