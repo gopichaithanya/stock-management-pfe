@@ -8,6 +8,8 @@ import com.pfe.client.mvp.views.ProductTypeDetailView;
 import com.pfe.client.mvp.views.ProductTypeDetailViewImpl;
 import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.mvp.views.ProductTypeListViewImpl;
+import com.pfe.client.mvp.views.SupplierDetailView;
+import com.pfe.client.mvp.views.SupplierDetailViewImpl;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.mvp.views.SupplierListViewImpl;
 import com.pfe.client.mvp.views.WelcomeView;
@@ -26,9 +28,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static SupplierServiceAsync supplierService;
 
 	private static WelcomeView welcomeView;
+	
 	private static ProductTypeListView productTypeListView;
 	private static ProductTypeDetailView productTypeDetailView;
 	private static SupplierListView supplierListView;
+	private static SupplierDetailView supplierDetailView; 
 	
 
 	@Override
@@ -95,6 +99,15 @@ public class ClientFactoryImpl implements ClientFactory {
 			supplierListView = new SupplierListViewImpl();
 		}
 		return supplierListView;
+	}
+
+
+	@Override
+	public SupplierDetailView getSupplierDetailView() {
+		if (supplierDetailView == null) {
+			supplierDetailView = new SupplierDetailViewImpl();
+		}
+		return supplierDetailView;
 	}
 
 }

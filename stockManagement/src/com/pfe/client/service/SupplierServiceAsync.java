@@ -14,4 +14,6 @@ public interface SupplierServiceAsync {
 	void search(FilterPagingLoadConfig config,
 			AsyncCallback<PagingLoadResult<SupplierDto>> callback);
 
+	void find(Long id, AsyncCallback<SupplierDto> callback);
+
 }

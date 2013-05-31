@@ -8,6 +8,7 @@ import com.pfe.client.mvp.activities.SupplierListActivity;
 import com.pfe.client.mvp.activities.WelcomeActivity;
 import com.pfe.client.mvp.places.ProductTypeDetailPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.places.SupplierListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
 
@@ -42,8 +43,12 @@ public class AppActivityMapper implements ActivityMapper {
 		} else if(place instanceof SupplierListPlace){
 			supplierActivity = new SupplierListActivity(clientFactory);
 			return supplierActivity;
+			
 		} else if(place instanceof ProductTypeDetailPlace){
 			return productTypeActivity;
+			
+		} else if(place instanceof SupplierDetailPlace){
+			return supplierActivity;
 			
 		} else
 			return null;
