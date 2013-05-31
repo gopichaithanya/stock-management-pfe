@@ -82,4 +82,20 @@ public class SupplierServiceImpl implements SupplierService {
 		return null;
 	}
 
+	@Override
+	public SupplierDto update(SupplierDto initial, SupplierDto buffer) throws BusinessException {
+		
+		//we don't update invoices from the supplier view
+		Supplier entity = dozerMapper.map(initial, Supplier.class, "miniSupplier");
+		entity.setName(buffer.getName());
+		entity.setDescription(buffer.getDescription());
+		Supplier merged = dao.merge(entity);
+		
+		if(merged != null){
+			return dozerMapper.map(merged, SupplierDto.class, "miniSupplier");
+		}
+		
+		return null;
+	}
+
 }
