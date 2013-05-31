@@ -40,6 +40,9 @@ public class SupplierListActivity extends AbstractActivity implements
 			public void onSuccess(List<SupplierDto> result) {
 				List<SupplierDto> l = result;
 				
+				
+				
+				
 			}
 			
 			@Override
