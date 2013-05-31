@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.SupplierDto;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -40,4 +41,14 @@ public interface SupplierService extends RemoteService {
 	 * @return
 	 */
 	public SupplierDto find(Long id);
+	
+	/**
+	 * Adds supplier in database
+	 * 
+	 * @param supplier
+	 * @return
+	 * @throws BusinessException
+	 */
+	public SupplierDto create(SupplierDto supplier)
+			throws BusinessException;
 }

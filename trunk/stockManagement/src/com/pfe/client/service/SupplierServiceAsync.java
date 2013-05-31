@@ -16,4 +16,6 @@ public interface SupplierServiceAsync {
 
 	void find(Long id, AsyncCallback<SupplierDto> callback);
 
+	void create(SupplierDto supplier, AsyncCallback<SupplierDto> callback);
+
 }

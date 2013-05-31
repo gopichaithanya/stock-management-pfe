@@ -11,7 +11,6 @@ import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
 import com.pfe.shared.dto.SupplierDto;
-import com.pfe.shared.model.Supplier;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
@@ -78,19 +77,35 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void create(Supplier supplier) {
+	public void create(SupplierDto supplier) {
+		rpcService.create(supplier, new AsyncCallback<SupplierDto>() {
+			
+			@Override
+			public void onSuccess(SupplierDto result) {
+				view.addData(result);
+				view.getCreateView().hide();
+				view.maskGrid();
+				view.refreshGrid();
+				view.unmaskGrid();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+	}
+
+	@Override
+	public void update(SupplierDto initial, SupplierDto updatedBuffer) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void update(Supplier initial, Supplier updatedBuffer) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(Supplier supplier) {
+	public void delete(SupplierDto supplier) {
 		// TODO Auto-generated method stub
 
 	}

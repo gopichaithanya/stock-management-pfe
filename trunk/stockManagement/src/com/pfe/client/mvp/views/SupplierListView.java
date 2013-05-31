@@ -73,6 +73,18 @@ public interface SupplierListView extends IsWidget {
 	 */
 	public void setPagingLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> remoteLoader);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public CreateSupplierView getCreateView();
+	
+	/**
+	 * Refresh the grid view
+	 * 
+	 */
+	public void refreshGrid();
 
 	public void maskGrid();
 	
