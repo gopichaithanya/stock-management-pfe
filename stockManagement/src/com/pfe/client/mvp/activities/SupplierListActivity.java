@@ -24,12 +24,12 @@ public class SupplierListActivity extends AbstractActivity implements
 	private ClientFactory clientFactory;
 	private SupplierServiceAsync rpcService;
 	private SupplierListView view;
-	
-	public SupplierListActivity(ClientFactory clientFactory){
+
+	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		this.rpcService = clientFactory.getSupplierService();
 	}
-	
+
 	@Override
 	public void bind() {
 		view.setPresenter(this);
@@ -46,7 +46,7 @@ public class SupplierListActivity extends AbstractActivity implements
 		panel.setWidget(view.asWidget());
 
 	}
-	
+
 	/**
 	 * Sets paging parameters and loads list pages
 	 */
@@ -79,7 +79,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	@Override
 	public void create(SupplierDto supplier) {
 		rpcService.create(supplier, new AsyncCallback<SupplierDto>() {
-			
+
 			@Override
 			public void onSuccess(SupplierDto result) {
 				view.addData(result);
@@ -88,11 +88,11 @@ public class SupplierListActivity extends AbstractActivity implements
 				view.refreshGrid();
 				view.unmaskGrid();
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -100,21 +100,22 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void update(SupplierDto initial, SupplierDto updatedBuffer) {
-		rpcService.update(initial, updatedBuffer, new AsyncCallback<SupplierDto>() {
-			
-			@Override
-			public void onSuccess(SupplierDto result) {
-				view.getEditView().hide();
-				view.updateData(result);
-				
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		rpcService.update(initial, updatedBuffer,
+				new AsyncCallback<SupplierDto>() {
+
+					@Override
+					public void onSuccess(SupplierDto result) {
+						view.getEditView().hide();
+						view.updateData(result);
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 
 	}
 
@@ -146,24 +147,24 @@ public class SupplierListActivity extends AbstractActivity implements
 	@Override
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
-		
+
 	}
 
 	@Override
 	public void find(Long id) {
 		rpcService.find(id, new AsyncCallback<SupplierDto>() {
-			
+
 			@Override
 			public void onSuccess(SupplierDto result) {
 				view.getEditView().setData(result);
 				view.getEditView().show();
-				
+
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}

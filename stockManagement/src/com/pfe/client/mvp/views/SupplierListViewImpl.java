@@ -91,7 +91,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		grid.getView().setAutoFill(true);
 		grid.setHeight("100%");
 		grid.addRowClickHandler(new GridRowClickHandler());
-		pagingToolBar = new PagingToolBar(2);
+		pagingToolBar = new PagingToolBar(4);
 
 		toolbar = new GridToolbar();
 		verticalCon = new VerticalLayoutContainer();
