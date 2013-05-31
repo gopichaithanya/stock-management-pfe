@@ -1,7 +1,5 @@
 package com.pfe.client.mvp.activities;
 
-import java.util.List;
-
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,6 +10,12 @@ import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
 import com.pfe.shared.dto.SupplierDto;
 import com.pfe.shared.model.Supplier;
+import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
+import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoader;
 
 public class SupplierListActivity extends AbstractActivity implements
 		SupplierPresenter {
@@ -33,22 +37,42 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		
-		rpcService.getAll(new AsyncCallback<List<SupplierDto>>() {
-			
+		view = clientFactory.getSupplierListView();
+		view.maskGrid();
+		bind();
+		loadPages();
+		view.unmaskGrid();
+		panel.setWidget(view.asWidget());
+
+	}
+	
+	/**
+	 * Sets paging parameters and loads list pages
+	 */
+	private void loadPages() {
+		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>>() {
+
 			@Override
-			public void onSuccess(List<SupplierDto> result) {
-				List<SupplierDto> l = result;
+			public void load(FilterPagingLoadConfig loadConfig,
+					AsyncCallback<PagingLoadResult<SupplierDto>> callback) {
+				rpcService.search(loadConfig, callback);
 
 			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 
+		};
+		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>>(
+				proxy) {
+			@Override
+			protected FilterPagingLoadConfig newLoadConfig() {
+				return new FilterPagingLoadConfigBean();
+			}
+		};
+		remoteLoader.setRemoteSort(true);
+		remoteLoader
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, SupplierDto, PagingLoadResult<SupplierDto>>(
+						view.getData()));
+
+		view.setPagingLoader(remoteLoader);
 	}
 
 	@Override

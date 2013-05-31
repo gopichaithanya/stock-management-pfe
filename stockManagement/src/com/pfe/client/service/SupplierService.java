@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.dto.SupplierDto;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 /**
  * RPC Service that handles supplier CRUD
@@ -21,5 +23,14 @@ public interface SupplierService extends RemoteService {
 	 * @return
 	 */
 	public List<SupplierDto> getAll();
+	
+	
+	/**
+	 * Retrieves suppliers with paging 
+	 * 
+	 * @param config
+	 * @return
+	 */
+	public PagingLoadResult<SupplierDto> search(FilterPagingLoadConfig config);
 
 }
