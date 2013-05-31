@@ -26,4 +26,13 @@ public interface EditProductTypeView {
 	 */
 	public void setData(ProductType productType);
 	
+	/**
+	 * Shows window
+	 */
+	public void show();
+
+	/**
+	 * Hides window
+	 */
+	public void hide();
 }

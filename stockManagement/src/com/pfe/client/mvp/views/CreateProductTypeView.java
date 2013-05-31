@@ -23,4 +23,14 @@ public interface CreateProductTypeView {
 	 * Clears the view data
 	 */
 	public void clearData();
+	
+	/**
+	 * Shows window
+	 */
+	public void show();
+
+	/**
+	 * Hides window
+	 */
+	public void hide();
 }
