@@ -20,8 +20,8 @@ import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -45,7 +45,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	private GridToolbar toolbar;
 	
 	private CreateSupplierView createView;
-	//private EditProductTypeViewImpl editWindow;
+	private EditSupplierView editView;
 
 	public SupplierListViewImpl() {
 
@@ -85,11 +85,9 @@ public class SupplierListViewImpl implements SupplierListView {
 		};
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
-		grid.getView().setAutoFill(true);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.setStateful(true);
-		grid.setLayoutData(new VerticalLayoutData(1, 1));
 		grid.getView().setAutoFill(true);
 		grid.setHeight("100%");
 		grid.addRowClickHandler(new GridRowClickHandler());
@@ -102,7 +100,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
-		//toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		//toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		//toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		//toolbar.getClearFilterBtn().addSelectHandler(
@@ -126,6 +124,27 @@ public class SupplierListViewImpl implements SupplierListView {
 			}
 			createView.clearData();
 			createView.show();
+		}
+	}
+	
+	/**
+	 * Edit type handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class EditBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (editView == null) {
+				editView = new EditSupplierViewImpl();
+				editView.setPresenter(presenter);
+				System.out.println("edit view was null");
+			}
+			SupplierDto supplier = grid.getSelectionModel()
+					.getSelectedItem();
+			presenter.find(supplier.getId());
 		}
 	}
 	
@@ -223,6 +242,11 @@ public class SupplierListViewImpl implements SupplierListView {
 	public void refreshGrid() {
 		pagingToolBar.refresh();
 		
+	}
+
+	@Override
+	public EditSupplierView getEditView() {
+		return editView;
 	}
 
 }

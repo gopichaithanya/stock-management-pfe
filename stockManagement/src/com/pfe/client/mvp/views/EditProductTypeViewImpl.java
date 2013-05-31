@@ -33,9 +33,10 @@ public class EditProductTypeViewImpl extends Window implements
 		setHeadingText("Add product type");
 		setWidth(550);
 		setHeight(400);
+		setMinHeight(400);
 		setModal(true);
 		setResizable(false);
-		setClosable(false);
+		//setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();

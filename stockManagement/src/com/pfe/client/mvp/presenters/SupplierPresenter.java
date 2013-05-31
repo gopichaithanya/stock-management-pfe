@@ -24,6 +24,13 @@ public interface SupplierPresenter extends Presenter {
 	 * @param supplier
 	 */
 	public void create(SupplierDto supplier);
+	
+	/**
+	 * Retrieves supplier by id
+	 * 
+	 * @param id
+	 */
+	public void find(Long id);
 
 	
 	/**

@@ -33,6 +33,7 @@ public class CreateProductTypeViewImpl extends Window implements
 		setHeadingText("Add product type");
 		setWidth(550);
 		setHeight(400);
+		setMinHeight(400);
 		setModal(true);
 		setBlinkModal(true);
 		setResizable(false);

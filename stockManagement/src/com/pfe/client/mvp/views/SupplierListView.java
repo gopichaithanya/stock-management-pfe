@@ -81,6 +81,13 @@ public interface SupplierListView extends IsWidget {
 	public CreateSupplierView getCreateView();
 	
 	/**
+	 * 
+	 * @return
+	 */
+	public EditSupplierView getEditView();
+	
+	
+	/**
 	 * Refresh the grid view
 	 * 
 	 */

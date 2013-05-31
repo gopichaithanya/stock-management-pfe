@@ -64,7 +64,8 @@ public class SupplierServiceImpl implements SupplierService {
 	public SupplierDto find(Long id) {
 		Supplier supplier = dao.get(id);
 		if(supplier != null){
-			return dozerMapper.map(supplier, SupplierDto.class, "fullSupplier");
+			SupplierDto dto = dozerMapper.map(supplier, SupplierDto.class, "fullSupplier");
+			return dto;
 		}	
 		return null;
 	}

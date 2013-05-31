@@ -33,6 +33,7 @@ public class CreateSupplierViewImpl extends Window implements
 		setHeadingText("Add supplier");
 		setWidth(550);
 		setHeight(400);
+		setMinHeight(400);
 		setModal(true);
 		setBlinkModal(true);
 		setResizable(false);
