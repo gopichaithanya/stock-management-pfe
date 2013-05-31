@@ -48,8 +48,8 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
 
-	private CreateProductTypeViewImpl createWindow;
-	private EditProductTypeViewImpl editWindow;
+	private CreateProductTypeView createView;
+	private EditProductTypeView editView;
 
 	public ProductTypeListViewImpl() {
 
@@ -139,12 +139,12 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (createWindow == null) {
-				createWindow = new CreateProductTypeViewImpl();
-				createWindow.setPresenter(presenter);
+			if (createView == null) {
+				createView = new CreateProductTypeViewImpl();
+				createView.setPresenter(presenter);
 			}
-			createWindow.clearData();
-			createWindow.show();
+			createView.clearData();
+			createView.show();
 		}
 	}
 
@@ -158,15 +158,15 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (editWindow == null) {
-				editWindow = new EditProductTypeViewImpl();
-				editWindow.setPresenter(presenter);
+			if (editView == null) {
+				editView = new EditProductTypeViewImpl();
+				editView.setPresenter(presenter);
 			}
 			ProductType productType = grid.getSelectionModel()
 					.getSelectedItem();
 			if (productType != null) {
-				editWindow.setData(productType);
-				editWindow.show();
+				editView.setData(productType);
+				editView.show();
 			}
 		}
 	}
@@ -288,13 +288,13 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	@Override
-	public CreateProductTypeViewImpl getCreateWindow() {
-		return createWindow;
+	public CreateProductTypeView getCreateView() {
+		return createView;
 	}
 
 	@Override
-	public EditProductTypeViewImpl getEditWindow() {
-		return editWindow;
+	public EditProductTypeView getEditView() {
+		return editView;
 	}
 
 	@Override

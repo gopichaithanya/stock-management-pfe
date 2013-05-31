@@ -90,7 +90,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 			@Override
 			public void onSuccess(ProductType result) {
 				view.addData(result);
-				view.getCreateWindow().hide();
+				view.getCreateView().hide();
 				view.refreshGrid();
 			}
 		});
@@ -104,7 +104,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 					@Override
 					public void onSuccess(ProductType result) {
 						view.updateData(result);
-						view.getEditWindow().hide();
+						view.getEditView().hide();
 					}
 
 					@Override

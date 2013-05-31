@@ -69,14 +69,14 @@ public interface ProductTypeListView extends IsWidget {
 	 * 
 	 * @return
 	 */
-	public CreateProductTypeViewImpl getCreateWindow();
+	public CreateProductTypeView getCreateView();
 
 	/**
 	 * Get edit window
 	 * 
 	 * @return
 	 */
-	public EditProductTypeViewImpl getEditWindow();
+	public EditProductTypeView getEditView();
 	
 	
 	/**
