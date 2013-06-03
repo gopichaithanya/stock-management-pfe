@@ -18,7 +18,7 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 		<class-a>com.pfe.shared.model.Supplier</class-a>
 		<class-b>com.pfe.shared.dto.SupplierDTO</class-b>
 	</mapping>
-	
+
 	<mapping map-id="miniInvoice">
 		<class-a>com.pfe.shared.model.Invoice</class-a>
 		<class-b>com.pfe.shared.dto.InvoiceDTO</class-b>
@@ -26,6 +26,16 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 			<a>shipments</a>
 			<b>shipments</b>
 		</field-exclude>
+	</mapping>
+	
+	<mapping map-id="fullInvoice">
+		<class-a>com.pfe.shared.model.Invoice</class-a>
+		<class-b>com.pfe.shared.dto.InvoiceDTO</class-b>
+	</mapping>
+
+	<mapping>
+		<class-a>com.pfe.shared.model.Shipment</class-a>
+		<class-b>com.pfe.shared.dto.ShipmentDTO</class-b>
 	</mapping>
 
 </mappings>
