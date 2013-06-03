@@ -1,5 +1,6 @@
 package com.pfe.client.mvp.views;
 
+import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.shared.dto.InvoiceDTO;
 
 /**
@@ -16,7 +17,7 @@ public interface EditInvoiceView {
 	 * 
 	 * @param presenter
 	 */
-	//public void setPresenter(SupplierPresenter presenter);
+	public void setPresenter(InvoicePresenter presenter);
 	
 	/**
 	 * Sets the view data
@@ -26,7 +27,7 @@ public interface EditInvoiceView {
 	public void setData(InvoiceDTO invoice);
 	
 	/**
-	 * Clears the UI componentss
+	 * Clears the UI components
 	 * 
 	 */
 	public void clearData();

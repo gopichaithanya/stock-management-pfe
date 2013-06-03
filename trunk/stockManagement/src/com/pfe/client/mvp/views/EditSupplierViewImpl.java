@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.properties.InvoiceProperties;
 import com.pfe.shared.dto.InvoiceDTO;
@@ -46,8 +47,10 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	private ListStore<InvoiceDTO> store;
 
 	private SupplierPresenter presenter;
+	private ClientFactory clientFactory;
 
-	public EditSupplierViewImpl() {
+	public EditSupplierViewImpl(ClientFactory factory) {
+		this.clientFactory = factory;
 		
 		setBodyBorder(false);
 		setWidth(850);

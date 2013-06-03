@@ -44,6 +44,7 @@ public class SupplierListActivity extends AbstractActivity implements
 		view = clientFactory.getSupplierListView();
 		view.maskGrid();
 		bind();
+		view.setClientFactory(clientFactory);
 		loadPages();
 		view.unmaskGrid();
 		panel.setWidget(view.asWidget());

@@ -14,6 +14,8 @@ import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.mvp.views.SupplierListViewImpl;
 import com.pfe.client.mvp.views.WelcomeView;
 import com.pfe.client.mvp.views.WelcomeViewImpl;
+import com.pfe.client.service.InvoiceService;
+import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.SupplierService;
@@ -26,6 +28,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private static ProductTypeServiceAsync productTypeService;
 	private static SupplierServiceAsync supplierService;
+	private static InvoiceServiceAsync invoiceService;
 
 	private static WelcomeView welcomeView;
 	
@@ -67,6 +70,15 @@ public class ClientFactoryImpl implements ClientFactory {
 		return supplierService;
 	}
 
+
+	@Override
+	public InvoiceServiceAsync getInvoiceService() {
+		if (invoiceService == null) {
+			invoiceService = GWT.create(InvoiceService.class);
+		}
+		return invoiceService;
+	}
+	
 	@Override
 	public ProductTypeListView getProductTypeListView() {
 		if (productTypeListView == null) {

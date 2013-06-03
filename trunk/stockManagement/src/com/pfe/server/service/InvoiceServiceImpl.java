@@ -21,6 +21,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public InvoiceDTO update(InvoiceDTO initial, InvoiceDTO buffer)
 			throws BusinessException {
 		// TODO Auto-generated method stub
+		System.out.println("in update invoice");
 		return null;
 	}
 

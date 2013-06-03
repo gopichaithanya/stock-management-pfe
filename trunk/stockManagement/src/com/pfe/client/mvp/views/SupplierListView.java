@@ -3,6 +3,7 @@ package com.pfe.client.mvp.views;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.shared.ListStore;
@@ -96,4 +97,6 @@ public interface SupplierListView extends IsWidget {
 	public void maskGrid();
 	
 	public void unmaskGrid();
+	
+	public void setClientFactory(ClientFactory factory);
 }

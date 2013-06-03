@@ -7,6 +7,7 @@ import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.mvp.views.SupplierDetailView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.mvp.views.WelcomeView;
+import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
 
@@ -47,17 +48,24 @@ public interface ClientFactory {
 	// SERVICES
 
 	/**
-	 * Creates the RPC product type service
+	 * Creates the RPC service for operations on product types
 	 * 
 	 * @return
 	 */
 	public ProductTypeServiceAsync getProductTypeService();
 	
 	/**
-	 * Creates the RPC supplier service
+	 * Creates the RPC service for operations on suppliers
 	 * 
 	 * @return
 	 */
 	public SupplierServiceAsync getSupplierService();
+	
+	/**
+	 * Creates RPC service for operations on invoices
+	 * 
+	 * @return
+	 */
+	public InvoiceServiceAsync getInvoiceService();
 
 }
