@@ -18,6 +18,7 @@ import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
@@ -113,6 +114,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
 		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
 
+		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
 		List<FieldLabel> labels = FormPanelHelper.getFieldLabels(fpanel);
