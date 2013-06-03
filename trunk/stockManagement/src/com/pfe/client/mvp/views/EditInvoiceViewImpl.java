@@ -1,13 +1,19 @@
 package com.pfe.client.mvp.views;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
-import com.pfe.client.service.InvoiceServiceAsync;
+import com.pfe.client.mvp.presenters.Presenter;
+import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.ui.properties.ShipmentProperties;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ShipmentDTO;
+import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -23,12 +29,16 @@ import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.ColumnModel;
+import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
+	
+	private static final ShipmentProperties props = GWT
+			.create(ShipmentProperties.class);
 
-	private Widget parent;
-	private InvoicePresenter presenter;
-	private ClientFactory clientFactory;
+	private Presenter presenter;
 
 	private InvoiceDTO invoice;
 	private NumberField<Integer> codeField;
@@ -36,9 +46,10 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private TextField paymentField;
 	private NumberField<Integer> debtField;
 	private TextField supplierField;
+	private Grid<ShipmentDTO> grid;
+	private ListStore<ShipmentDTO> store;
 
 	public EditInvoiceViewImpl() {
-
 		setBodyBorder(false);
 		setWidth(550);
 		setHeight(350);
@@ -71,6 +82,41 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		container.add(new FieldLabel(supplierField, "Supplier"), new HtmlData(
 				".supplier"));
 
+		// column configuration
+		int ratio = 1;
+		ColumnConfig<ShipmentDTO, String> typeCol = new ColumnConfig<ShipmentDTO, String>(
+				props.productType(), 2 * ratio, "Type");
+		ColumnConfig<ShipmentDTO, BigDecimal> priceCol = new ColumnConfig<ShipmentDTO, BigDecimal>(
+				props.unitPrice(), 2 * ratio, "Unit price");
+		ColumnConfig<ShipmentDTO, Integer> initQtyCol = new ColumnConfig<ShipmentDTO, Integer>(
+				props.initialQty(), 2 * ratio, "Init. Qty");
+		ColumnConfig<ShipmentDTO, Integer> currentQtyCol = new ColumnConfig<ShipmentDTO, Integer>(
+				props.currentQty(), 2 * ratio, "Current Qty");
+		ColumnConfig<ShipmentDTO, Boolean> paidCol = new ColumnConfig<ShipmentDTO, Boolean>(
+				props.paid(), ratio, "Paid");
+		ColumnConfig<ShipmentDTO, Date> dateCol = new ColumnConfig<ShipmentDTO, Date>(
+				props.created(), 3 * ratio, "Created");
+		
+		List<ColumnConfig<ShipmentDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<ShipmentDTO, ?>>();
+		columnConfigList.add(typeCol);
+		columnConfigList.add(priceCol);
+		columnConfigList.add(initQtyCol);
+		columnConfigList.add(currentQtyCol);
+		columnConfigList.add(paidCol);
+		columnConfigList.add(dateCol);
+		ColumnModel<ShipmentDTO> cm = new ColumnModel<ShipmentDTO>(columnConfigList);
+		store = new ListStore<ShipmentDTO>(props.key());
+
+		grid = new Grid<ShipmentDTO>(store, cm);
+		grid.getView().setStripeRows(true);
+		grid.getView().setColumnLines(true);
+		grid.getView().setAutoFill(true);
+		grid.setBorders(true);
+		grid.setHeight(60);
+		
+		FieldLabel gridField = new FieldLabel(grid, "Shipments");
+		container.add(gridField, new HtmlData(".shipments"));
+		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
@@ -99,17 +145,18 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			// if window parent is null, it means the window was opened from the
-			// invoice list
-			if (parent == null) {
-				// TODO call presenter simple update method here
+			InvoiceDTO buffer = new InvoiceDTO();
+			buffer.setCode(codeField.getValue());
+			buffer.setCreated(dateField.getValue());
+			buffer.setPaymentType(paymentField.getValue());
+			buffer.setShipments(store.getAll());
+			//buffer.setSupplier(supplier)
+			if(presenter instanceof SupplierPresenter){
+				((SupplierPresenter)presenter).updateInvoice(invoice, buffer);
+			} else if (presenter instanceof InvoicePresenter){
+				
 			}
-			// if parent is edit supplier window
-			else if (parent instanceof EditSupplierView) {
-				InvoiceServiceAsync rpcService = clientFactory
-						.getInvoiceService();
-				// call service here directly
-			}
+			
 
 		}
 	}
@@ -144,7 +191,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 				'<table width=100% cellpadding=10 cellspacing=10>',
 				'<tr><td class=code width=30%></td> <td class=date width=30%></td><td class=payment width=30%></tr>',
 				'<tr><td class=debt width=30%><td class=supplier width=30%></td></tr>',
-				'<tr><td class=shipments colspan=2></tr>', '</table>'
+				'<tr><td class=shipments colspan=3></tr>', '</table>'
 
 		].join("");
 	}-*/;
@@ -152,40 +199,35 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	@Override
 	public void setData(InvoiceDTO invoice) {
 		this.invoice = invoice;
-	}
-
-	@Override
-	public void clearData() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setPresenter(InvoicePresenter presenter) {
-		this.presenter = presenter;
-
-	}
-
-	@Override
-	public void setParent(Window w) {
-		this.parent = w;
-
-	}
-
-	@Override
-	public void setClientFactory(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
-
-	}
-
-	@Override
-	public void show() {
+		clearData();
 		codeField.setValue(invoice.getCode());
 		dateField.setValue(invoice.getCreated());
 		paymentField.setValue(invoice.getPaymentType());
 		debtField.setValue(invoice.getRestToPay().intValue());
 		supplierField.setValue(invoice.getSupplier().getName());
 		setHeadingText("Invoice " + invoice.getCode());
+		store.addAll(invoice.getShipments());
+	}
+
+	@Override
+	public void clearData() {
+		codeField.clear();
+		dateField.clear();
+		paymentField.clear();
+		debtField.clear();
+		supplierField.clear();
+		store.clear();
+
+	}
+
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+
+	}
+
+	@Override
+	public void show() {
 		super.show();
 	}
 

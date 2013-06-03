@@ -1,6 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
 import com.google.gwt.place.shared.Place;
+import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.SupplierDTO;
 
 /**
@@ -69,4 +70,12 @@ public interface SupplierPresenter extends Presenter {
 	 */
 	public void displayDetailsView(SupplierDTO supplier);
 
+	
+	/**
+	 * Updates invoice via corresponding supplier
+	 * 
+	 * @param initial
+	 * @param buffer
+	 */
+	public void updateInvoice(InvoiceDTO initial, InvoiceDTO buffer);
 }

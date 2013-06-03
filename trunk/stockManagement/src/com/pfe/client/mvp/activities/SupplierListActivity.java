@@ -9,8 +9,10 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
+import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
 import com.pfe.shared.BusinessException;
+import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -24,12 +26,13 @@ public class SupplierListActivity extends AbstractActivity implements
 		SupplierPresenter {
 
 	private ClientFactory clientFactory;
-	private SupplierServiceAsync rpcService;
+	private SupplierServiceAsync supplierService;
+	private InvoiceServiceAsync invoiceService;
 	private SupplierListView view;
 
 	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		this.rpcService = clientFactory.getSupplierService();
+		this.supplierService = clientFactory.getSupplierService();
 	
 	}
 
@@ -44,7 +47,6 @@ public class SupplierListActivity extends AbstractActivity implements
 		view = clientFactory.getSupplierListView();
 		view.maskGrid();
 		bind();
-		view.setClientFactory(clientFactory);
 		loadPages();
 		view.unmaskGrid();
 		panel.setWidget(view.asWidget());
@@ -60,7 +62,7 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig,
 					AsyncCallback<PagingLoadResult<SupplierDTO>> callback) {
-				rpcService.search(loadConfig, callback);
+				supplierService.search(loadConfig, callback);
 
 			}
 
@@ -82,7 +84,7 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void create(SupplierDTO supplier) {
-		rpcService.create(supplier, new AsyncCallback<SupplierDTO>() {
+		supplierService.create(supplier, new AsyncCallback<SupplierDTO>() {
 
 			@Override
 			public void onSuccess(SupplierDTO result) {
@@ -104,7 +106,7 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void update(SupplierDTO initial, SupplierDTO updatedBuffer) {
-		rpcService.update(initial, updatedBuffer,
+		supplierService.update(initial, updatedBuffer,
 				new AsyncCallback<SupplierDTO>() {
 
 					@Override
@@ -125,7 +127,7 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void delete(final SupplierDTO supplier) {
-		rpcService.delete(supplier, new AsyncCallback<Void>() {
+		supplierService.delete(supplier, new AsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
@@ -174,7 +176,7 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void find(Long id) {
-		rpcService.find(id, new AsyncCallback<SupplierDTO>() {
+		supplierService.find(id, new AsyncCallback<SupplierDTO>() {
 
 			@Override
 			public void onSuccess(SupplierDTO result) {
@@ -189,6 +191,29 @@ public class SupplierListActivity extends AbstractActivity implements
 
 			}
 		});
+	}
+
+	@Override
+	public void updateInvoice(final InvoiceDTO initial, InvoiceDTO buffer) {
+		invoiceService.update(initial, buffer, new AsyncCallback<InvoiceDTO>() {
+			
+			@Override
+			public void onSuccess(InvoiceDTO result) {
+				// TODO set data on editSupplier here
+				if(initial.getSupplier() != result.getSupplier()){
+					//view.getEditView().
+				}
+				
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 }

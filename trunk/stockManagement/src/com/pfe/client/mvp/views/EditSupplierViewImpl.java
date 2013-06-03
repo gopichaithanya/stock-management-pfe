@@ -8,7 +8,6 @@ import java.util.List;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.properties.InvoiceProperties;
 import com.pfe.shared.dto.InvoiceDTO;
@@ -47,10 +46,9 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	private EditInvoiceView editInvoiceView;
 
 	private SupplierPresenter presenter;
-	private ClientFactory clientFactory;
 
-	public EditSupplierViewImpl(ClientFactory factory) {
-		this.clientFactory = factory;
+
+	public EditSupplierViewImpl() {
 
 		setBodyBorder(false);
 		setWidth(850);
@@ -189,8 +187,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 			InvoiceDTO invoice = store.get(row);	
 			if (editInvoiceView == null) {
 				editInvoiceView = new EditInvoiceViewImpl();
-				editInvoiceView.setParent(w);
-				editInvoiceView.setClientFactory(clientFactory);
+				editInvoiceView.setPresenter(presenter);
 			}
 			editInvoiceView.setData(invoice);
 			editInvoiceView.show();
@@ -223,6 +220,13 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	public void setData(SupplierDTO supplier) {
 		clearData();
 		this.supplier = supplier;
+		List<InvoiceDTO> invoices = supplier.getInvoices();
+		if (invoices != null) {
+			store.addAll(invoices);
+		}
+		nameField.setValue(supplier.getName());
+		descriptionEditor.setValue(supplier.getDescription());
+		setHeadingText(supplier.getName() + " Supplier");
 	}
 
 	@Override
@@ -234,13 +238,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	
 	@Override 
 	public void show(){
-		List<InvoiceDTO> invoices = supplier.getInvoices();
-		if (invoices != null) {
-			store.addAll(invoices);
-		}
-		nameField.setValue(supplier.getName());
-		descriptionEditor.setValue(supplier.getDescription());
-		setHeadingText(supplier.getName());
 		super.show();
 	}
 }
