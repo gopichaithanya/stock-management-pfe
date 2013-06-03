@@ -3,23 +3,23 @@ package com.pfe.client.service;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 public interface SupplierServiceAsync {
 
-	void getAll(AsyncCallback<List<SupplierDto>> callback);
+	void getAll(AsyncCallback<List<SupplierDTO>> callback);
 
 	void search(FilterPagingLoadConfig config,
-			AsyncCallback<PagingLoadResult<SupplierDto>> callback);
+			AsyncCallback<PagingLoadResult<SupplierDTO>> callback);
 
-	void find(Long id, AsyncCallback<SupplierDto> callback);
+	void find(Long id, AsyncCallback<SupplierDTO> callback);
 
-	void create(SupplierDto supplier, AsyncCallback<SupplierDto> callback);
+	void create(SupplierDTO supplier, AsyncCallback<SupplierDTO> callback);
 
-	void update(SupplierDto initial, SupplierDto buffer,
-			AsyncCallback<SupplierDto> callback);
+	void update(SupplierDTO initial, SupplierDTO buffer,
+			AsyncCallback<SupplierDTO> callback);
 
 	
 

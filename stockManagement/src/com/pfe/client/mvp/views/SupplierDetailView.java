@@ -1,7 +1,7 @@
 package com.pfe.client.mvp.views;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 
 /**
  * Contains components used to display detailed information on selected supplier
@@ -21,6 +21,6 @@ public interface SupplierDetailView extends IsWidget {
 	 * 
 	 * @param supplier
 	 */
-	public void setData(SupplierDto supplier);
+	public void setData(SupplierDTO supplier);
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -31,14 +31,14 @@ public interface SupplierListView extends IsWidget {
 	 * 
 	 * @param suppliers
 	 */
-	public void setData(List<SupplierDto> suppliers);
+	public void setData(List<SupplierDTO> suppliers);
 
 	/**
 	 * Gets the view data
 	 * 
 	 * @return
 	 */
-	public ListStore<SupplierDto> getData();
+	public ListStore<SupplierDTO> getData();
 
 	/**
 	 * Clears the view components
@@ -50,21 +50,21 @@ public interface SupplierListView extends IsWidget {
 	 * 
 	 * @param supplier
 	 */
-	public void addData(SupplierDto supplier);
+	public void addData(SupplierDTO supplier);
 	
 	/**
 	 * Updates a line in the list
 	 * 
 	 * @param supplier
 	 */
-	public void updateData(SupplierDto supplier);
+	public void updateData(SupplierDTO supplier);
 	
 	/**
 	 * Deletes type from the displayed list
 	 * 
 	 * @param supplier
 	 */
-	public void deleteData(SupplierDto supplier);
+	public void deleteData(SupplierDTO supplier);
 	
 	/**
 	 * Set loader for paging
@@ -72,7 +72,7 @@ public interface SupplierListView extends IsWidget {
 	 * @param loader
 	 */
 	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> remoteLoader);
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> remoteLoader);
 	
 	/**
 	 * 

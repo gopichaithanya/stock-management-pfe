@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
@@ -23,7 +23,7 @@ public interface SupplierService extends RemoteService {
 	 * 
 	 * @return
 	 */
-	public List<SupplierDto> getAll();
+	public List<SupplierDTO> getAll();
 
 	/**
 	 * Retrieves suppliers with paging
@@ -31,7 +31,7 @@ public interface SupplierService extends RemoteService {
 	 * @param config
 	 * @return
 	 */
-	public PagingLoadResult<SupplierDto> search(FilterPagingLoadConfig config);
+	public PagingLoadResult<SupplierDTO> search(FilterPagingLoadConfig config);
 
 	/**
 	 * Retrieves supplier by id
@@ -39,7 +39,7 @@ public interface SupplierService extends RemoteService {
 	 * @param id
 	 * @return
 	 */
-	public SupplierDto find(Long id);
+	public SupplierDTO find(Long id);
 
 	/**
 	 * Adds supplier in database
@@ -48,7 +48,7 @@ public interface SupplierService extends RemoteService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public SupplierDto create(SupplierDto supplier) throws BusinessException;
+	public SupplierDTO create(SupplierDTO supplier) throws BusinessException;
 
 	/**
 	 * Updates supplier
@@ -57,5 +57,5 @@ public interface SupplierService extends RemoteService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public SupplierDto update(SupplierDto initial, SupplierDto buffer) throws BusinessException;
+	public SupplierDTO update(SupplierDTO initial, SupplierDTO buffer) throws BusinessException;
 }

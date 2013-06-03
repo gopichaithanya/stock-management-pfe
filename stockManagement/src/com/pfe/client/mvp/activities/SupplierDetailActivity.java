@@ -8,7 +8,7 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.views.SupplierDetailView;
 import com.pfe.client.service.SupplierServiceAsync;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 
 public class SupplierDetailActivity extends AbstractActivity {
 	
@@ -28,10 +28,10 @@ public class SupplierDetailActivity extends AbstractActivity {
 		
 		view = clientFactory.getSupplierDetailView();
 		Long supplierId = Long.parseLong(id);
-		rpcService.find(supplierId, new AsyncCallback<SupplierDto>() {
+		rpcService.find(supplierId, new AsyncCallback<SupplierDTO>() {
 			
 			@Override
-			public void onSuccess(SupplierDto result) {
+			public void onSuccess(SupplierDTO result) {
 				view.setData(result);
 				panel.setWidget(view.asWidget());
 				

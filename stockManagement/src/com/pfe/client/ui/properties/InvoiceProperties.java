@@ -4,33 +4,33 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.gwt.editor.client.Editor.Path;
-import com.pfe.shared.dto.InvoiceDto;
+import com.pfe.shared.dto.InvoiceDTO;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
-public interface InvoiceProperties extends PropertyAccess<InvoiceDto> {
+public interface InvoiceProperties extends PropertyAccess<InvoiceDTO> {
 
 	@Path("id")
-	ModelKeyProvider<InvoiceDto> key();
+	ModelKeyProvider<InvoiceDTO> key();
 	
 	@Path("code")
-	LabelProvider<InvoiceDto> codeLabel();	
+	LabelProvider<InvoiceDTO> codeLabel();	
 
 	@Path("code")
-	ValueProvider<InvoiceDto, Integer> code();
+	ValueProvider<InvoiceDTO, Integer> code();
 	
 	@Path("supplier.name")
-	ValueProvider<InvoiceDto, String> supplier();
+	ValueProvider<InvoiceDTO, String> supplier();
 	
 	@Path("shipments.size")
-	ValueProvider<InvoiceDto, Integer> shipments();
+	ValueProvider<InvoiceDTO, Integer> shipments();
 	
 	@Path("restToPay")
-	ValueProvider<InvoiceDto, BigDecimal> restToPay();
+	ValueProvider<InvoiceDTO, BigDecimal> restToPay();
 	
 	@Path("created")
-	ValueProvider<InvoiceDto, Date> created();
+	ValueProvider<InvoiceDTO, Date> created();
 	
 }

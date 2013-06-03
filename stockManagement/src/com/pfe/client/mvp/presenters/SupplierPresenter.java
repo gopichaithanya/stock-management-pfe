@@ -1,7 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
 import com.google.gwt.place.shared.Place;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 
 /**
  * Controls SupplierListView
@@ -23,7 +23,7 @@ public interface SupplierPresenter extends Presenter {
 	 * 
 	 * @param supplier
 	 */
-	public void create(SupplierDto supplier);
+	public void create(SupplierDTO supplier);
 	
 	/**
 	 * Retrieves supplier by id
@@ -39,14 +39,14 @@ public interface SupplierPresenter extends Presenter {
 	 * @param initial
 	 * @param updatedBuffer
 	 */
-	public void update(SupplierDto initial, SupplierDto updatedBuffer);
+	public void update(SupplierDTO initial, SupplierDTO updatedBuffer);
 
 	/***
 	 * Deletes supplier
 	 * 
 	 * @param supplier
 	 */
-	public void delete(SupplierDto supplier);
+	public void delete(SupplierDTO supplier);
 
 	/**
 	 * Filters list by name. Creates new paging load configuration corresponding
@@ -67,6 +67,6 @@ public interface SupplierPresenter extends Presenter {
 	 * 
 	 * @param productType
 	 */
-	public void displayDetailsView(SupplierDto supplier);
+	public void displayDetailsView(SupplierDTO supplier);
 
 }

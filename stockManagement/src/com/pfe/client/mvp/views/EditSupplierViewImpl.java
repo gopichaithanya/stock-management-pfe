@@ -9,8 +9,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.properties.InvoiceProperties;
-import com.pfe.shared.dto.InvoiceDto;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
@@ -38,11 +38,11 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	private static final InvoiceProperties props = GWT
 			.create(InvoiceProperties.class);
 
-	private SupplierDto supplier;
+	private SupplierDTO supplier;
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
-	private Grid<InvoiceDto> grid;
-	private ListStore<InvoiceDto> store;
+	private Grid<InvoiceDTO> grid;
+	private ListStore<InvoiceDTO> store;
 
 	private SupplierPresenter presenter;
 
@@ -57,32 +57,32 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		setClosable(false);
 
 		// check box selection model
-		IdentityValueProvider<InvoiceDto> identity = new IdentityValueProvider<InvoiceDto>();
-		CheckBoxSelectionModel<InvoiceDto> sm = new CheckBoxSelectionModel<InvoiceDto>(
+		IdentityValueProvider<InvoiceDTO> identity = new IdentityValueProvider<InvoiceDTO>();
+		CheckBoxSelectionModel<InvoiceDTO> sm = new CheckBoxSelectionModel<InvoiceDTO>(
 				identity);
 		sm.setSelectionMode(SelectionMode.SINGLE);
 		// column configuration
 		int ratio = 1;
-		ColumnConfig<InvoiceDto, Integer> codeCol = new ColumnConfig<InvoiceDto, Integer>(
+		ColumnConfig<InvoiceDTO, Integer> codeCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.code(), ratio, "Code");
-		ColumnConfig<InvoiceDto, Integer> shipCol = new ColumnConfig<InvoiceDto, Integer>(
+		ColumnConfig<InvoiceDTO, Integer> shipCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.shipments(), 2 * ratio, "Shipments");
-		ColumnConfig<InvoiceDto, BigDecimal> debtCol = new ColumnConfig<InvoiceDto, BigDecimal>(
+		ColumnConfig<InvoiceDTO, BigDecimal> debtCol = new ColumnConfig<InvoiceDTO, BigDecimal>(
 				props.restToPay(), 2 * ratio, "Rest to pay");
-		ColumnConfig<InvoiceDto, Date> dateCol = new ColumnConfig<InvoiceDto, Date>(
+		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(
 				props.created(), 4 * ratio, "Created");
 		
-		List<ColumnConfig<InvoiceDto, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDto, ?>>();
+		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(codeCol);
 		columnConfigList.add(shipCol);
 		columnConfigList.add(debtCol);
 		columnConfigList.add(dateCol);
-		ColumnModel<InvoiceDto> cm = new ColumnModel<InvoiceDto>(
+		ColumnModel<InvoiceDTO> cm = new ColumnModel<InvoiceDTO>(
 				columnConfigList);
-		store = new ListStore<InvoiceDto>(props.key());
+		store = new ListStore<InvoiceDTO>(props.key());
 		
-		grid = new Grid<InvoiceDto>(store, cm);
+		grid = new Grid<InvoiceDTO>(store, cm);
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
@@ -134,7 +134,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				SupplierDto updated = new SupplierDto();
+				SupplierDTO updated = new SupplierDTO();
 				updated.setDescription(descriptionEditor.getValue());
 				updated.setName(nameField.getValue());
 				presenter.update(supplier, updated);
@@ -184,10 +184,10 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	}
 
 	@Override
-	public void setData(SupplierDto supplier) {
+	public void setData(SupplierDTO supplier) {
 		clearData();
 		this.supplier = supplier;
-		List<InvoiceDto> invoices = supplier.getInvoices();
+		List<InvoiceDTO> invoices = supplier.getInvoices();
 		if(invoices != null){
 			store.addAll(invoices);
 		}
