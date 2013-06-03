@@ -21,6 +21,8 @@ public interface SupplierServiceAsync {
 	void update(SupplierDTO initial, SupplierDTO buffer,
 			AsyncCallback<SupplierDTO> callback);
 
+	void delete(SupplierDTO supplier, AsyncCallback<Void> callback);
+
 	
 
 }

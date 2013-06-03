@@ -37,7 +37,7 @@ public class EditProductTypeViewImpl extends Window implements
 		setMinHeight(400);
 		setModal(true);
 		setResizable(false);
-		//setClosable(false);
+		setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
