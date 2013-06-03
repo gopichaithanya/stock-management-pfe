@@ -30,6 +30,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		this.rpcService = clientFactory.getSupplierService();
+	
 	}
 
 	@Override
