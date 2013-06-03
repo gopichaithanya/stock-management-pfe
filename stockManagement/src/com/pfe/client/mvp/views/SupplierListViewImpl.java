@@ -7,7 +7,6 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
-import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.properties.SupplierProperties;
@@ -38,7 +37,6 @@ public class SupplierListViewImpl implements SupplierListView {
 
 	private static final SupplierProperties props = GWT
 			.create(SupplierProperties.class);
-	private ClientFactory factory;
 
 	private SupplierPresenter presenter;
 	private Grid<SupplierDTO> grid;
@@ -144,7 +142,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (editView == null) {
-				editView = new EditSupplierViewImpl(factory);
+				editView = new EditSupplierViewImpl();
 				editView.setPresenter(presenter);
 			}
 			SupplierDTO supplier = grid.getSelectionModel()
@@ -292,12 +290,6 @@ public class SupplierListViewImpl implements SupplierListView {
 	@Override
 	public EditSupplierView getEditView() {
 		return editView;
-	}
-
-	@Override
-	public void setClientFactory(ClientFactory factory) {
-		this.factory = factory;
-		
 	}
 
 }
