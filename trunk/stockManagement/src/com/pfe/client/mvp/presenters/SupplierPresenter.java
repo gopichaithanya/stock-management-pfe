@@ -4,7 +4,7 @@ import com.google.gwt.place.shared.Place;
 import com.pfe.shared.dto.SupplierDTO;
 
 /**
- * Controls SupplierListView
+ * Controls the views displaying supplier related information
  * 
  * @author Alexandra
  *
@@ -65,7 +65,7 @@ public interface SupplierPresenter extends Presenter {
 	/**
 	 * Loads selected type data in details panel
 	 * 
-	 * @param productType
+	 * @param supplier
 	 */
 	public void displayDetailsView(SupplierDTO supplier);
 

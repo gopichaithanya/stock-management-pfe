@@ -52,7 +52,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	private EditSupplierView editView;
 
 	public SupplierListViewImpl() {
-
+		
 		// check box selection model
 		IdentityValueProvider<SupplierDTO> identity = new IdentityValueProvider<SupplierDTO>();
 		CheckBoxSelectionModel<SupplierDTO> sm = new CheckBoxSelectionModel<SupplierDTO>(
@@ -108,7 +108,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		//toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		//toolbar.getClearFilterBtn().addSelectHandler(
-				//new ClearFilterBtnHandler());
+		//new ClearFilterBtnHandler());
 
 	}
 	
@@ -144,7 +144,6 @@ public class SupplierListViewImpl implements SupplierListView {
 			if (editView == null) {
 				editView = new EditSupplierViewImpl();
 				editView.setPresenter(presenter);
-				System.out.println("edit view was null");
 			}
 			SupplierDTO supplier = grid.getSelectionModel()
 					.getSelectedItem();
