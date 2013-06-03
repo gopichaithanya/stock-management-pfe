@@ -10,6 +10,7 @@ import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -17,6 +18,7 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class SupplierListActivity extends AbstractActivity implements
 		SupplierPresenter {
@@ -120,8 +122,26 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void delete(SupplierDTO supplier) {
-		// TODO Auto-generated method stub
+	public void delete(final SupplierDTO supplier) {
+		rpcService.delete(supplier, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				view.deleteData(supplier);
+				view.refreshGrid();
+				view.unmaskGrid();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if (caught instanceof BusinessException){
+					view.unmaskGrid();
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
+			}
+		});
 
 	}
 

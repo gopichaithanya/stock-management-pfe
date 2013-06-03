@@ -180,7 +180,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		@Override
 		public void onSelect(SelectEvent event) {
 
-			confirmBox = new ConfirmMessageBox("Quit",
+			confirmBox = new ConfirmMessageBox("Delete",
 					"Are you sure you want to delete the type?");
 			final HideHandler hideHandler = new HideHandler() {
 

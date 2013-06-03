@@ -17,8 +17,12 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
+import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -40,7 +44,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	private PagingToolBar pagingToolBar;
 	private ListStore<SupplierDTO> store;
 
-	//private ConfirmMessageBox confirmBox;
+	private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
 	
@@ -101,7 +105,7 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
-		//toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		//toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		//toolbar.getClearFilterBtn().addSelectHandler(
 				//new ClearFilterBtnHandler());
@@ -145,6 +149,46 @@ public class SupplierListViewImpl implements SupplierListView {
 			SupplierDTO supplier = grid.getSelectionModel()
 					.getSelectedItem();
 			presenter.find(supplier.getId());
+		}
+	}
+	
+	
+	/**
+	 * Delete type handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class DeleteBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+
+			confirmBox = new ConfirmMessageBox("Delete",
+					"Are you sure you want to delete the supplier?");
+			final HideHandler hideHandler = new HideHandler() {
+
+				@Override
+				public void onHide(HideEvent event) {
+					Dialog btn = (Dialog) event.getSource();
+					String msg = btn.getHideButton().getText();
+					if (msg.equals("Yes")) {
+
+						SupplierDTO supplier = grid.getSelectionModel()
+								.getSelectedItem();
+						if (supplier != null) {
+							maskGrid();
+							presenter.delete(supplier);
+						}
+
+					} else if (msg.equals("No")) {
+						confirmBox.hide();
+					}
+				}
+			};
+			confirmBox.addHideHandler(hideHandler);
+			confirmBox.show();
+
 		}
 	}
 	

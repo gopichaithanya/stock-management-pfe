@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.SupplierService;
+import com.pfe.server.dao.invoice.InvoiceDao;
 import com.pfe.server.dao.supplier.SupplierDao;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.SupplierDTO;
+import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Supplier;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -22,81 +24,106 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 public class SupplierServiceImpl implements SupplierService {
 
 	@Autowired
-	private SupplierDao dao;
-	@Autowired 
+	private SupplierDao supplierDao;
+	@Autowired
+	private InvoiceDao invoiceDao;
+	@Autowired
 	private DozerBeanMapper dozerMapper;
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public List<SupplierDTO> getAll() {
-		List<Supplier> suppliers = dao.findAll();
+		List<Supplier> suppliers = supplierDao.findAll();
 		List<SupplierDTO> dtos = new ArrayList<SupplierDTO>();
-	
+
 		if (suppliers.size() > 0) {
 			for (Supplier supplier : suppliers) {
-				dtos.add(dozerMapper.map(
-						supplier, SupplierDTO.class));
+				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,
+						"fullSupplier"));
 			}
 		}
 		return dtos;
 	}
 
 	@Override
-	//@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public PagingLoadResult<SupplierDTO> search(FilterPagingLoadConfig config) {
-		
-		int size = (int) dao.count();
+
+		int size = (int) supplierDao.count();
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<Supplier> sublist = dao.search(start, limit, null);
+		List<Supplier> sublist = supplierDao.search(start, limit, null);
 		List<SupplierDTO> dtos = new ArrayList<SupplierDTO>();
-		
+
 		if (sublist.size() > 0) {
 			for (Supplier supplier : sublist) {
-				dtos.add(dozerMapper.map(
-						supplier, SupplierDTO.class, "miniSupplier"));
+				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,
+						"miniSupplier"));
 			}
-		}	
-		return new PagingLoadResultBean<SupplierDTO>(dtos, size,config.getOffset());
+		}
+		return new PagingLoadResultBean<SupplierDTO>(dtos, size,
+				config.getOffset());
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public SupplierDTO find(Long id) {
-		Supplier supplier = dao.get(id);
-		if(supplier != null){
-			SupplierDTO dto = dozerMapper.map(supplier, SupplierDTO.class, "fullSupplier");
+		Supplier supplier = supplierDao.get(id);
+		if (supplier != null) {
+			SupplierDTO dto = dozerMapper.map(supplier, SupplierDTO.class,
+					"fullSupplier");
 			return dto;
-		}	
+		}
 		return null;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public SupplierDTO create(SupplierDTO supplier) throws BusinessException {
-		
-		//here the supplier has no invoices
-		Supplier entity = dozerMapper.map(supplier, Supplier.class, "miniSupplier");
-		Supplier merged = dao.merge(entity);
-		if(merged != null){
+
+		// here the supplier has no invoices
+		Supplier entity = dozerMapper.map(supplier, Supplier.class,
+				"miniSupplier");
+		Supplier merged = supplierDao.merge(entity);
+		if (merged != null) {
 			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");
 		}
 		return null;
 	}
 
 	@Override
-	public SupplierDTO update(SupplierDTO initial, SupplierDTO buffer) throws BusinessException {
-		
-		//we don't update invoices from the supplier view
-		Supplier entity = dozerMapper.map(initial, Supplier.class, "miniSupplier");
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public SupplierDTO update(SupplierDTO initial, SupplierDTO buffer)
+			throws BusinessException {
+
+		// we don't update invoices from the supplier view
+		Supplier entity = dozerMapper.map(initial, Supplier.class,
+				"miniSupplier");
 		entity.setName(buffer.getName());
 		entity.setDescription(buffer.getDescription());
-		Supplier merged = dao.merge(entity);
-		
-		if(merged != null){
+		Supplier merged = supplierDao.merge(entity);
+
+		if (merged != null) {
 			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");
 		}
-		
+
 		return null;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(SupplierDTO supplier) throws BusinessException {
+
+		// don't delete if there are invoices belonging to this supplier
+		Supplier entity = dozerMapper.map(supplier, Supplier.class,
+				"miniSupplier");
+		List<Invoice> invoices = invoiceDao.getBySupplier(entity);
+		if (invoices.size() > 0) {
+			throw new BusinessException(
+					"This supplier has one or several invoices associated to it and cannot be deleted.");
+		} else {
+			supplierDao.delete(entity);
+		}
+
 	}
 
 }
