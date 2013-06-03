@@ -1,7 +1,9 @@
 package com.pfe.client.mvp.views;
 
+import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.sencha.gxt.widget.core.client.Window;
 
 /**
  * Contains UI components that display invoice information : code, supplier, shipments, payment type,
@@ -41,5 +43,9 @@ public interface EditInvoiceView {
 	 * Hides window
 	 */
 	public void hide();
+	
+	public void setParent(Window w);
+	
+	public void setClientFactory(ClientFactory clientFactory);
 	
 }
