@@ -3,7 +3,7 @@ package com.pfe.client.mvp.views;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
@@ -12,7 +12,7 @@ import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.Expa
 public class SupplierDetailViewImpl implements SupplierDetailView {
 	
 	private AccordionLayoutContainer detailsCon;
-	private SupplierDto supplier;
+	private SupplierDTO supplier;
 	private Label descriptionLabel;
 	private Label nameLabel;
 
@@ -56,7 +56,7 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 	}
 
 	@Override
-	public void setData(SupplierDto supplier) {
+	public void setData(SupplierDTO supplier) {
 		this.supplier = supplier;
 
 	}

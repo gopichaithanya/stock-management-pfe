@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -106,7 +106,7 @@ public class CreateSupplierViewImpl extends Window implements
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				SupplierDto supplier = new SupplierDto();
+				SupplierDTO supplier = new SupplierDTO();
 				supplier.setName(nameField.getValue());
 				supplier.setDescription(descriptionEditor.getValue());
 				presenter.create(supplier);

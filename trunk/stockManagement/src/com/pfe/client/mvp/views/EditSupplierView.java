@@ -1,7 +1,7 @@
 package com.pfe.client.mvp.views;
 
 import com.pfe.client.mvp.presenters.SupplierPresenter;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 
 /**
  * Contains UI components that display supplier information : name, description, invoices, debt
@@ -24,7 +24,7 @@ public interface EditSupplierView {
 	 * 
 	 * @param supplier
 	 */
-	public void setData(SupplierDto supplier);
+	public void setData(SupplierDTO supplier);
 	
 	/**
 	 * Clears the UI componentss

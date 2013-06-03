@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.properties.SupplierProperties;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
@@ -35,10 +35,10 @@ public class SupplierListViewImpl implements SupplierListView {
 			.create(SupplierProperties.class);
 
 	private SupplierPresenter presenter;
-	private Grid<SupplierDto> grid;
-	private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> loader;
+	private Grid<SupplierDTO> grid;
+	private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> loader;
 	private PagingToolBar pagingToolBar;
-	private ListStore<SupplierDto> store;
+	private ListStore<SupplierDTO> store;
 
 	//private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
@@ -50,28 +50,28 @@ public class SupplierListViewImpl implements SupplierListView {
 	public SupplierListViewImpl() {
 
 		// check box selection model
-		IdentityValueProvider<SupplierDto> identity = new IdentityValueProvider<SupplierDto>();
-		CheckBoxSelectionModel<SupplierDto> sm = new CheckBoxSelectionModel<SupplierDto>(
+		IdentityValueProvider<SupplierDTO> identity = new IdentityValueProvider<SupplierDTO>();
+		CheckBoxSelectionModel<SupplierDTO> sm = new CheckBoxSelectionModel<SupplierDTO>(
 				identity);
 		sm.setSelectionMode(SelectionMode.SINGLE);
 
 		// column configuration
 		int ratio = 1;
-		ColumnConfig<SupplierDto, String> nameCol = new ColumnConfig<SupplierDto, String>(
+		ColumnConfig<SupplierDTO, String> nameCol = new ColumnConfig<SupplierDTO, String>(
 				props.name(), ratio, "Name");
-		ColumnConfig<SupplierDto, String> descCol = new ColumnConfig<SupplierDto, String>(
+		ColumnConfig<SupplierDTO, String> descCol = new ColumnConfig<SupplierDTO, String>(
 				props.description(), 3 * ratio, "Description");
 
-		List<ColumnConfig<SupplierDto, ?>> columnConfigList = new ArrayList<ColumnConfig<SupplierDto, ?>>();
+		List<ColumnConfig<SupplierDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<SupplierDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
 		columnConfigList.add(descCol);
-		ColumnModel<SupplierDto> cm = new ColumnModel<SupplierDto>(
+		ColumnModel<SupplierDTO> cm = new ColumnModel<SupplierDTO>(
 				columnConfigList);
-		store = new ListStore<SupplierDto>(props.key());
+		store = new ListStore<SupplierDTO>(props.key());
 
 		// Grid
-		grid = new Grid<SupplierDto>(store, cm) {
+		grid = new Grid<SupplierDTO>(store, cm) {
 			@Override
 			protected void onAfterFirstAttach() {
 				super.onAfterFirstAttach();
@@ -142,7 +142,7 @@ public class SupplierListViewImpl implements SupplierListView {
 				editView.setPresenter(presenter);
 				System.out.println("edit view was null");
 			}
-			SupplierDto supplier = grid.getSelectionModel()
+			SupplierDTO supplier = grid.getSelectionModel()
 					.getSelectedItem();
 			presenter.find(supplier.getId());
 		}
@@ -159,7 +159,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		@Override
 		public void onRowClick(RowClickEvent event) {
 			int row = event.getRowIndex();
-			SupplierDto selected = store.get(row);
+			SupplierDTO selected = store.get(row);
 			presenter.displayDetailsView(selected);
 
 		}
@@ -177,13 +177,13 @@ public class SupplierListViewImpl implements SupplierListView {
 	}
 
 	@Override
-	public void setData(List<SupplierDto> suppliers) {
+	public void setData(List<SupplierDTO> suppliers) {
 		this.store.addAll(suppliers);
 		
 	}
 
 	@Override
-	public ListStore<SupplierDto> getData() {
+	public ListStore<SupplierDTO> getData() {
 		return this.store;
 	}
 
@@ -194,26 +194,26 @@ public class SupplierListViewImpl implements SupplierListView {
 	}
 
 	@Override
-	public void addData(SupplierDto supplier) {
+	public void addData(SupplierDTO supplier) {
 		store.add(supplier);
 		
 	}
 
 	@Override
-	public void updateData(SupplierDto supplier) {
+	public void updateData(SupplierDTO supplier) {
 		store.update(supplier);
 		
 	}
 
 	@Override
-	public void deleteData(SupplierDto supplier) {
+	public void deleteData(SupplierDTO supplier) {
 		store.remove(supplier);
 		
 	}
 
 	@Override
 	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> remoteLoader) {
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> remoteLoader) {
 		loader = remoteLoader;
 		pagingToolBar.bind(loader);
 		pagingToolBar.first();

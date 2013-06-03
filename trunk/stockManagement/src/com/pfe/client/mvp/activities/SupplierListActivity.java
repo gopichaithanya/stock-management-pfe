@@ -10,7 +10,7 @@ import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.SupplierServiceAsync;
-import com.pfe.shared.dto.SupplierDto;
+import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
@@ -51,17 +51,17 @@ public class SupplierListActivity extends AbstractActivity implements
 	 * Sets paging parameters and loads list pages
 	 */
 	private void loadPages() {
-		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>>() {
+		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>>() {
 
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig,
-					AsyncCallback<PagingLoadResult<SupplierDto>> callback) {
+					AsyncCallback<PagingLoadResult<SupplierDTO>> callback) {
 				rpcService.search(loadConfig, callback);
 
 			}
 
 		};
-		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDto>>(
+		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>>(
 				proxy) {
 			@Override
 			protected FilterPagingLoadConfig newLoadConfig() {
@@ -70,18 +70,18 @@ public class SupplierListActivity extends AbstractActivity implements
 		};
 		remoteLoader.setRemoteSort(true);
 		remoteLoader
-				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, SupplierDto, PagingLoadResult<SupplierDto>>(
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, SupplierDTO, PagingLoadResult<SupplierDTO>>(
 						view.getData()));
 
 		view.setPagingLoader(remoteLoader);
 	}
 
 	@Override
-	public void create(SupplierDto supplier) {
-		rpcService.create(supplier, new AsyncCallback<SupplierDto>() {
+	public void create(SupplierDTO supplier) {
+		rpcService.create(supplier, new AsyncCallback<SupplierDTO>() {
 
 			@Override
-			public void onSuccess(SupplierDto result) {
+			public void onSuccess(SupplierDTO result) {
 				view.addData(result);
 				view.getCreateView().hide();
 				view.maskGrid();
@@ -99,12 +99,12 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void update(SupplierDto initial, SupplierDto updatedBuffer) {
+	public void update(SupplierDTO initial, SupplierDTO updatedBuffer) {
 		rpcService.update(initial, updatedBuffer,
-				new AsyncCallback<SupplierDto>() {
+				new AsyncCallback<SupplierDTO>() {
 
 					@Override
-					public void onSuccess(SupplierDto result) {
+					public void onSuccess(SupplierDTO result) {
 						view.getEditView().hide();
 						view.updateData(result);
 
@@ -120,7 +120,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void delete(SupplierDto supplier) {
+	public void delete(SupplierDTO supplier) {
 		// TODO Auto-generated method stub
 
 	}
@@ -138,7 +138,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void displayDetailsView(SupplierDto supplier) {
+	public void displayDetailsView(SupplierDTO supplier) {
 		String token = supplier.getId().toString();
 		goTo(new SupplierDetailPlace(token));
 
@@ -152,10 +152,10 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void find(Long id) {
-		rpcService.find(id, new AsyncCallback<SupplierDto>() {
+		rpcService.find(id, new AsyncCallback<SupplierDTO>() {
 
 			@Override
-			public void onSuccess(SupplierDto result) {
+			public void onSuccess(SupplierDTO result) {
 				view.getEditView().setData(result);
 				view.getEditView().show();
 
