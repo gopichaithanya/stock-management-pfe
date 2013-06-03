@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.ClientFactory;
@@ -12,8 +13,7 @@ import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.properties.InvoiceProperties;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.SupplierDTO;
-import com.sencha.gxt.core.client.IdentityValueProvider;
-import com.sencha.gxt.core.client.Style.SelectionMode;
+import com.sencha.gxt.cell.core.client.TextButtonCell;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
@@ -30,7 +30,6 @@ import com.sencha.gxt.widget.core.client.form.HtmlEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
-import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
@@ -45,13 +44,14 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	private HtmlEditor descriptionEditor;
 	private Grid<InvoiceDTO> grid;
 	private ListStore<InvoiceDTO> store;
+	private EditInvoiceView editInvoiceView;
 
 	private SupplierPresenter presenter;
 	private ClientFactory clientFactory;
 
 	public EditSupplierViewImpl(ClientFactory factory) {
 		this.clientFactory = factory;
-		
+
 		setBodyBorder(false);
 		setWidth(850);
 		setHeight(350);
@@ -60,11 +60,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		setResizable(false);
 		setClosable(false);
 
-		// check box selection model
-		IdentityValueProvider<InvoiceDTO> identity = new IdentityValueProvider<InvoiceDTO>();
-		CheckBoxSelectionModel<InvoiceDTO> sm = new CheckBoxSelectionModel<InvoiceDTO>(
-				identity);
-		sm.setSelectionMode(SelectionMode.SINGLE);
 		// column configuration
 		int ratio = 1;
 		ColumnConfig<InvoiceDTO, Integer> codeCol = new ColumnConfig<InvoiceDTO, Integer>(
@@ -75,24 +70,31 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 				props.restToPay(), 2 * ratio, "Rest to pay");
 		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(
 				props.created(), 4 * ratio, "Created");
-		
+		ColumnConfig<InvoiceDTO, String> detailCol = new ColumnConfig<InvoiceDTO, String>(
+				props.supplier(), 2 * ratio, "Details");
+
+		TextButtonCell detailBtn = new TextButtonCell();
+		detailBtn.setText("Details");
+		detailBtn.addSelectHandler(new DetailsBtnHandler(this));
+		detailCol.setCell(detailBtn);
+
 		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();
-		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(codeCol);
 		columnConfigList.add(shipCol);
 		columnConfigList.add(debtCol);
 		columnConfigList.add(dateCol);
+		columnConfigList.add(detailCol);
 		ColumnModel<InvoiceDTO> cm = new ColumnModel<InvoiceDTO>(
 				columnConfigList);
 		store = new ListStore<InvoiceDTO>(props.key());
-		
+
 		grid = new Grid<InvoiceDTO>(store, cm);
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
 		grid.setBorders(true);
 		grid.setHeight(150);
-		
+
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
 		HtmlLayoutContainer container = new HtmlLayoutContainer(
@@ -108,10 +110,10 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		descriptionEditor.setHeight(150);
 		FieldLabel descriptor = new FieldLabel(descriptionEditor, "Description");
 		container.add(descriptor, new HtmlData(".description"));
-		
+
 		FieldLabel gridField = new FieldLabel(grid, "Invoices");
 		container.add(gridField, new HtmlData(".grid"));
-		
+
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
@@ -127,7 +129,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		vp.add(fpanel);
 		this.add(vp);
 	}
-	
+
 	/**
 	 * Save updates
 	 * 
@@ -146,7 +148,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 			}
 		}
 	}
-	
+
 	/**
 	 * Close window
 	 * 
@@ -156,17 +158,45 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	private class CancelBtnHandler implements SelectHandler {
 
 		private Window w;
-		public CancelBtnHandler(Window w){
+
+		public CancelBtnHandler(Window w) {
 			this.w = w;
 		}
-		
+
 		@Override
 		public void onSelect(SelectEvent event) {
 			w.hide();
 		}
 	}
-	
-	
+
+	/**
+	 * Open invoice detail window
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class DetailsBtnHandler implements SelectHandler {
+		
+		private Window w;
+		public DetailsBtnHandler(Window w) {
+			this.w = w;
+		}
+		
+		@Override
+		public void onSelect(SelectEvent event) {
+			Context c = event.getContext();
+			int row = c.getIndex();
+			InvoiceDTO invoice = store.get(row);	
+			if (editInvoiceView == null) {
+				editInvoiceView = new EditInvoiceViewImpl();
+				editInvoiceView.setParent(w);
+				editInvoiceView.setClientFactory(clientFactory);
+			}
+			editInvoiceView.setData(invoice);
+			editInvoiceView.show();
+		}
+
+	}
 
 	/**
 	 * HTML table
@@ -177,7 +207,8 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		return [
 				'<table width=100% cellpadding=10 cellspacing=10>',
 				'<tr><td class=name width=50%></td> <td width=50%></td></tr>',
-				'<tr><td class=description width=50%> <td class=grid width=50%></td></tr>', '</table>'
+				'<tr><td class=description width=50%> <td class=grid width=50%></td></tr>',
+				'</table>'
 
 		].join("");
 	}-*/;
@@ -192,13 +223,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	public void setData(SupplierDTO supplier) {
 		clearData();
 		this.supplier = supplier;
-		List<InvoiceDTO> invoices = supplier.getInvoices();
-		if(invoices != null){
-			store.addAll(invoices);
-		}
-		nameField.setValue(supplier.getName());
-		descriptionEditor.setValue(supplier.getDescription());
-		setHeadingText(supplier.getName());
 	}
 
 	@Override
@@ -206,7 +230,17 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		store.clear();
 		nameField.clear();
 		descriptionEditor.clear();
-		
 	}
-
+	
+	@Override 
+	public void show(){
+		List<InvoiceDTO> invoices = supplier.getInvoices();
+		if (invoices != null) {
+			store.addAll(invoices);
+		}
+		nameField.setValue(supplier.getName());
+		descriptionEditor.setValue(supplier.getDescription());
+		setHeadingText(supplier.getName());
+		super.show();
+	}
 }
