@@ -23,7 +23,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public InvoiceDTO update(InvoiceDTO initial, InvoiceDTO buffer)
 			throws BusinessException {
-		
+		//TODO implement update here
+		Boolean OK = true;
+		if(OK){
+			throw new BusinessException("Unable to update Invoice");
+		}
 		
 		return new InvoiceDTO();
 	}

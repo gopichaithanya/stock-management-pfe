@@ -202,7 +202,6 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void updateInvoice(final InvoiceDTO initial, InvoiceDTO buffer) {
-		System.out.println("activity - update invoice");
 		
 		invoiceService.update(initial, buffer, new AsyncCallback<InvoiceDTO>() {
 			
@@ -227,7 +226,6 @@ public class SupplierListActivity extends AbstractActivity implements
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
 				}
-				caught.printStackTrace();
 			}
 		});
 		editInvoiceView.hide();
