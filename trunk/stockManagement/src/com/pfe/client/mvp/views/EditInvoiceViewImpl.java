@@ -35,9 +35,10 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
-	
+
 	private static final ShipmentProperties props = GWT
 			.create(ShipmentProperties.class);
 	private static final SupplierProperties supplierProps = GWT
@@ -134,6 +135,10 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		grid.setBorders(true);
 		grid.setHeight(60);
 		
+		GridInlineEditing<ShipmentDTO> gr = new GridInlineEditing<ShipmentDTO>(grid);
+		gr.addEditor(priceCol, new NumberField<Integer>(new IntegerPropertyEditor()));
+		gr.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
+		
 		FieldLabel gridField = new FieldLabel(grid, "Shipments");
 		container.add(gridField, new HtmlData(".shipments"));
 		
@@ -173,10 +178,10 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			list.addAll(shipmentStore.getAll());
 			buffer.setShipments(list);
 			buffer.setSupplier(supplierCombo.getValue());
-			if(presenter instanceof SupplierPresenter){
-				((SupplierPresenter)presenter).updateInvoice(invoice, buffer);
-			} else if (presenter instanceof InvoicePresenter){
-				
+			if (presenter instanceof SupplierPresenter) {
+				((SupplierPresenter) presenter).updateInvoice(invoice, buffer);
+			} else if (presenter instanceof InvoicePresenter) {
+
 			}
 		}
 	}
@@ -227,7 +232,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		supplierField.setValue(invoice.getSupplier().getName());
 		setHeadingText("Invoice " + invoice.getCode());
 		shipmentStore.addAll(invoice.getShipments());
-		
+
 	}
 
 	@Override
