@@ -1,5 +1,7 @@
 package com.pfe.client.mvp.activities;
 
+import java.util.List;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
@@ -8,6 +10,8 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.mvp.views.EditInvoiceView;
+import com.pfe.client.mvp.views.EditSupplierView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
@@ -29,6 +33,8 @@ public class SupplierListActivity extends AbstractActivity implements
 	private SupplierServiceAsync supplierService;
 	private InvoiceServiceAsync invoiceService;
 	private SupplierListView view;
+	private EditSupplierView editSupplierView;
+	private EditInvoiceView editInvoiceView;
 
 	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -180,8 +186,9 @@ public class SupplierListActivity extends AbstractActivity implements
 
 			@Override
 			public void onSuccess(SupplierDTO result) {
-				view.getEditView().setData(result);
-				view.getEditView().show();
+				editSupplierView = view.getEditView();
+				editSupplierView.setData(result);
+				editSupplierView.show();
 
 			}
 
@@ -210,6 +217,25 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
+	@Override
+	public void findAll() {
+		supplierService.getAll(new AsyncCallback<List<SupplierDTO>>() {
+			
+			@Override
+			public void onSuccess(List<SupplierDTO> result) {
+				editInvoiceView = editSupplierView.getEditInvoiceView();
+				editInvoiceView.setSuppliers(result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				//TODO Auto-generated method stub
 				
 			}
 		});

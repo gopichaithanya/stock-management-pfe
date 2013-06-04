@@ -11,8 +11,11 @@ import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.properties.ShipmentProperties;
+import com.pfe.client.ui.properties.SupplierProperties;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ShipmentDTO;
+import com.pfe.shared.dto.SupplierDTO;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
@@ -22,6 +25,7 @@ import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutP
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.DateField;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
@@ -37,6 +41,8 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	
 	private static final ShipmentProperties props = GWT
 			.create(ShipmentProperties.class);
+	private static final SupplierProperties supplierProps = GWT
+			.create(SupplierProperties.class);
 
 	private Presenter presenter;
 
@@ -47,7 +53,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private NumberField<Integer> debtField;
 	private TextField supplierField;
 	private Grid<ShipmentDTO> grid;
-	private ListStore<ShipmentDTO> store;
+	private ListStore<ShipmentDTO> shipmentStore;
+	private ListStore<SupplierDTO> supplierStore;
+	private ComboBox<SupplierDTO> supplierCombo;
 
 	public EditInvoiceViewImpl() {
 		setBodyBorder(false);
@@ -79,7 +87,14 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(
 				".debt"));
 		supplierField = new TextField();
-		container.add(new FieldLabel(supplierField, "Supplier"), new HtmlData(
+		
+		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
+		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
+		supplierCombo.setEmptyText("Select a supplier...");
+		supplierCombo.setWidth(150);
+		supplierCombo.setTypeAhead(true);
+		supplierCombo.setTriggerAction(TriggerAction.ALL);
+		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(
 				".supplier"));
 
 		// column configuration
@@ -105,9 +120,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		columnConfigList.add(paidCol);
 		columnConfigList.add(dateCol);
 		ColumnModel<ShipmentDTO> cm = new ColumnModel<ShipmentDTO>(columnConfigList);
-		store = new ListStore<ShipmentDTO>(props.key());
+		shipmentStore = new ListStore<ShipmentDTO>(props.key());
 
-		grid = new Grid<ShipmentDTO>(store, cm);
+		grid = new Grid<ShipmentDTO>(shipmentStore, cm);
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
@@ -149,7 +164,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			buffer.setCode(codeField.getValue());
 			buffer.setCreated(dateField.getValue());
 			buffer.setPaymentType(paymentField.getValue());
-			buffer.setShipments(store.getAll());
+			buffer.setShipments(shipmentStore.getAll());
 			//buffer.setSupplier(supplier)
 			if(presenter instanceof SupplierPresenter){
 				((SupplierPresenter)presenter).updateInvoice(invoice, buffer);
@@ -190,7 +205,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		return [
 				'<table width=100% cellpadding=10 cellspacing=10>',
 				'<tr><td class=code width=30%></td> <td class=date width=30%></td><td class=payment width=30%></tr>',
-				'<tr><td class=debt width=30%><td class=supplier width=30%></td></tr>',
+				'<tr><td class=debt width=20%><td class=supplier width=50%></td></tr>',
 				'<tr><td class=shipments colspan=3></tr>', '</table>'
 
 		].join("");
@@ -206,7 +221,8 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		debtField.setValue(invoice.getRestToPay().intValue());
 		supplierField.setValue(invoice.getSupplier().getName());
 		setHeadingText("Invoice " + invoice.getCode());
-		store.addAll(invoice.getShipments());
+		shipmentStore.addAll(invoice.getShipments());
+		
 	}
 
 	@Override
@@ -216,7 +232,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		paymentField.clear();
 		debtField.clear();
 		supplierField.clear();
-		store.clear();
+		shipmentStore.clear();
 
 	}
 
@@ -229,6 +245,13 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	@Override
 	public void show() {
 		super.show();
+	}
+
+	@Override
+	public void setSuppliers(List<SupplierDTO> suppliers) {
+		supplierStore.clear();
+		supplierStore.addAll(suppliers);
+		supplierCombo.setValue(invoice.getSupplier());
 	}
 
 }

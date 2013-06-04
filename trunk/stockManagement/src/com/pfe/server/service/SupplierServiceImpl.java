@@ -31,7 +31,7 @@ public class SupplierServiceImpl implements SupplierService {
 	private DozerBeanMapper dozerMapper;
 
 	@Override
-	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
+	//@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public List<SupplierDTO> getAll() {
 		List<Supplier> suppliers = supplierDao.findAll();
 		List<SupplierDTO> dtos = new ArrayList<SupplierDTO>();
@@ -39,7 +39,7 @@ public class SupplierServiceImpl implements SupplierService {
 		if (suppliers.size() > 0) {
 			for (Supplier supplier : suppliers) {
 				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,
-						"fullSupplier"));
+						"miniSupplier"));
 			}
 		}
 		return dtos;

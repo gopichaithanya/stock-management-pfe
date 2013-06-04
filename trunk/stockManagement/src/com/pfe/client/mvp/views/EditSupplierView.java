@@ -41,4 +41,11 @@ public interface EditSupplierView {
 	 * Hides window
 	 */
 	public void hide();
+	
+	/**
+	 * Get editInvoice window
+	 * 
+	 * @return
+	 */
+	public EditInvoiceView getEditInvoiceView();
 }
