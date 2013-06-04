@@ -1,14 +1,14 @@
 package com.pfe.shared.dto;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 public class SupplierDTO implements Serializable {
 
 	private Long id;
 	private String name;
 	private String description;
-	private List<InvoiceDTO> invoices;
+	private ArrayList<InvoiceDTO> invoices;
 	
 	public SupplierDTO(){
 		
@@ -32,10 +32,10 @@ public class SupplierDTO implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<InvoiceDTO> getInvoices() {
+	public ArrayList<InvoiceDTO> getInvoices() {
 		return invoices;
 	}
-	public void setInvoices(List<InvoiceDTO> invoices) {
+	public void setInvoices(ArrayList<InvoiceDTO> invoices) {
 		this.invoices = invoices;
 	}
 }
