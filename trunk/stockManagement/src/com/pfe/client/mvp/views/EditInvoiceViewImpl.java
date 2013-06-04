@@ -169,7 +169,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			buffer.setCode(codeField.getValue());
 			buffer.setCreated(dateField.getValue());
 			buffer.setPaymentType(paymentField.getValue());
-			buffer.setShipments(shipmentStore.getAll());
+			ArrayList<ShipmentDTO> list = new ArrayList<ShipmentDTO>();
+			list.addAll(shipmentStore.getAll());
+			buffer.setShipments(list);
 			buffer.setSupplier(supplierCombo.getValue());
 			if(presenter instanceof SupplierPresenter){
 				((SupplierPresenter)presenter).updateInvoice(invoice, buffer);

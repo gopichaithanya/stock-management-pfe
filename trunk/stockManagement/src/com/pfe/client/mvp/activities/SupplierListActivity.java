@@ -208,16 +208,16 @@ public class SupplierListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
-				System.out.println("on success");
 				// invoice supplier changed. Update EditSupplierParent window
-				if(initial.getSupplier() != result.getSupplier()){
+				Long initialId = initial.getSupplier().getId();
+				Long currentId = result.getSupplier().getId();
+				if(!(initialId.equals(currentId))){
 					editSupplierView.removeInvoice(result);
 				} 
 				// invoice has the same supplier
 				else{
 					editSupplierView.updateInvoice(result);
 				}	
-				editInvoiceView.hide();
 			}
 			
 			@Override
@@ -227,9 +227,10 @@ public class SupplierListActivity extends AbstractActivity implements
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
 				}
-				editInvoiceView.hide();
+				caught.printStackTrace();
 			}
 		});
+		editInvoiceView.hide();
 	}
 
 	@Override
