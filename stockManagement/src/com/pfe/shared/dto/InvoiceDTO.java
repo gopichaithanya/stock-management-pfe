@@ -1,8 +1,8 @@
 package com.pfe.shared.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class InvoiceDTO implements Serializable {
 	
@@ -10,7 +10,7 @@ public class InvoiceDTO implements Serializable {
 	private int code;
 	private SupplierDTO supplier;
 	private String paymentType;
-	private List<ShipmentDTO> shipments;
+	private ArrayList<ShipmentDTO> shipments;
 	private int restToPay;
 	private Date created;
 	
@@ -42,10 +42,10 @@ public class InvoiceDTO implements Serializable {
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
 	}
-	public List<ShipmentDTO> getShipments() {
+	public ArrayList<ShipmentDTO> getShipments() {
 		return shipments;
 	}
-	public void setShipments(List<ShipmentDTO> shipments) {
+	public void setShipments(ArrayList<ShipmentDTO> shipments) {
 		this.shipments = shipments;
 	}
 	public int getRestToPay() {
