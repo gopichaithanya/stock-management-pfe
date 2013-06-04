@@ -32,6 +32,12 @@ public interface SupplierPresenter extends Presenter {
 	 * @param id
 	 */
 	public void find(Long id);
+	
+	/**
+	 * Retrieves all suppliers from database
+	 * 
+	 */
+	public void findAll();
 
 	
 	/**

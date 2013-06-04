@@ -73,7 +73,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 
 		TextButtonCell detailBtn = new TextButtonCell();
 		detailBtn.setText("Details");
-		detailBtn.addSelectHandler(new DetailsBtnHandler(this));
+		detailBtn.addSelectHandler(new DetailsBtnHandler());
 		detailCol.setCell(detailBtn);
 
 		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();
@@ -175,11 +175,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	 */
 	private class DetailsBtnHandler implements SelectHandler {
 		
-		private Window w;
-		public DetailsBtnHandler(Window w) {
-			this.w = w;
-		}
-		
 		@Override
 		public void onSelect(SelectEvent event) {
 			Context c = event.getContext();
@@ -190,6 +185,8 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 				editInvoiceView.setPresenter(presenter);
 			}
 			editInvoiceView.setData(invoice);
+			//get list of all suppliers
+			presenter.findAll();
 			editInvoiceView.show();
 		}
 
@@ -239,5 +236,10 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	@Override 
 	public void show(){
 		super.show();
+	}
+
+	@Override
+	public EditInvoiceView getEditInvoiceView() {
+		return editInvoiceView;
 	}
 }

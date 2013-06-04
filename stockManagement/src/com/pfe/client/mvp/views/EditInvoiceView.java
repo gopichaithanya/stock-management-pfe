@@ -1,7 +1,10 @@
 package com.pfe.client.mvp.views;
 
+import java.util.List;
+
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.SupplierDTO;
 
 /**
  * Contains UI components that display invoice information : code, supplier, shipments, payment type,
@@ -42,4 +45,10 @@ public interface EditInvoiceView {
 	 */
 	public void hide();
 	
+	/**
+	 * Sets supplier store displayed by the combo box
+	 * 
+	 * @param suppliers
+	 */
+	public void setSuppliers(List<SupplierDTO> suppliers);
 }
