@@ -1,19 +1,22 @@
 package com.pfe.shared.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShipmentDTO implements Serializable {
 
 	private Long id;
 	private ProductTypeDTO productType;
-	private BigDecimal unitPrice;
+	private int unitPrice;
 	private int initialQuantity;
 	private int currentQuantity;
 	private Boolean paid;
 	private Date created;
 	private InvoiceDTO invoice;
+	
+	public ShipmentDTO(){
+		
+	}
 	
 	public Long getId() {
 		return id;
@@ -27,10 +30,10 @@ public class ShipmentDTO implements Serializable {
 	public void setProductType(ProductTypeDTO productType) {
 		this.productType = productType;
 	}
-	public BigDecimal getUnitPrice() {
+	public int getUnitPrice() {
 		return unitPrice;
 	}
-	public void setUnitPrice(BigDecimal unitPrice) {
+	public void setUnitPrice(int unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 	public int getInitialQuantity() {

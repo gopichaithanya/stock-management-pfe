@@ -1,6 +1,5 @@
 package com.pfe.client.mvp.views;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,7 +106,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		int ratio = 1;
 		ColumnConfig<ShipmentDTO, String> typeCol = new ColumnConfig<ShipmentDTO, String>(
 				props.productType(), 2 * ratio, "Type");
-		ColumnConfig<ShipmentDTO, BigDecimal> priceCol = new ColumnConfig<ShipmentDTO, BigDecimal>(
+		ColumnConfig<ShipmentDTO, Integer> priceCol = new ColumnConfig<ShipmentDTO, Integer>(
 				props.unitPrice(), 2 * ratio, "Unit price");
 		ColumnConfig<ShipmentDTO, Integer> initQtyCol = new ColumnConfig<ShipmentDTO, Integer>(
 				props.initialQty(), 2 * ratio, "Init. Qty");
@@ -171,14 +170,12 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			buffer.setCreated(dateField.getValue());
 			buffer.setPaymentType(paymentField.getValue());
 			buffer.setShipments(shipmentStore.getAll());
-			//buffer.setSupplier(supplier)
+			buffer.setSupplier(supplierCombo.getValue());
 			if(presenter instanceof SupplierPresenter){
 				((SupplierPresenter)presenter).updateInvoice(invoice, buffer);
 			} else if (presenter instanceof InvoicePresenter){
 				
 			}
-			
-
 		}
 	}
 
@@ -224,7 +221,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		codeField.setValue(invoice.getCode());
 		dateField.setValue(invoice.getCreated());
 		paymentField.setValue(invoice.getPaymentType());
-		debtField.setValue(invoice.getRestToPay().intValue());
+		debtField.setValue(invoice.getRestToPay());
 		supplierField.setValue(invoice.getSupplier().getName());
 		setHeadingText("Invoice " + invoice.getCode());
 		shipmentStore.addAll(invoice.getShipments());

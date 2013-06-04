@@ -10,6 +10,10 @@ public class SupplierDTO implements Serializable {
 	private String description;
 	private List<InvoiceDTO> invoices;
 	
+	public SupplierDTO(){
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}

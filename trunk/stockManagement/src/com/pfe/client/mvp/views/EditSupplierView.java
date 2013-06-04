@@ -1,6 +1,7 @@
 package com.pfe.client.mvp.views;
 
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.SupplierDTO;
 
 /**
@@ -27,6 +28,15 @@ public interface EditSupplierView {
 	public void setData(SupplierDTO supplier);
 	
 	/**
+	 * Deletes invoice
+	 * 
+	 * @param invoice
+	 */
+	public void removeInvoice(InvoiceDTO invoice);
+	
+	public void updateInvoice(InvoiceDTO invoice);
+	
+	/**
 	 * Clears the UI componentss
 	 * 
 	 */
@@ -48,4 +58,5 @@ public interface EditSupplierView {
 	 * @return
 	 */
 	public EditInvoiceView getEditInvoiceView();
+	
 }

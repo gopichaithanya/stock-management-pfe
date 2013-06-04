@@ -18,7 +18,7 @@ public interface ShipmentProperties extends PropertyAccess<ShipmentDTO> {
 	ValueProvider<ShipmentDTO, String> productType();
 	
 	@Path("unitPrice")
-	ValueProvider<ShipmentDTO, BigDecimal> unitPrice();
+	ValueProvider<ShipmentDTO, Integer> unitPrice();
 	
 	@Path("initialQuantity")
 	ValueProvider<ShipmentDTO, Integer> initialQty();

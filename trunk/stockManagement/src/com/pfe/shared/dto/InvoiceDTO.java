@@ -1,7 +1,6 @@
 package com.pfe.shared.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +11,12 @@ public class InvoiceDTO implements Serializable {
 	private SupplierDTO supplier;
 	private String paymentType;
 	private List<ShipmentDTO> shipments;
-	private BigDecimal restToPay;
+	private int restToPay;
 	private Date created;
+	
+	public InvoiceDTO(){
+		
+	}
 	
 	public Long getId() {
 		return id;
@@ -45,10 +48,10 @@ public class InvoiceDTO implements Serializable {
 	public void setShipments(List<ShipmentDTO> shipments) {
 		this.shipments = shipments;
 	}
-	public BigDecimal getRestToPay() {
+	public int getRestToPay() {
 		return restToPay;
 	}
-	public void setRestToPay(BigDecimal restToPay) {
+	public void setRestToPay(int restToPay) {
 		this.restToPay = restToPay;
 	}
 	public Date getCreated() {

@@ -1,6 +1,5 @@
 package com.pfe.client.ui.properties;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.gwt.editor.client.Editor.Path;
@@ -28,7 +27,7 @@ public interface InvoiceProperties extends PropertyAccess<InvoiceDTO> {
 	ValueProvider<InvoiceDTO, Integer> shipments();
 	
 	@Path("restToPay")
-	ValueProvider<InvoiceDTO, BigDecimal> restToPay();
+	ValueProvider<InvoiceDTO, Integer> restToPay();
 	
 	@Path("created")
 	ValueProvider<InvoiceDTO, Date> created();
