@@ -1,6 +1,5 @@
 package com.pfe.client.mvp.views;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +46,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 
 	private SupplierPresenter presenter;
 
-
 	public EditSupplierViewImpl() {
 
 		setBodyBorder(false);
@@ -64,7 +62,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 				props.code(), ratio, "Code");
 		ColumnConfig<InvoiceDTO, Integer> shipCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.shipments(), 2 * ratio, "Shipments");
-		ColumnConfig<InvoiceDTO, BigDecimal> debtCol = new ColumnConfig<InvoiceDTO, BigDecimal>(
+		ColumnConfig<InvoiceDTO, Integer> debtCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.restToPay(), 2 * ratio, "Rest to pay");
 		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(
 				props.created(), 4 * ratio, "Created");
@@ -241,5 +239,17 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	@Override
 	public EditInvoiceView getEditInvoiceView() {
 		return editInvoiceView;
+	}
+
+	@Override
+	public void removeInvoice(InvoiceDTO invoice) {
+		store.remove(invoice);
+		
+	}
+
+	@Override
+	public void updateInvoice(InvoiceDTO invoice) {
+		store.update(invoice);
+		
 	}
 }

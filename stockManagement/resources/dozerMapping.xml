@@ -5,6 +5,10 @@
 	xsi:schemaLocation="http://dozer.sourceforge.net
 http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
+	<configuration>
+		<date-format>MM/dd/yyyy HH:mm</date-format>
+	</configuration>
+
 	<mapping map-id="miniSupplier">
 		<class-a>com.pfe.shared.model.Supplier</class-a>
 		<class-b>com.pfe.shared.dto.SupplierDTO</class-b>
@@ -22,6 +26,7 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	<mapping map-id="miniInvoice">
 		<class-a>com.pfe.shared.model.Invoice</class-a>
 		<class-b>com.pfe.shared.dto.InvoiceDTO</class-b>
+		
 		<field-exclude>
 			<a>shipments</a>
 			<b>shipments</b>

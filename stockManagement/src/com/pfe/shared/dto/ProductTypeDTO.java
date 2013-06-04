@@ -8,6 +8,10 @@ public class ProductTypeDTO implements Serializable {
 	private String name;
 	private String description;
 	
+	public ProductTypeDTO(){
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}

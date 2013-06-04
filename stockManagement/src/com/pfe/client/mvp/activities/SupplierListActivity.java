@@ -39,7 +39,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		this.supplierService = clientFactory.getSupplierService();
-	
+		this.invoiceService = clientFactory.getInvoiceService();
 	}
 
 	@Override
@@ -202,22 +202,32 @@ public class SupplierListActivity extends AbstractActivity implements
 
 	@Override
 	public void updateInvoice(final InvoiceDTO initial, InvoiceDTO buffer) {
+		System.out.println("activity - update invoice");
+		
 		invoiceService.update(initial, buffer, new AsyncCallback<InvoiceDTO>() {
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
-				// TODO set data on editSupplier here
+				System.out.println("on success");
+				// invoice supplier changed. Update EditSupplierParent window
 				if(initial.getSupplier() != result.getSupplier()){
-					//view.getEditView().
-				}
-				
-				
+					editSupplierView.removeInvoice(result);
+				} 
+				// invoice has the same supplier
+				else{
+					editSupplierView.updateInvoice(result);
+				}	
+				editInvoiceView.hide();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
+				if (caught instanceof BusinessException){
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
+				editInvoiceView.hide();
 			}
 		});
 	}
