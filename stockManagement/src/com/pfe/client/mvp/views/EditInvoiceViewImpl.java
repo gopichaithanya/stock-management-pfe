@@ -51,7 +51,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private DateField dateField;
 	private TextField paymentField;
 	private NumberField<Integer> debtField;
+	private NumberField<Integer> fractionField;
 	private TextField supplierField;
+	private TextButton payBtn;
 	private Grid<ShipmentDTO> grid;
 	private ListStore<ShipmentDTO> shipmentStore;
 	private ListStore<SupplierDTO> supplierStore;
@@ -59,7 +61,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 	public EditInvoiceViewImpl() {
 		setBodyBorder(false);
-		setWidth(550);
+		setWidth(670);
 		setHeight(350);
 		setMinHeight(350);
 		setModal(true);
@@ -83,20 +85,24 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		paymentField = new TextField();
 		container.add(new FieldLabel(paymentField, "Payment Type"),
 				new HtmlData(".payment"));
-		debtField = new NumberField<Integer>(new IntegerPropertyEditor());
-		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(
-				".debt"));
-		supplierField = new TextField();
 		
+		supplierField = new TextField();
 		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
 		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
 		supplierCombo.setEmptyText("Select a supplier...");
-		supplierCombo.setWidth(150);
+		supplierCombo.setWidth(200);
 		supplierCombo.setTypeAhead(true);
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
 		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(
 				".supplier"));
-
+		
+		debtField = new NumberField<Integer>(new IntegerPropertyEditor());
+		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(".debt"));
+		fractionField = new NumberField<Integer>(new IntegerPropertyEditor());
+		container.add(new FieldLabel(fractionField, "Debt fraction"), new HtmlData(".fr"));
+		payBtn = new TextButton("Pay");
+		container.add(new FieldLabel(payBtn, "Pay fraction"), new HtmlData(".pay"));
+		
 		// column configuration
 		int ratio = 1;
 		ColumnConfig<ShipmentDTO, String> typeCol = new ColumnConfig<ShipmentDTO, String>(
@@ -204,9 +210,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private native String getTableMarkup() /*-{
 		return [
 				'<table width=100% cellpadding=10 cellspacing=10>',
-				'<tr><td class=code width=30%></td> <td class=date width=30%></td><td class=payment width=30%></tr>',
-				'<tr><td class=debt width=20%><td class=supplier width=50%></td></tr>',
-				'<tr><td class=shipments colspan=3></tr>', '</table>'
+				'<tr><td class=code width=30%></td><td class=date width=40%></td><td class=payment width=30%></td> <td></td></tr>',
+				'<tr><td class=supplier width=50%></td><td class=debt width=15%></td></td> <td class=fr width=20%></td><td class=pay width=15%></td></tr>',
+				'<tr><td class=shipments colspan=4></tr>', '</table>'
 
 		].join("");
 	}-*/;
