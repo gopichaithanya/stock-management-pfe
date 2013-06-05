@@ -99,6 +99,12 @@ public class SupplierServiceImpl implements SupplierService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public SupplierDTO update(SupplierDTO initial, SupplierDTO buffer)
 			throws BusinessException {
+	
+		Supplier duplicate = supplierDao.getDuplicateName(initial.getId(),
+				buffer.getName());
+		if (duplicate != null) {
+			throw new BusinessException("The name you chose is already in use.");
+		}
 
 		// we don't update invoices from the supplier view
 		Supplier entity = dozerMapper.map(initial, Supplier.class,

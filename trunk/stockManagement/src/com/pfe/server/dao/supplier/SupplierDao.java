@@ -16,6 +16,16 @@ public interface SupplierDao extends IBaseDao<Long, Supplier> {
 	public Supplier search(String name);
 	
 	/**
+	 * Retrieves supplier with given name where id different from excludedId
+	 * 
+	 * @param excludedId
+	 * @param name
+	 * @return  supplier with given name and id different from excludedId
+	 */
+	public Supplier getDuplicateName(Long excludedId, String name);
+	
+	
+	/**
 	 * Retrieves records from start to limit index where name like parameter.
 	 * Name is ignored if null or blank
 	 * 
