@@ -30,4 +30,11 @@ public class SupplierDaoImpl extends BaseDaoImpl<Long, Supplier> implements Supp
 		List<Supplier> results = findByCriteria(start, limit, criterion);
 		return results;
 	}
+
+	@Override
+	public Supplier search(String name) {
+		Criterion criterion = Restrictions.eq("name", name).ignoreCase();
+		List<Supplier> l = findByCriteria(criterion);
+		return l.size() > 0 ? l.get(0) : null; 
+	}
 }

@@ -98,10 +98,13 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
+		
 		nameField = new TextField();
 		nameField.addValidator(new MinLengthValidator(2));
 		nameField.addValidator(new EmptyValidator<String>());
+		nameField.setWidth(300);
 		container.add(new FieldLabel(nameField, "Name"), new HtmlData(".name"));
+		
 		descriptionEditor = new HtmlEditor();
 		descriptionEditor.setHeight(150);
 		FieldLabel descriptor = new FieldLabel(descriptionEditor, "Description");

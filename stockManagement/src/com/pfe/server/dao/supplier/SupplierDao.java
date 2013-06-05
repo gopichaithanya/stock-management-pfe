@@ -8,6 +8,14 @@ import com.pfe.shared.model.Supplier;
 public interface SupplierDao extends IBaseDao<Long, Supplier> {
 	
 	/**
+	 * Retrieves supplier by name
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Supplier search(String name);
+	
+	/**
 	 * Retrieves records from start to limit index where name like parameter.
 	 * Name is ignored if null or blank
 	 * 

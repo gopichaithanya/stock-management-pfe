@@ -104,8 +104,12 @@ public class SupplierListActivity extends AbstractActivity implements
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
+				if (caught instanceof BusinessException){
+					view.unmaskGrid();
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
 			}
 		});
 
