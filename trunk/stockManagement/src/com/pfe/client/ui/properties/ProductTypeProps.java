@@ -1,24 +1,24 @@
 package com.pfe.client.ui.properties;
 
 import com.google.gwt.editor.client.Editor.Path;
-import com.pfe.shared.dto.ProductTypeDTO;
+import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
-public interface ProductTypeProperties extends PropertyAccess<ProductTypeDTO> {
-
+public interface ProductTypeProps extends PropertyAccess<ProductType> {
+	
 	@Path("id")
-	ModelKeyProvider<ProductTypeDTO> key();
+	ModelKeyProvider<ProductType> key();
 	
 	@Path("name")
-	LabelProvider<ProductTypeDTO> nameLabel();	
+	LabelProvider<ProductType> nameLabel();	
 
 	@Path("name")
-	ValueProvider<ProductTypeDTO, String> name();
+	ValueProvider<ProductType, String> name();
 	
 
 	@Path("description")
-	ValueProvider<ProductTypeDTO, String> description();
+	ValueProvider<ProductType, String> description();
 }

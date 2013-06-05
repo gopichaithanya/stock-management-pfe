@@ -84,4 +84,11 @@ public interface SupplierPresenter extends Presenter {
 	 * @param buffer
 	 */
 	public void updateInvoice(InvoiceDTO initial, InvoiceDTO buffer);
+	
+	
+	/**
+	 * Retrieves all product types from server
+	 * 
+	 */
+	public void getProductTypes();
 }

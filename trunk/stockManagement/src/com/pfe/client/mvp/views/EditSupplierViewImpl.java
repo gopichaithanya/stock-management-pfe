@@ -185,6 +185,8 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 			editInvoiceView.setData(invoice);
 			//get list of all suppliers
 			presenter.findAll();
+			//get all types
+			presenter.getProductTypes();
 			editInvoiceView.show();
 		}
 

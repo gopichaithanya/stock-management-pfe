@@ -3,14 +3,13 @@ package com.pfe.client.service;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 public interface ProductTypeServiceAsync {
-
-	void getAll(AsyncCallback<List<ProductType>> callback);
-
+	
 	void create(ProductType productType,
 			AsyncCallback<ProductType> callback);
 
@@ -24,5 +23,7 @@ public interface ProductTypeServiceAsync {
 
 	void filter(FilterPagingLoadConfig config, String name,
 			AsyncCallback<PagingLoadResult<ProductType>> callback);
+
+	void getAll(AsyncCallback<List<ProductTypeDTO>> callback);
 
 }
