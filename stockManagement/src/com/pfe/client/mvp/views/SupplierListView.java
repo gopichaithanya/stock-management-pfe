@@ -84,7 +84,7 @@ public interface SupplierListView extends IsWidget {
 	 * 
 	 * @return
 	 */
-	public EditSupplierView getEditView();
+	public EditSupplierView getEditSupplierView();
 	
 	
 	/**

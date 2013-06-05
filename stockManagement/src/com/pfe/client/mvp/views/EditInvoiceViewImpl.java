@@ -149,6 +149,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		typeCombo.setTriggerAction(TriggerAction.ALL);
 		typeCombo.setForceSelection(true); 
 		typeCombo.setWidth(170);
+		
 		typeCol.setCell(typeCombo);
 		FieldLabel gridField = new FieldLabel(grid, "Shipments");
 		container.add(gridField, new HtmlData(".shipments"));
@@ -175,7 +176,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		this.add(vp);
 
 	}
-
+	
 	/**
 	 * Save updates
 	 * 
