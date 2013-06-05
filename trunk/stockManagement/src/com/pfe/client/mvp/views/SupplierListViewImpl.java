@@ -288,7 +288,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	}
 
 	@Override
-	public EditSupplierView getEditView() {
+	public EditSupplierView getEditSupplierView() {
 		return editView;
 	}
 

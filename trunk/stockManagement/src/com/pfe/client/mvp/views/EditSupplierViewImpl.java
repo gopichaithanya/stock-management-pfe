@@ -61,7 +61,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		ColumnConfig<InvoiceDTO, Integer> codeCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.code(), ratio, "Code");
 		ColumnConfig<InvoiceDTO, String> paymentCol = new ColumnConfig<InvoiceDTO, String>(
-				props.payment(), 2 * ratio, "Shipments");
+				props.payment(), 2 * ratio, "Payment");
 		ColumnConfig<InvoiceDTO, Integer> debtCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.restToPay(), 2 * ratio, "Rest to pay");
 		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(

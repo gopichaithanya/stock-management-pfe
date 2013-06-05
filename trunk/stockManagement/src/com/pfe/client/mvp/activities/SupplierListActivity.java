@@ -10,8 +10,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
-import com.pfe.client.mvp.views.EditInvoiceView;
-import com.pfe.client.mvp.views.EditSupplierView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
@@ -37,8 +35,6 @@ public class SupplierListActivity extends AbstractActivity implements
 	private ProductTypeServiceAsync productTypeService;
 	
 	private SupplierListView view;
-	private EditSupplierView editSupplierView;
-	private EditInvoiceView editInvoiceView;
 
 	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -122,7 +118,7 @@ public class SupplierListActivity extends AbstractActivity implements
 
 					@Override
 					public void onSuccess(SupplierDTO result) {
-						view.getEditView().hide();
+						view.getEditSupplierView().hide();
 						view.updateData(result);
 
 					}
@@ -191,9 +187,8 @@ public class SupplierListActivity extends AbstractActivity implements
 
 			@Override
 			public void onSuccess(SupplierDTO result) {
-				editSupplierView = view.getEditView();
-				editSupplierView.setData(result);
-				editSupplierView.show();
+				view.getEditSupplierView().setData(result);
+				view.getEditSupplierView().show();
 
 			}
 
@@ -216,11 +211,11 @@ public class SupplierListActivity extends AbstractActivity implements
 				Long initialId = initial.getSupplier().getId();
 				Long currentId = result.getSupplier().getId();
 				if(!(initialId.equals(currentId))){
-					editSupplierView.removeInvoice(result);
+					view.getEditSupplierView().removeInvoice(result);
 				} 
 				// invoice has the same supplier
 				else{
-					editSupplierView.updateInvoice(result);
+					view.getEditSupplierView().updateInvoice(result);
 				}	
 			}
 			
@@ -233,7 +228,7 @@ public class SupplierListActivity extends AbstractActivity implements
 				}
 			}
 		});
-		editInvoiceView.hide();
+		view.getEditSupplierView().getEditInvoiceView().hide();
 	}
 
 	@Override
@@ -242,9 +237,7 @@ public class SupplierListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(List<SupplierDTO> result) {
-				editInvoiceView = editSupplierView.getEditInvoiceView();
-				editInvoiceView.setSuppliers(result);
-				
+				view.getEditSupplierView().getEditInvoiceView().setSuppliers(result);
 			}
 			
 			@Override
@@ -262,8 +255,7 @@ public class SupplierListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(List<ProductTypeDTO> result) {
-				editInvoiceView.setProductTypes(result);
-				
+				view.getEditSupplierView().getEditInvoiceView().setProductTypes(result);
 			}
 			
 			@Override
