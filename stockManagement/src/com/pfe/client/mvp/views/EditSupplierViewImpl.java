@@ -60,8 +60,8 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		int ratio = 1;
 		ColumnConfig<InvoiceDTO, Integer> codeCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.code(), ratio, "Code");
-		ColumnConfig<InvoiceDTO, Integer> shipCol = new ColumnConfig<InvoiceDTO, Integer>(
-				props.shipments(), 2 * ratio, "Shipments");
+		ColumnConfig<InvoiceDTO, String> paymentCol = new ColumnConfig<InvoiceDTO, String>(
+				props.payment(), 2 * ratio, "Shipments");
 		ColumnConfig<InvoiceDTO, Integer> debtCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.restToPay(), 2 * ratio, "Rest to pay");
 		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(
@@ -76,7 +76,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 
 		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();
 		columnConfigList.add(codeCol);
-		columnConfigList.add(shipCol);
+		columnConfigList.add(paymentCol);
 		columnConfigList.add(debtCol);
 		columnConfigList.add(dateCol);
 		columnConfigList.add(detailCol);
@@ -184,7 +184,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 			}
 			editInvoiceView.setData(invoice);
 			//get list of all suppliers
-			presenter.findAll();
+			presenter.getAll();
 			//get all types
 			presenter.getProductTypes();
 			editInvoiceView.show();

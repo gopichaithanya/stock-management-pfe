@@ -23,8 +23,8 @@ public interface InvoiceProperties extends PropertyAccess<InvoiceDTO> {
 	@Path("supplier.name")
 	ValueProvider<InvoiceDTO, String> supplier();
 	
-	@Path("shipments.size")
-	ValueProvider<InvoiceDTO, Integer> shipments();
+	@Path("paymentType")
+	ValueProvider<InvoiceDTO, String> payment();
 	
 	@Path("restToPay")
 	ValueProvider<InvoiceDTO, Integer> restToPay();
