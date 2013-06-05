@@ -37,4 +37,12 @@ public class SupplierDaoImpl extends BaseDaoImpl<Long, Supplier> implements Supp
 		List<Supplier> l = findByCriteria(criterion);
 		return l.size() > 0 ? l.get(0) : null; 
 	}
+
+	@Override
+	public Supplier getDuplicateName(Long excludedId, String name) {
+		Criterion criterion1 = Restrictions.eq("name", name).ignoreCase();
+		Criterion criterion2 = Restrictions.not(Restrictions.eq("id", excludedId));
+		List<Supplier> l = findByCriteria(criterion1, criterion2);
+		return l.size() > 0 ? l.get(0) : null;
+	}
 }
