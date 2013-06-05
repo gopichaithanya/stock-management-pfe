@@ -37,7 +37,7 @@ public interface SupplierPresenter extends Presenter {
 	 * Retrieves all suppliers from database
 	 * 
 	 */
-	public void findAll();
+	public void getAll();
 
 	
 	/**

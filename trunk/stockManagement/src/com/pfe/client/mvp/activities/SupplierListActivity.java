@@ -237,7 +237,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void findAll() {
+	public void getAll() {
 		supplierService.getAll(new AsyncCallback<List<SupplierDTO>>() {
 			
 			@Override
