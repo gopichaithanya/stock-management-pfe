@@ -3,42 +3,41 @@ package com.pfe.client.mvp.views;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.pfe.client.mvp.presenters.SupplierPresenter;
-import com.pfe.shared.dto.SupplierDTO;
+import com.pfe.client.mvp.presenters.InvoicePresenter;
+import com.pfe.shared.dto.InvoiceDTO;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 
 /**
- * Contains UI components to display a list of suppliers
+ * Contains UI components to display a list of invoice
  * 
  * @author Alexandra
  *
  */
-public interface SupplierListView extends IsWidget {
+public interface InvoiceListView extends IsWidget {
 
-	
 	/**
 	 * Sets the presenter of this view
 	 * 
 	 * @param presenter
 	 */
-	public void setPresenter(SupplierPresenter presenter);
+	public void setPresenter(InvoicePresenter presenter);
 	
 	/**
 	 * Sets data to be rendered
 	 * 
-	 * @param suppliers
+	 * @param invoices
 	 */
-	public void setData(List<SupplierDTO> suppliers);
+	public void setData(List<InvoiceDTO> invoices);
 
 	/**
 	 * Gets the view data
 	 * 
 	 * @return
 	 */
-	public ListStore<SupplierDTO> getData();
+	public ListStore<InvoiceDTO> getData();
 
 	/**
 	 * Clears the view components
@@ -46,25 +45,25 @@ public interface SupplierListView extends IsWidget {
 	public void clearData();
 	
 	/**
-	 * Adds new line in the list
+	 * Adds new line in list
 	 * 
-	 * @param supplier
+	 * @param invoice
 	 */
-	public void addData(SupplierDTO supplier);
+	public void addData(InvoiceDTO invoice);
 	
 	/**
-	 * Updates a line in the list
+	 * Updates record in list
 	 * 
-	 * @param supplier
+	 * @param invoice
 	 */
-	public void updateData(SupplierDTO supplier);
+	public void updateData(InvoiceDTO invoice);
 	
 	/**
-	 * Deletes type from the displayed list
+	 * Deletes record from list
 	 * 
-	 * @param supplier
+	 * @param invoice
 	 */
-	public void deleteData(SupplierDTO supplier);
+	public void deleteData(InvoiceDTO invioce);
 	
 	/**
 	 * Set loader for paging
@@ -72,21 +71,19 @@ public interface SupplierListView extends IsWidget {
 	 * @param loader
 	 */
 	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> remoteLoader);
+			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader);
 	
 	/**
-	 * Get create supplier window
 	 * 
 	 * @return
 	 */
-	public CreateSupplierView getCreateView();
+	//public CreateInvoiceView getCreateView();
 	
 	/**
-	 * Get edit supplier window
 	 * 
 	 * @return
 	 */
-	public EditSupplierView getEditSupplierView();
+	//public EditInvoiceView getEditSupplierView();
 	
 	
 	/**
@@ -98,4 +95,5 @@ public interface SupplierListView extends IsWidget {
 	public void maskGrid();
 	
 	public void unmaskGrid();
+	
 }

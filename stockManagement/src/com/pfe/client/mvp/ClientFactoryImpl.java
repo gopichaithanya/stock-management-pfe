@@ -4,6 +4,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.pfe.client.mvp.views.InvoiceListView;
+import com.pfe.client.mvp.views.InvoiceListViewImpl;
 import com.pfe.client.mvp.views.ProductTypeDetailView;
 import com.pfe.client.mvp.views.ProductTypeDetailViewImpl;
 import com.pfe.client.mvp.views.ProductTypeListView;
@@ -36,7 +38,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static ProductTypeDetailView productTypeDetailView;
 	private static SupplierListView supplierListView;
 	private static SupplierDetailView supplierDetailView; 
-	
+	private static InvoiceListView invoiceListView;
 
 	@Override
 	public EventBus getEventBus() {
@@ -120,6 +122,15 @@ public class ClientFactoryImpl implements ClientFactory {
 			supplierDetailView = new SupplierDetailViewImpl();
 		}
 		return supplierDetailView;
+	}
+
+
+	@Override
+	public InvoiceListView getInvoiceListView() {
+		if (invoiceListView == null) {
+			invoiceListView = new InvoiceListViewImpl();
+		}
+		return invoiceListView;
 	}
 
 }
