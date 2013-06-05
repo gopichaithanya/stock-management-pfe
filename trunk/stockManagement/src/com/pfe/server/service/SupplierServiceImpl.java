@@ -79,7 +79,12 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public SupplierDTO create(SupplierDTO supplier) throws BusinessException {
-
+		
+		Supplier s = supplierDao.search(supplier.getName());
+		if (s != null) {
+			throw new BusinessException("The name you chose is already in use.");
+		}
+		
 		// here the supplier has no invoices
 		Supplier entity = dozerMapper.map(supplier, Supplier.class,
 				"miniSupplier");

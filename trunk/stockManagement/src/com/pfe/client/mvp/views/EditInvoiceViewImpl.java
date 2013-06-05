@@ -126,6 +126,13 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		ColumnConfig<ShipmentDTO, Date> dateCol = new ColumnConfig<ShipmentDTO, Date>(
 				shipProps.created(), 3 * ratio, "Created");
 		
+		// Product type combo
+		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
+		typeCombo = new ComboBoxCell<ProductTypeDTO>(typeStore,typeProps.nameLabel());
+		typeCombo.setTriggerAction(TriggerAction.ALL);
+		typeCombo.setForceSelection(true);
+		typeCombo.setWidth(170);
+		
 		List<ColumnConfig<ShipmentDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<ShipmentDTO, ?>>();
 		columnConfigList.add(typeCol);
 		columnConfigList.add(priceCol);
@@ -133,6 +140,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		columnConfigList.add(currentQtyCol);
 		columnConfigList.add(paidCol);
 		columnConfigList.add(dateCol);
+		typeCol.setCell(typeCombo);
 		ColumnModel<ShipmentDTO> cm = new ColumnModel<ShipmentDTO>(columnConfigList);
 		shipmentStore = new ListStore<ShipmentDTO>(shipProps.key());
 
@@ -143,14 +151,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		grid.setBorders(true);
 		grid.setHeight(100);
 		
-		// Product type combo
-		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
-		typeCombo = new  ComboBoxCell<ProductTypeDTO>(typeStore, typeProps.nameLabel());
-		typeCombo.setTriggerAction(TriggerAction.ALL);
-		typeCombo.setForceSelection(true); 
-		typeCombo.setWidth(170);
-		
-		typeCol.setCell(typeCombo);
 		FieldLabel gridField = new FieldLabel(grid, "Shipments");
 		container.add(gridField, new HtmlData(".shipments"));
 		
@@ -187,6 +187,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			
 			InvoiceDTO buffer = new InvoiceDTO();
 			buffer.setCode(codeField.getValue());
 			buffer.setCreated(dateField.getValue());
