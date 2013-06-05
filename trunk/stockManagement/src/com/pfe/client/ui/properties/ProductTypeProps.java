@@ -9,6 +9,8 @@ import com.sencha.gxt.data.shared.PropertyAccess;
 
 public interface ProductTypeProps extends PropertyAccess<ProductType> {
 	
+	//TODO remove this class when only dtos will be used on client
+	
 	@Path("id")
 	ModelKeyProvider<ProductType> key();
 	
