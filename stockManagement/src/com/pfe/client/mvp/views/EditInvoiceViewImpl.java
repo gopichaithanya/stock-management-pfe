@@ -9,11 +9,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.ShipmentProperties;
 import com.pfe.client.ui.properties.SupplierProperties;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
@@ -39,10 +42,12 @@ import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
-	private static final ShipmentProperties props = GWT
+	private static final ShipmentProperties shipProps = GWT
 			.create(ShipmentProperties.class);
 	private static final SupplierProperties supplierProps = GWT
 			.create(SupplierProperties.class);
+	private static final ProductTypeProperties typeProps = GWT
+			.create(ProductTypeProperties.class);
 
 	private Presenter presenter;
 
@@ -57,12 +62,14 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private Grid<ShipmentDTO> grid;
 	private ListStore<ShipmentDTO> shipmentStore;
 	private ListStore<SupplierDTO> supplierStore;
+	private ListStore<ProductTypeDTO> typeStore;
 	private ComboBox<SupplierDTO> supplierCombo;
+	private ComboBoxCell<ProductTypeDTO> typeCombo;
 
 	public EditInvoiceViewImpl() {
 		setBodyBorder(false);
-		setWidth(670);
-		setHeight(350);
+		setWidth(650);
+		setHeight(400);
 		setMinHeight(350);
 		setModal(true);
 		setResizable(false);
@@ -86,6 +93,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		container.add(new FieldLabel(paymentField, "Payment Type"),
 				new HtmlData(".payment"));
 		
+		// Supplier combo
 		supplierField = new TextField();
 		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
 		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
@@ -103,20 +111,20 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		payBtn = new TextButton("Pay");
 		container.add(new FieldLabel(payBtn, "Pay fraction"), new HtmlData(".pay"));
 		
-		// column configuration
+		// Column configuration
 		int ratio = 1;
-		ColumnConfig<ShipmentDTO, String> typeCol = new ColumnConfig<ShipmentDTO, String>(
-				props.productType(), 2 * ratio, "Type");
+		ColumnConfig<ShipmentDTO, ProductTypeDTO> typeCol = new ColumnConfig<ShipmentDTO, ProductTypeDTO>(
+				shipProps.productType(), 3 * ratio, "Type");
 		ColumnConfig<ShipmentDTO, Integer> priceCol = new ColumnConfig<ShipmentDTO, Integer>(
-				props.unitPrice(), 2 * ratio, "Unit price");
+				shipProps.unitPrice(), ratio, "Unit price");
 		ColumnConfig<ShipmentDTO, Integer> initQtyCol = new ColumnConfig<ShipmentDTO, Integer>(
-				props.initialQty(), 2 * ratio, "Init. Qty");
+				shipProps.initialQty(), ratio, "Init. Qty");
 		ColumnConfig<ShipmentDTO, Integer> currentQtyCol = new ColumnConfig<ShipmentDTO, Integer>(
-				props.currentQty(), 2 * ratio, "Current Qty");
+				shipProps.currentQty(), ratio, "Current Qty");
 		ColumnConfig<ShipmentDTO, Boolean> paidCol = new ColumnConfig<ShipmentDTO, Boolean>(
-				props.paid(), ratio, "Paid");
+				shipProps.paid(), ratio, "Paid");
 		ColumnConfig<ShipmentDTO, Date> dateCol = new ColumnConfig<ShipmentDTO, Date>(
-				props.created(), 3 * ratio, "Created");
+				shipProps.created(), 3 * ratio, "Created");
 		
 		List<ColumnConfig<ShipmentDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<ShipmentDTO, ?>>();
 		columnConfigList.add(typeCol);
@@ -126,21 +134,29 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		columnConfigList.add(paidCol);
 		columnConfigList.add(dateCol);
 		ColumnModel<ShipmentDTO> cm = new ColumnModel<ShipmentDTO>(columnConfigList);
-		shipmentStore = new ListStore<ShipmentDTO>(props.key());
+		shipmentStore = new ListStore<ShipmentDTO>(shipProps.key());
 
 		grid = new Grid<ShipmentDTO>(shipmentStore, cm);
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
 		grid.setBorders(true);
-		grid.setHeight(60);
+		grid.setHeight(100);
 		
-		GridInlineEditing<ShipmentDTO> gr = new GridInlineEditing<ShipmentDTO>(grid);
-		gr.addEditor(priceCol, new NumberField<Integer>(new IntegerPropertyEditor()));
-		gr.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
-		
+		// Product type combo
+		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
+		typeCombo = new  ComboBoxCell<ProductTypeDTO>(typeStore, typeProps.nameLabel());
+		typeCombo.setTriggerAction(TriggerAction.ALL);
+		typeCombo.setForceSelection(true); 
+		typeCombo.setWidth(170);
+		typeCol.setCell(typeCombo);
 		FieldLabel gridField = new FieldLabel(grid, "Shipments");
 		container.add(gridField, new HtmlData(".shipments"));
+		
+		//Editing fields
+		GridInlineEditing<ShipmentDTO> editingGrig = new GridInlineEditing<ShipmentDTO>(grid);
+		editingGrig.addEditor(priceCol, new NumberField<Integer>(new IntegerPropertyEditor()));
+		editingGrig.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
@@ -262,6 +278,13 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		supplierStore.clear();
 		supplierStore.addAll(suppliers);
 		supplierCombo.setValue(invoice.getSupplier());
+	}
+
+	@Override
+	public void setProductTypes(List<ProductTypeDTO> types) {
+		typeStore.clear();
+		typeStore.addAll(types);
+		
 	}
 
 }

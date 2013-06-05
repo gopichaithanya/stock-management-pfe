@@ -9,7 +9,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.ui.GridToolbar;
-import com.pfe.client.ui.properties.ProductTypeProperties;
+import com.pfe.client.ui.properties.ProductTypeProps;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
@@ -35,8 +35,8 @@ import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 
 public class ProductTypeListViewImpl implements ProductTypeListView {
 
-	private static final ProductTypeProperties props = GWT
-			.create(ProductTypeProperties.class);
+	private static final ProductTypeProps props = GWT
+			.create(ProductTypeProps.class);
 
 	private ProductTypePresenter presenter;
 	private Grid<ProductType> grid;

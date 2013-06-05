@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -21,9 +22,9 @@ public interface ProductTypeService extends RemoteService {
 	/**
 	 * Retrieves all product types from database
 	 * 
-	 * @return list of all types
+	 * @return
 	 */
-	public List<ProductType> getAll();
+	public List<ProductTypeDTO> getAll();
 
 	/**
 	 * Adds new product type in database

@@ -14,9 +14,11 @@ import com.pfe.client.mvp.views.EditInvoiceView;
 import com.pfe.client.mvp.views.EditSupplierView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.InvoiceServiceAsync;
+import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -32,14 +34,17 @@ public class SupplierListActivity extends AbstractActivity implements
 	private ClientFactory clientFactory;
 	private SupplierServiceAsync supplierService;
 	private InvoiceServiceAsync invoiceService;
+	private ProductTypeServiceAsync productTypeService;
+	
 	private SupplierListView view;
 	private EditSupplierView editSupplierView;
 	private EditInvoiceView editInvoiceView;
 
 	public SupplierListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		this.supplierService = clientFactory.getSupplierService();
-		this.invoiceService = clientFactory.getInvoiceService();
+		supplierService = clientFactory.getSupplierService();
+		invoiceService = clientFactory.getInvoiceService();
+		productTypeService = clientFactory.getProductTypeService();
 	}
 
 	@Override
@@ -245,6 +250,25 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				//TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void getProductTypes() {
+		productTypeService.getAll(new AsyncCallback<List<ProductTypeDTO>>() {
+			
+			@Override
+			public void onSuccess(List<ProductTypeDTO> result) {
+				editInvoiceView.setProductTypes(result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
 				
 			}
 		});

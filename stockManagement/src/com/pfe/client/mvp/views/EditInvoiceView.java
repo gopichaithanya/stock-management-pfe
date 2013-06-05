@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.SupplierDTO;
 
 /**
@@ -46,9 +47,16 @@ public interface EditInvoiceView {
 	public void hide();
 	
 	/**
-	 * Sets supplier store displayed by the combo box
+	 * Sets list of available suppliers
 	 * 
 	 * @param suppliers
 	 */
 	public void setSuppliers(List<SupplierDTO> suppliers);
+	
+	/**
+	 * Sets list of available product types 
+	 * 
+	 * @param types
+	 */
+	public void setProductTypes(List<ProductTypeDTO> types);
 }

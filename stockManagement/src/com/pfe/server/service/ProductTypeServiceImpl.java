@@ -1,7 +1,9 @@
 package com.pfe.server.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.server.dao.producttype.ProductTypeDao;
 import com.pfe.shared.BusinessException;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -21,12 +24,22 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Autowired
 	private ProductTypeDao dao;
+	@Autowired
+	private DozerBeanMapper dozerMapper;
 
 	@Override
-	public List<ProductType> getAll() {
-		return dao.findAll();
-	}
+	public List<ProductTypeDTO> getAll() {
+		List<ProductType> types = dao.findAll();
+		List<ProductTypeDTO> dtos = new ArrayList<ProductTypeDTO>();
 
+		if (types.size() > 0) {
+			for (ProductType type : types) {
+				dtos.add(dozerMapper.map(type, ProductTypeDTO.class));
+			}
+		}
+		return dtos;
+	}
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ProductType create(ProductType productType) throws BusinessException {

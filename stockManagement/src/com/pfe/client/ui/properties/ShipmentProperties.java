@@ -1,9 +1,9 @@
 package com.pfe.client.ui.properties;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.gwt.editor.client.Editor.Path;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.ShipmentDTO;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
@@ -14,8 +14,8 @@ public interface ShipmentProperties extends PropertyAccess<ShipmentDTO> {
 	@Path("id")
 	ModelKeyProvider<ShipmentDTO> key();
 
-	@Path("productType.name")
-	ValueProvider<ShipmentDTO, String> productType();
+	@Path("productType")
+	ValueProvider<ShipmentDTO, ProductTypeDTO> productType();
 	
 	@Path("unitPrice")
 	ValueProvider<ShipmentDTO, Integer> unitPrice();
