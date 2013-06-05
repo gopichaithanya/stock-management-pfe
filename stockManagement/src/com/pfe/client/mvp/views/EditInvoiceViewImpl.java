@@ -187,13 +187,13 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			
+			grid.getStore().commitChanges();
 			InvoiceDTO buffer = new InvoiceDTO();
 			buffer.setCode(codeField.getValue());
 			buffer.setCreated(dateField.getValue());
 			buffer.setPaymentType(paymentField.getValue());
 			ArrayList<ShipmentDTO> list = new ArrayList<ShipmentDTO>();
-			list.addAll(shipmentStore.getAll());
+			list.addAll(grid.getStore().getAll());
 			buffer.setShipments(list);
 			buffer.setSupplier(supplierCombo.getValue());
 			if (presenter instanceof SupplierPresenter) {
