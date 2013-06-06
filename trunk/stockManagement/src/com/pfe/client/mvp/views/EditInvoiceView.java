@@ -59,4 +59,6 @@ public interface EditInvoiceView {
 	 * @param types
 	 */
 	public void setProductTypes(List<ProductTypeDTO> types);
+
+	
 }

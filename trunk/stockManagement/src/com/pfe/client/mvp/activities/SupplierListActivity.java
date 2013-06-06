@@ -229,6 +229,7 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				if (caught instanceof BusinessException){
+					view.getEditSupplierView().getEditInvoiceView().setData(initial);
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
