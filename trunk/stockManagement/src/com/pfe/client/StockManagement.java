@@ -48,6 +48,7 @@ public class StockManagement implements EntryPoint {
 	public void onModuleLoad() {
 
 		clientFactory = new ClientFactoryImpl();
+		
 		EventBus eventBus = clientFactory.getEventBus();
 		PlaceController placeController = clientFactory.getPlaceController();
 
