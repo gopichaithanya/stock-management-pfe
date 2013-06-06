@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
@@ -30,8 +29,6 @@ import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutP
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.ParseErrorEvent;
-import com.sencha.gxt.widget.core.client.event.ParseErrorEvent.ParseErrorHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
@@ -42,13 +39,11 @@ import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
-import com.sencha.gxt.widget.core.client.form.validator.MinNumberValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.Grid.GridCell;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
-import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
@@ -82,7 +77,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		setBodyBorder(false);
 		setWidth(650);
 		setHeight(400);
-		setMinHeight(350);
+		setMinHeight(400);
 		setModal(true);
 		setResizable(false);
 		setClosable(false);
@@ -167,9 +162,12 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		
 		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
 		ToolBar toolBar = new ToolBar();
-		TextButton addBtn = new TextButton("Add Shipment");
+		TextButton addBtn = new TextButton("Add");
+		TextButton deleteBtn = new TextButton("Delete");
 		addBtn.addSelectHandler(new AddBtnHandler());
+		deleteBtn.addSelectHandler(new DeleteBtnHandler());
 		toolBar.add(addBtn);
+		toolBar.add(deleteBtn);
 		gridPanel.add(toolBar, new VerticalLayoutData(1, -1));
 		gridPanel.add(grid, new VerticalLayoutData(1, 1));
 
@@ -280,6 +278,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			//TODO finish this
 			ShipmentDTO shipment = new ShipmentDTO();
 			shipment.setProductType(typeStore.get(0));
 			shipment.setCreated(invoice.getCreated());
@@ -291,7 +290,22 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		    editingGrid.startEditing(new GridCell(0, 0));
 			
 		}
-		
+	}
+	
+	/**
+	 * Delete shipment handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class DeleteBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			ShipmentDTO shipment = grid.getSelectionModel().getSelectedItem();
+			shipmentStore.remove(shipment);
+			
+		}
 	}
 
 	/**

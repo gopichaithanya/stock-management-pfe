@@ -63,6 +63,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		
 		//TODO get updated shipments from buffer; if shipment id = null => it's newly added
+		//TODO if missing ids in buffer when compared to initial list of shipments => some shipments have been deleted
 		
 		invoiceDao.merge(invoice);	
 		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
