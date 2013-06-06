@@ -86,12 +86,13 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		fpanel.setBorders(false);
 
 		codeField = new NumberField<Integer>(new IntegerPropertyEditor());
-		codeField.isReadOnly();
+		codeField.setReadOnly(true);
 		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
 		dateField = new DateField();
 		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(
 				".date"));
 		paymentField = new TextField();
+		paymentField.setReadOnly(true);
 		container.add(new FieldLabel(paymentField, "Payment Type"),
 				new HtmlData(".payment"));
 		
@@ -107,6 +108,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 				".supplier"));
 		
 		debtField = new NumberField<Integer>(new IntegerPropertyEditor());
+		debtField.setReadOnly(true);
 		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(".debt"));
 		fractionField = new NumberField<Integer>(new IntegerPropertyEditor());
 		container.add(new FieldLabel(fractionField, "Debt fraction"), new HtmlData(".fr"));
@@ -195,10 +197,10 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			buffer.setCreated(dateField.getValue());
 			buffer.setPaymentType(paymentField.getValue());
 			buffer.setSupplier(supplierCombo.getValue());
+			buffer.setRestToPay(debtField.getValue());
 		
 			//clone shipments before committing changes and add initial records to invoice
-			for (Store<ShipmentDTO>.Record record : shipmentStore
-					.getModifiedRecords()) {
+			for (Store<ShipmentDTO>.Record record : shipmentStore.getModifiedRecords()) {
 				ShipmentDTO model = record.getModel();
 				ShipmentDTO initial = cloneShipment(model);
 				buildInitialInvoice(initial);

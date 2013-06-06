@@ -214,16 +214,7 @@ public class SupplierListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
-				// invoice supplier changed. Update EditSupplierParent window
-				Long initialId = initial.getSupplier().getId();
-				Long currentId = result.getSupplier().getId();
-				if(!(initialId.equals(currentId))){
-					view.getEditSupplierView().removeInvoice(result);
-				} 
-				// invoice has the same supplier
-				else{
-					view.getEditSupplierView().updateInvoice(result);
-				}	
+				view.displayEditSupplierWindow();
 			}
 			
 			@Override

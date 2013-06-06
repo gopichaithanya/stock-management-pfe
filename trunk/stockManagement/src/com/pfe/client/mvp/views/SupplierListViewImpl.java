@@ -141,14 +141,18 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (editView == null) {
-				editView = new EditSupplierViewImpl();
-				editView.setPresenter(presenter);
-			}
-			SupplierDTO supplier = grid.getSelectionModel()
-					.getSelectedItem();
-			presenter.find(supplier.getId());
+			displayEditSupplierWindow();
 		}
+	}
+	
+	@Override
+	public void displayEditSupplierWindow(){
+		if (editView == null) {
+			editView = new EditSupplierViewImpl();
+			editView.setPresenter(presenter);
+		}
+		SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
+		presenter.find(supplier.getId());
 	}
 	
 	
