@@ -91,7 +91,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		grid.setBorders(true);
 		grid.setHeight(150);
 		grid.setWidth(400);
-
+		
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
 		HtmlLayoutContainer container = new HtmlLayoutContainer(
@@ -250,7 +250,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 	@Override
 	public void removeInvoice(InvoiceDTO invoice) {
 		store.remove(invoice);
-		
 	}
 
 	@Override
