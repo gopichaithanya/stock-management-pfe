@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
@@ -29,6 +30,8 @@ import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutP
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.ParseErrorEvent;
+import com.sencha.gxt.widget.core.client.event.ParseErrorEvent.ParseErrorHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
@@ -39,10 +42,13 @@ import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.validator.MinNumberValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.grid.Grid.GridCell;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
+import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
@@ -65,6 +71,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private TextField supplierField;
 	private TextButton payBtn;
 	private Grid<ShipmentDTO> grid;
+	private GridInlineEditing<ShipmentDTO> editingGrid;
 	private ListStore<ShipmentDTO> shipmentStore;
 	private ListStore<SupplierDTO> supplierStore;
 	private ListStore<ProductTypeDTO> typeStore;
@@ -161,6 +168,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
 		ToolBar toolBar = new ToolBar();
 		TextButton addBtn = new TextButton("Add Shipment");
+		addBtn.addSelectHandler(new AddBtnHandler());
 		toolBar.add(addBtn);
 		gridPanel.add(toolBar, new VerticalLayoutData(1, -1));
 		gridPanel.add(grid, new VerticalLayoutData(1, 1));
@@ -169,9 +177,20 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		container.add(gridField, new HtmlData(".shipments"));
 		
 		//Editing fields
-		GridInlineEditing<ShipmentDTO> editingGrig = new GridInlineEditing<ShipmentDTO>(grid);
-		editingGrig.addEditor(priceCol, new NumberField<Integer>(new IntegerPropertyEditor()));
-		editingGrig.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
+		editingGrid = new GridInlineEditing<ShipmentDTO>(grid);
+		NumberField<Integer> priceField = new NumberField<Integer>(new IntegerPropertyEditor());
+//		priceField.addParseErrorHandler(new ParseErrorHandler() {
+//			@Override
+//			public void onParseError(ParseErrorEvent event) {
+//				 Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a number");
+//				
+//			}
+//		});
+//		priceField.setAllowBlank(false);
+//		priceField.addValidator(new MinNumberValidator<Integer>(1));
+		
+		editingGrid.addEditor(priceCol, priceField);
+		editingGrid.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
@@ -249,6 +268,30 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		public void onSelect(SelectEvent event) {
 			w.hide();
 		}
+	}
+	
+	/**
+	 * Add shipment handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class AddBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			ShipmentDTO shipment = new ShipmentDTO();
+			shipment.setProductType(typeStore.get(0));
+			shipment.setCreated(invoice.getCreated());
+			shipment.setUnitPrice(0);
+			shipment.setInitialQuantity(0);	
+			
+			editingGrid.cancelEditing();
+		    shipmentStore.add(0, shipment);
+		    editingGrid.startEditing(new GridCell(0, 0));
+			
+		}
+		
 	}
 
 	/**

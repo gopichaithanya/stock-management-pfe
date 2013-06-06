@@ -62,6 +62,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			invoice.setRestToPay(debt);
 		}
 		
+		//TODO get updated shipments from buffer; if shipment id = null => it's newly added
+		
 		invoiceDao.merge(invoice);	
 		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
 		return dto;
