@@ -27,6 +27,8 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
@@ -41,6 +43,7 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
@@ -155,7 +158,14 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		grid.setBorders(true);
 		grid.setHeight(100);
 		
-		FieldLabel gridField = new FieldLabel(grid, "Shipments");
+		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
+		ToolBar toolBar = new ToolBar();
+		TextButton addBtn = new TextButton("Add Shipment");
+		toolBar.add(addBtn);
+		gridPanel.add(toolBar, new VerticalLayoutData(1, -1));
+		gridPanel.add(grid, new VerticalLayoutData(1, 1));
+
+		FieldLabel gridField = new FieldLabel(gridPanel, "Shipments");
 		container.add(gridField, new HtmlData(".shipments"));
 		
 		//Editing fields
