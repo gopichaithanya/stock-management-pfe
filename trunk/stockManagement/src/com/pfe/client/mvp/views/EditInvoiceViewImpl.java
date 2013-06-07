@@ -18,6 +18,8 @@ import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
+import com.sencha.gxt.core.client.IdentityValueProvider;
+import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
@@ -37,10 +39,12 @@ import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.Grid.GridCell;
+import com.sencha.gxt.widget.core.client.grid.editing.ClicksToEdit;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
@@ -74,16 +78,15 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	public EditInvoiceViewImpl() {
 		setBodyBorder(false);
 		setWidth(650);
-		setHeight(400);
-		setMinHeight(400);
+		setHeight(500);
+		setMinHeight(500);
 		setModal(true);
 		setResizable(false);
 		setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
-		HtmlLayoutContainer container = new HtmlLayoutContainer(
-				getTableMarkup());
+		HtmlLayoutContainer container = new HtmlLayoutContainer(getTableMarkup());
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
@@ -92,12 +95,10 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		codeField.setReadOnly(true);
 		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
 		dateField = new DateField();
-		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(
-				".date"));
+		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(".date"));
 		paymentField = new TextField();
 		paymentField.setReadOnly(true);
-		container.add(new FieldLabel(paymentField, "Payment Type"),
-				new HtmlData(".payment"));
+		container.add(new FieldLabel(paymentField, "Payment Type"),new HtmlData(".payment"));
 		
 		// Supplier combo
 		supplierField = new TextField();
@@ -107,8 +108,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		supplierCombo.setWidth(200);
 		supplierCombo.setTypeAhead(true);
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
-		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(
-				".supplier"));
+		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(".supplier"));
 		
 		debtField = new NumberField<Integer>(new IntegerPropertyEditor());
 		debtField.setReadOnly(true);
@@ -135,12 +135,18 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		
 		// Product type combo
 		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
-		typeCombo = new ComboBoxCell<ProductTypeDTO>(typeStore,typeProps.nameLabel());
+		typeCombo = new ComboBoxCell<ProductTypeDTO>(typeStore, typeProps.nameLabel());
 		typeCombo.setTriggerAction(TriggerAction.ALL);
 		typeCombo.setForceSelection(true);
 		typeCombo.setWidth(170);
+		 
+		// Check box selection model
+		IdentityValueProvider<ShipmentDTO> identity = new IdentityValueProvider<ShipmentDTO>();
+		CheckBoxSelectionModel<ShipmentDTO> sm = new CheckBoxSelectionModel<ShipmentDTO>(identity);
+		sm.setSelectionMode(SelectionMode.MULTI);
 		
 		List<ColumnConfig<ShipmentDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<ShipmentDTO, ?>>();
+		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(typeCol);
 		columnConfigList.add(priceCol);
 		columnConfigList.add(initQtyCol);
@@ -156,7 +162,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
 		grid.setBorders(true);
-		grid.setHeight(100);
+		grid.setHeight(200);
 		
 		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
 		ToolBar toolBar = new ToolBar();
@@ -184,22 +190,19 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 //		});
 //		priceField.setAllowBlank(false);
 //		priceField.addValidator(new MinNumberValidator<Integer>(1));
-		
 		editingGrid.addEditor(priceCol, priceField);
 		editingGrid.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
+		editingGrid.setClicksToEdit(ClicksToEdit.TWO);
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
 		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
-
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
 		List<FieldLabel> labels = FormPanelHelper.getFieldLabels(fpanel);
-		for (FieldLabel lbl : labels) {
-			lbl.setLabelAlign(LabelAlign.TOP);
-		}
+		for (FieldLabel lbl : labels) { lbl.setLabelAlign(LabelAlign.TOP);}
 
 		vp.add(fpanel);
 		this.add(vp);
@@ -222,7 +225,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			invoice.setPaymentType(paymentField.getValue());
 			invoice.setSupplier(supplierCombo.getValue());
 			invoice.setRestToPay(debtField.getValue());
-		
 			//commit changes on grid
 			shipmentStore.commitChanges();
 			
@@ -243,7 +245,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private class CancelBtnHandler implements SelectHandler {
 
 		private Window w;
-
 		public CancelBtnHandler(Window w) {
 			this.w = w;
 		}
@@ -273,8 +274,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			
 			editingGrid.cancelEditing();
 		    shipmentStore.add(0, shipment);
-		    editingGrid.startEditing(new GridCell(0, 0));
-			
+		    editingGrid.startEditing(new GridCell(0, 0));	
 		}
 	}
 	
@@ -288,9 +288,12 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			ShipmentDTO shipment = grid.getSelectionModel().getSelectedItem();
-			shipmentStore.remove(shipment);
-			
+			List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
+			if(presenter instanceof SupplierPresenter){
+				((SupplierPresenter) presenter).deleteShipments(shipments);
+			} else if (presenter instanceof InvoicePresenter){
+				
+			}
 		}
 	}
 

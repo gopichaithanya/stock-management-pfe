@@ -1,7 +1,10 @@
 package com.pfe.client.mvp.presenters;
 
+import java.util.List;
+
 import com.google.gwt.place.shared.Place;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 
 /**
@@ -83,6 +86,12 @@ public interface SupplierPresenter extends Presenter {
 	 */
 	public void updateInvoice(InvoiceDTO updatedInvoice);
 	
+	/**
+	 * Deletes shipments 
+	 * 
+	 * @param shipments
+	 */
+	public void deleteShipments(List<ShipmentDTO> shipments);
 	
 	/**
 	 * Retrieves all product types from server
