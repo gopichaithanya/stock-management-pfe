@@ -5,7 +5,6 @@ import com.pfe.shared.dto.InvoiceDTO;
 
 public interface InvoiceServiceAsync {
 
-	void update(InvoiceDTO initial, InvoiceDTO buffer,
-			AsyncCallback<InvoiceDTO> callback);
+	void update(InvoiceDTO updatedInvoice, AsyncCallback<InvoiceDTO> callback);
 
 }
