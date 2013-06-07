@@ -1,8 +1,9 @@
 package com.pfe.client.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ShipmentDTO;
 
@@ -12,7 +13,7 @@ import com.pfe.shared.dto.ShipmentDTO;
  * @author Alexandra
  *
  */
-@Service("gxt3/shipmentService")
+@RemoteServiceRelativePath("gxt3/shipmentService")
 public interface ShipmentService extends RemoteService {
 
 	/**
@@ -22,4 +23,12 @@ public interface ShipmentService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public void delete(ShipmentDTO shipment) throws BusinessException;
+	
+	/**
+	 * Deletes shipments
+	 * 
+	 * @param shipments
+	 * @throws BusinessException
+	 */
+	public void deleteList(List<ShipmentDTO> shipments) throws BusinessException;
 }
