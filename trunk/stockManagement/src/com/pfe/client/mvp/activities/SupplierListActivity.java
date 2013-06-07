@@ -116,9 +116,8 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void update(SupplierDTO initial, SupplierDTO updatedBuffer) {
-		supplierService.update(initial, updatedBuffer,
-				new AsyncCallback<SupplierDTO>() {
+	public void update(SupplierDTO updatedSupplier) {
+		supplierService.update(updatedSupplier, new AsyncCallback<SupplierDTO>() {
 
 					@Override
 					public void onSuccess(SupplierDTO result) {
@@ -130,6 +129,7 @@ public class SupplierListActivity extends AbstractActivity implements
 					@Override
 					public void onFailure(Throwable caught) {
 						if (caught instanceof BusinessException){
+							view.displayEditSupplierWindow();
 							BusinessException exp = (BusinessException) caught;
 							AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 							alertBox.show();
