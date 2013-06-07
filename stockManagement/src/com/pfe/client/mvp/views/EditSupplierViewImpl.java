@@ -141,10 +141,9 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				SupplierDTO updated = new SupplierDTO();
-				updated.setDescription(descriptionEditor.getValue());
-				updated.setName(nameField.getValue());
-				presenter.update(supplier, updated);
+				supplier.setDescription(descriptionEditor.getValue());
+				supplier.setName(nameField.getValue());
+				presenter.update(supplier);
 			}
 		}
 	}

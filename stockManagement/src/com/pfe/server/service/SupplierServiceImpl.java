@@ -97,21 +97,22 @@ public class SupplierServiceImpl implements SupplierService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public SupplierDTO update(SupplierDTO initial, SupplierDTO buffer)
+	public SupplierDTO update(SupplierDTO updatedSupplier)
 			throws BusinessException {
 	
-		Supplier duplicate = supplierDao.getDuplicateName(initial.getId(),
-				buffer.getName());
+		Long id = updatedSupplier.getId();
+		
+		Supplier duplicate = supplierDao.getDuplicateName(id, updatedSupplier.getName());
 		if (duplicate != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
 
 		// we don't update invoices from the supplier view
-		Supplier entity = dozerMapper.map(initial, Supplier.class,
-				"miniSupplier");
-		entity.setName(buffer.getName());
-		entity.setDescription(buffer.getDescription());
-		Supplier merged = supplierDao.merge(entity);
+		Supplier supplier = supplierDao.get(id);
+		
+		supplier.setName(updatedSupplier.getName());
+		supplier.setDescription(updatedSupplier.getDescription());
+		Supplier merged = supplierDao.merge(supplier);
 
 		if (merged != null) {
 			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");

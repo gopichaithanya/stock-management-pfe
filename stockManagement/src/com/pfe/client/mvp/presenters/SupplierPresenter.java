@@ -43,10 +43,9 @@ public interface SupplierPresenter extends Presenter {
 	/**
 	 * Updates supplier
 	 * 
-	 * @param initial
-	 * @param updatedBuffer
+	 * @param updatedSupplier
 	 */
-	public void update(SupplierDTO initial, SupplierDTO updatedBuffer);
+	public void update(SupplierDTO updatedSupplier);
 
 	/***
 	 * Deletes supplier

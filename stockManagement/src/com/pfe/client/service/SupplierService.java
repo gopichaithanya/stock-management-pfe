@@ -51,13 +51,13 @@ public interface SupplierService extends RemoteService {
 	public SupplierDTO create(SupplierDTO supplier) throws BusinessException;
 
 	/**
-	 * Updates supplier
+	 * UpdatedSupplier
 	 * 
-	 * @param supplier
+	 * @param updatedSupplier
 	 * @return
 	 * @throws BusinessException
 	 */
-	public SupplierDTO update(SupplierDTO initial, SupplierDTO buffer) throws BusinessException;
+	public SupplierDTO update(SupplierDTO updatedSupplier) throws BusinessException;
 	
 	/**
 	 * Deletes supplier
