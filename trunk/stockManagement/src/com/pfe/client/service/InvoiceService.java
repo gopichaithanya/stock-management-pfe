@@ -17,10 +17,9 @@ public interface InvoiceService extends RemoteService {
 	/**
 	 * Updates invoice
 	 * 
-	 * @param initial
 	 * @param buffer
 	 * @return
 	 * @throws BusinessException
 	 */
-	public InvoiceDTO update(InvoiceDTO initial, InvoiceDTO buffer) throws BusinessException;
+	public InvoiceDTO update(InvoiceDTO updatedInvoice) throws BusinessException;
 }

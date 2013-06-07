@@ -19,8 +19,6 @@ import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.Store;
-import com.sencha.gxt.data.shared.Store.Change;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -219,29 +217,17 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		@Override
 		public void onSelect(SelectEvent event) {
 
-			InvoiceDTO buffer = new InvoiceDTO();
-			buffer.setCode(codeField.getValue());
-			buffer.setCreated(dateField.getValue());
-			buffer.setPaymentType(paymentField.getValue());
-			buffer.setSupplier(supplierCombo.getValue());
-			buffer.setRestToPay(debtField.getValue());
+			invoice.setCode(codeField.getValue());
+			invoice.setCreated(dateField.getValue());
+			invoice.setPaymentType(paymentField.getValue());
+			invoice.setSupplier(supplierCombo.getValue());
+			invoice.setRestToPay(debtField.getValue());
 		
-			//clone shipments before committing changes and add initial records to invoice
-			for (Store<ShipmentDTO>.Record record : shipmentStore.getModifiedRecords()) {
-				ShipmentDTO model = record.getModel();
-				ShipmentDTO initial = cloneShipment(model);
-				buildInitialInvoice(initial);
-				for (Change<ShipmentDTO, ?> change : record.getChanges()) {
-					change.modify(model);
-				}
-			}
-			//add updated shipments to buffer invoice
-			ArrayList<ShipmentDTO> updatedShipments = new ArrayList<ShipmentDTO>();
-			updatedShipments.addAll(shipmentStore.getAll());
-			buffer.setShipments(updatedShipments);
+			//commit changes on grid
+			shipmentStore.commitChanges();
 			
 			if (presenter instanceof SupplierPresenter) {
-				((SupplierPresenter) presenter).updateInvoice(invoice, buffer);
+				((SupplierPresenter) presenter).updateInvoice(invoice);
 			} else if (presenter instanceof InvoicePresenter) {
 
 			}
@@ -371,37 +357,5 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		typeStore.clear();
 		typeStore.addAll(types);
 		
-	}
-
-	/**
-	 * Clones shipment
-	 * 
-	 * @param shipment
-	 * @return
-	 */
-	private ShipmentDTO cloneShipment(ShipmentDTO shipment){
-		
-		ShipmentDTO clone = new ShipmentDTO();
-		clone.setId(shipment.getId());
-		clone.setCreated(shipment.getCreated());
-		clone.setCurrentQuantity(shipment.getCurrentQuantity());
-		clone.setInitialQuantity(shipment.getInitialQuantity());
-		clone.setInvoice(shipment.getInvoice());
-		clone.setPaid(shipment.getPaid());
-		clone.setProductType(shipment.getProductType());
-		clone.setUnitPrice(shipment.getUnitPrice());
-		
-		return clone;
-	}
-	
-	private void buildInitialInvoice(ShipmentDTO initial){
-		ArrayList<ShipmentDTO> shipments = invoice.getShipments();
-		for(ShipmentDTO shipment : shipments){
-			if(shipment.getId().equals(initial.getId())){
-				shipments.remove(shipment);
-				shipments.add(initial);
-				break;
-			}
-		}
 	}
 }

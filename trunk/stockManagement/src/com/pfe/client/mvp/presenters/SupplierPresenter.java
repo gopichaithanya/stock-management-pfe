@@ -80,10 +80,9 @@ public interface SupplierPresenter extends Presenter {
 	/**
 	 * Updates invoice via corresponding supplier
 	 * 
-	 * @param initial
-	 * @param buffer
+	 * @param updatedInvoice
 	 */
-	public void updateInvoice(InvoiceDTO initial, InvoiceDTO buffer);
+	public void updateInvoice(InvoiceDTO updatedInvoice);
 	
 	
 	/**

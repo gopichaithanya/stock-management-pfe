@@ -28,7 +28,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
-	public InvoiceDTO update(InvoiceDTO initial, InvoiceDTO buffer)
+	public InvoiceDTO update(InvoiceDTO updatedInvoice)
 			throws BusinessException {
 		//id, code, payment type not editable
 		
@@ -37,29 +37,29 @@ public class InvoiceServiceImpl implements InvoiceService {
 //			throw new BusinessException("Unable to update Invoice");
 //		}
 		
-		Invoice invoice = dozerMapper.map(initial,Invoice.class, "fullInvoice");
+		Long id = updatedInvoice.getId();
+		Invoice invoice = invoiceDao.get(id);
 		
 		//supplier update
-		Long initialId = initial.getSupplier().getId();
-		Long updatedId = buffer.getSupplier().getId();
+		Long initialId = invoice.getSupplier().getId();
+		Long updatedId = updatedInvoice.getSupplier().getId();
 		if(!initialId.equals(updatedId)){
 			
 			Supplier updatedSupplier = supplierDao.get(updatedId);
 			invoice.setSupplier(updatedSupplier);
 			updatedSupplier.getInvoices().add(invoice);
 			
-			Supplier initialSupplier = supplierDao.get(initialId);
+			Supplier initialSupplier = invoice.getSupplier();
 			initialSupplier.getInvoices().remove(invoice);
 		
 			supplierDao.merge(initialSupplier);
 			supplierDao.merge(updatedSupplier);
 		}
 		//rest to pay update
-		int initialDebt = initial.getRestToPay();
-		int updatedDebt = buffer.getRestToPay();
-		if(initialDebt != updatedDebt){
-			BigDecimal debt = new BigDecimal(updatedDebt);
-			invoice.setRestToPay(debt);
+		BigDecimal initialDebt = invoice.getRestToPay();
+		BigDecimal updatedDebt = new BigDecimal(updatedInvoice.getRestToPay());
+		if(!(initialDebt.compareTo(updatedDebt) == 0)){
+			invoice.setRestToPay(updatedDebt);
 		}
 		
 		//TODO get updated shipments from buffer; if shipment id = null => it's newly added

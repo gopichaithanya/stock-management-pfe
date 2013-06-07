@@ -208,9 +208,9 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void updateInvoice(final InvoiceDTO initial, InvoiceDTO buffer) {
+	public void updateInvoice(InvoiceDTO updatedInvoice) {
 		
-		invoiceService.update(initial, buffer, new AsyncCallback<InvoiceDTO>() {
+		invoiceService.update(updatedInvoice, new AsyncCallback<InvoiceDTO>() {
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
@@ -220,12 +220,13 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				if (caught instanceof BusinessException){
-					view.getEditSupplierView().getEditInvoiceView().setData(initial);
+					view.displayEditSupplierWindow();
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
 				}
 			}
+			
 		});
 		view.getEditSupplierView().getEditInvoiceView().hide();
 	}
