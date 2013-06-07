@@ -13,10 +13,12 @@ import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
+import com.pfe.client.service.ShipmentServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
+import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -33,6 +35,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	private SupplierServiceAsync supplierService;
 	private InvoiceServiceAsync invoiceService;
 	private ProductTypeServiceAsync productTypeService;
+	private ShipmentServiceAsync shipmentService;
 	
 	private SupplierListView view;
 
@@ -41,6 +44,7 @@ public class SupplierListActivity extends AbstractActivity implements
 		supplierService = clientFactory.getSupplierService();
 		invoiceService = clientFactory.getInvoiceService();
 		productTypeService = clientFactory.getProductTypeService();
+		shipmentService = clientFactory.getShipmentService();
 	}
 
 	@Override
@@ -229,6 +233,25 @@ public class SupplierListActivity extends AbstractActivity implements
 			
 		});
 		view.getEditSupplierView().getEditInvoiceView().hide();
+	}
+	
+	@Override
+	public void deleteShipments(List<ShipmentDTO> shipments) {
+		shipmentService.deleteList(shipments, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				System.out.println("on success");
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 	@Override
