@@ -276,9 +276,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			//TODO finish this
 			ShipmentDTO shipment = new ShipmentDTO();
 			shipment.setProductType(typeStore.get(0));
-			shipment.setCreated(invoice.getCreated());
 			shipment.setUnitPrice(0);
 			shipment.setInitialQuantity(0);	
+			shipment.setInvoice(invoice);
 			
 			editingGrid.cancelEditing();
 		    shipmentStore.add(0, shipment);
