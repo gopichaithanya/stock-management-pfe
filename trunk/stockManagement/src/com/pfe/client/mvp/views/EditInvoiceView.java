@@ -5,6 +5,7 @@ import java.util.List;
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
+import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 
 /**
@@ -35,6 +36,13 @@ public interface EditInvoiceView {
 	 * 
 	 */
 	public void clearData();
+	
+	/**
+	 * Removes shipments from invoice list
+	 * 
+	 * @param shipments
+	 */
+	public void deleteShipments(List<ShipmentDTO> shipments);
 	
 	/**
 	 * Shows window

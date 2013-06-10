@@ -21,14 +21,18 @@ import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
+import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
@@ -74,6 +78,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private ListStore<ProductTypeDTO> typeStore;
 	private ComboBox<SupplierDTO> supplierCombo;
 	private ComboBoxCell<ProductTypeDTO> typeCombo;
+	private ConfirmMessageBox confirmBox;
 
 	public EditInvoiceViewImpl() {
 		setBodyBorder(false);
@@ -282,18 +287,39 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	 * Delete shipment handler
 	 * 
 	 * @author Alexandra
-	 *
+	 * 
 	 */
-	private class DeleteBtnHandler implements SelectHandler{
+	private class DeleteBtnHandler implements SelectHandler {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
-			if(presenter instanceof SupplierPresenter){
-				((SupplierPresenter) presenter).deleteShipments(shipments);
-			} else if (presenter instanceof InvoicePresenter){
-				
-			}
+
+			confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the type?");
+			final HideHandler hideHandler = new HideHandler() {
+
+				@Override
+				public void onHide(HideEvent event) {
+					Dialog btn = (Dialog) event.getSource();
+					String msg = btn.getHideButton().getText();
+					if (msg.equals("Yes")) {
+
+						List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
+						if (shipments.size() > 0) {
+							if (presenter instanceof SupplierPresenter) {
+								((SupplierPresenter) presenter)
+										.deleteShipments(shipments);
+							} else if (presenter instanceof InvoicePresenter) {
+
+							}
+						}
+
+					} else if (msg.equals("No")) {
+						confirmBox.hide();
+					}
+				}
+			};
+			confirmBox.addHideHandler(hideHandler);
+			confirmBox.show();
 		}
 	}
 
@@ -359,6 +385,14 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	public void setProductTypes(List<ProductTypeDTO> types) {
 		typeStore.clear();
 		typeStore.addAll(types);
+		
+	}
+
+	@Override
+	public void deleteShipments(List<ShipmentDTO> shipments) {
+		for(ShipmentDTO shipment : shipments){
+			shipmentStore.remove(shipment);
+		}
 		
 	}
 }

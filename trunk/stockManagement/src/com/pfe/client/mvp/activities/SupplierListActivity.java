@@ -133,7 +133,7 @@ public class SupplierListActivity extends AbstractActivity implements
 					@Override
 					public void onFailure(Throwable caught) {
 						if (caught instanceof BusinessException){
-							view.displayEditSupplierWindow();
+							view.refreshEditSupplierWindow();
 							BusinessException exp = (BusinessException) caught;
 							AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 							alertBox.show();
@@ -218,13 +218,13 @@ public class SupplierListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
-				view.displayEditSupplierWindow();
+				view.refreshEditSupplierWindow();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 				if (caught instanceof BusinessException){
-					view.displayEditSupplierWindow();
+					view.refreshEditSupplierWindow();
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
@@ -236,18 +236,22 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 	
 	@Override
-	public void deleteShipments(List<ShipmentDTO> shipments) {
+	public void deleteShipments(final List<ShipmentDTO> shipments) {
 		shipmentService.deleteList(shipments, new AsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
-				System.out.println("on success");
-				
+				view.refreshEditSupplierWindow();
+				view.getEditSupplierView().getEditInvoiceView().deleteShipments(shipments);
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				if (caught instanceof BusinessException){
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
 				
 			}
 		});
