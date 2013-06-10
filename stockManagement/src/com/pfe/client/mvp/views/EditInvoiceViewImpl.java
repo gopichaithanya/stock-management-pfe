@@ -232,6 +232,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			invoice.setRestToPay(debtField.getValue());
 			//commit changes on grid
 			shipmentStore.commitChanges();
+			ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
+			shipments.addAll(shipmentStore.getAll());
+			invoice.setShipments(shipments);
 			
 			if (presenter instanceof SupplierPresenter) {
 				((SupplierPresenter) presenter).updateInvoice(invoice);
@@ -306,8 +309,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 						List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
 						if (shipments.size() > 0) {
 							if (presenter instanceof SupplierPresenter) {
-								((SupplierPresenter) presenter)
-										.deleteShipments(shipments);
+								((SupplierPresenter) presenter).deleteShipments(shipments);
 							} else if (presenter instanceof InvoicePresenter) {
 
 							}
