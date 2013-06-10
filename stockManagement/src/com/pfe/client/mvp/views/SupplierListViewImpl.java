@@ -141,12 +141,12 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			displayEditSupplierWindow();
+			refreshEditSupplierWindow();
 		}
 	}
 	
 	@Override
-	public void displayEditSupplierWindow(){
+	public void refreshEditSupplierWindow(){
 		if (editView == null) {
 			editView = new EditSupplierViewImpl();
 			editView.setPresenter(presenter);
