@@ -15,4 +15,13 @@ public interface InvoiceDao extends IBaseDao<Long, Invoice> {
 	 * @return
 	 */
 	public List<Invoice> getBySupplier(Supplier supplier);
+	
+	/**
+	 * Retrieves records from start to limit index.
+	 * 
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	public List<Invoice> search(int start, int limit); 
 }

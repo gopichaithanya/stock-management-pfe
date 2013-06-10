@@ -27,6 +27,9 @@ import com.pfe.shared.model.ProductType;
 import com.pfe.shared.model.Shipment;
 import com.pfe.shared.model.Stock;
 import com.pfe.shared.model.Supplier;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 
 @Service("invoiceService") 
 public class InvoiceServiceImpl implements InvoiceService {
@@ -252,5 +255,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 			return debt.subtract(initialDebt);
 		}
 
+	}
+
+	@Override
+	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
+		
+		int size = (int) invoiceDao.count();
+		int start = config.getOffset();
+		int limit = config.getLimit();
+		List<Invoice> sublist = invoiceDao.search(start, limit);
+		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
+
+		if (sublist.size() > 0) {
+			for (Invoice invoice : sublist) {
+				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class,"miniInvoice"));
+			}
+		}
+		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
 	}
 }
