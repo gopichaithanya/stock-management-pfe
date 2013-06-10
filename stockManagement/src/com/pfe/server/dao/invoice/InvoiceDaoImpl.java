@@ -27,5 +27,11 @@ public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
 		List<Invoice> l = findByCriteria(criterion1);
 		return l;
 	}
+
+	@Override
+	public List<Invoice> search(int start, int limit) {
+		List<Invoice> results = findByCriteria(start, limit, (Criterion[])null);
+		return results;
+	}
 	
 }
