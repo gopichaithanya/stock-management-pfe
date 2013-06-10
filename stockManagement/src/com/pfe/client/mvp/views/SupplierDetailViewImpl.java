@@ -65,7 +65,7 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 		if (size > 0) {
 			int debt = 0;
 			for (InvoiceDTO invoice : invoices) {
-				int restToPay = invoice.getRestToPay();
+				Double restToPay = invoice.getRestToPay();
 				if (restToPay > 0) {
 					debt += restToPay;
 				}

@@ -11,7 +11,7 @@ public class InvoiceDTO implements Serializable {
 	private SupplierDTO supplier;
 	private String paymentType;
 	private ArrayList<ShipmentDTO> shipments;
-	private int restToPay;
+	private Double restToPay;
 	private Date created;
 	
 	public InvoiceDTO(){
@@ -48,10 +48,10 @@ public class InvoiceDTO implements Serializable {
 	public void setShipments(ArrayList<ShipmentDTO> shipments) {
 		this.shipments = shipments;
 	}
-	public int getRestToPay() {
+	public Double getRestToPay() {
 		return restToPay;
 	}
-	public void setRestToPay(int restToPay) {
+	public void setRestToPay(Double restToPay) {
 		this.restToPay = restToPay;
 	}
 	public Date getCreated() {

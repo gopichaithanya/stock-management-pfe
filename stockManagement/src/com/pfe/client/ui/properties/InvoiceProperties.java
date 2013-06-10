@@ -27,7 +27,7 @@ public interface InvoiceProperties extends PropertyAccess<InvoiceDTO> {
 	ValueProvider<InvoiceDTO, String> payment();
 	
 	@Path("restToPay")
-	ValueProvider<InvoiceDTO, Integer> restToPay();
+	ValueProvider<InvoiceDTO, Double> restToPay();
 	
 	@Path("created")
 	ValueProvider<InvoiceDTO, Date> created();

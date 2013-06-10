@@ -41,6 +41,7 @@ import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
+import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
@@ -67,8 +68,8 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private NumberField<Integer> codeField;
 	private DateField dateField;
 	private TextField paymentField;
-	private NumberField<Integer> debtField;
-	private NumberField<Integer> fractionField;
+	private NumberField<Double> debtField;
+	private NumberField<Double> fractionField;
 	private TextField supplierField;
 	private TextButton payBtn;
 	private Grid<ShipmentDTO> grid;
@@ -115,10 +116,10 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
 		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(".supplier"));
 		
-		debtField = new NumberField<Integer>(new IntegerPropertyEditor());
+		debtField = new NumberField<Double>(new NumberPropertyEditor.DoublePropertyEditor());
 		debtField.setReadOnly(true);
 		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(".debt"));
-		fractionField = new NumberField<Integer>(new IntegerPropertyEditor());
+		fractionField = new NumberField<Double>(new NumberPropertyEditor.DoublePropertyEditor());
 		container.add(new FieldLabel(fractionField, "Debt fraction"), new HtmlData(".fr"));
 		payBtn = new TextButton("Pay");
 		payBtn.addSelectHandler(new PayBtnHandler());
@@ -255,13 +256,14 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			int fraction = fractionField.getValue();
+			double fraction = fractionField.getValue();
 			if(fraction >= debtField.getValue()){
-				debtField.setValue(0);
+				debtField.setValue(new Double(0));
 			}
 			else{
 				debtField.setValue(debtField.getValue() - fraction);
 			}
+			fractionField.clear();
 		}
 	}
 
