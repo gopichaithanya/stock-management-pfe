@@ -121,6 +121,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		fractionField = new NumberField<Integer>(new IntegerPropertyEditor());
 		container.add(new FieldLabel(fractionField, "Debt fraction"), new HtmlData(".fr"));
 		payBtn = new TextButton("Pay");
+		payBtn.addSelectHandler(new PayBtnHandler());
 		container.add(new FieldLabel(payBtn, "Pay fraction"), new HtmlData(".pay"));
 		
 		// Column configuration
@@ -243,6 +244,26 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			}
 		}
 	}
+	
+	/**
+	 * Pay part of debt
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class PayBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			int fraction = fractionField.getValue();
+			if(fraction >= debtField.getValue()){
+				debtField.setValue(0);
+			}
+			else{
+				debtField.setValue(debtField.getValue() - fraction);
+			}
+		}
+	}
 
 	/**
 	 * Close window
@@ -359,6 +380,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		codeField.clear();
 		dateField.clear();
 		paymentField.clear();
+		fractionField.clear();
 		debtField.clear();
 		supplierField.clear();
 		shipmentStore.clear();
