@@ -16,6 +16,7 @@ import com.pfe.client.mvp.AppPlaceHistoryMapper;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.DetailsActivityMapper;
+import com.pfe.client.mvp.places.InvoiceListPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
 import com.pfe.client.mvp.places.SupplierListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
@@ -157,16 +158,22 @@ public class StockManagement implements EntryPoint {
 		storageMenu.add(lTypeItem);
 		storageMenu.add(locationItem);
 
-		TextButton supplierBtn = new TextButton("Suppliers",
-				ImageResources.INSTANCE.addSupplierIcon());
-		TextButton invoiceBtn = new TextButton("Invoices",
-				ImageResources.INSTANCE.addInvoiceIcon());
+		TextButton supplierBtn = new TextButton("Suppliers",ImageResources.INSTANCE.addSupplierIcon());
+		TextButton invoiceBtn = new TextButton("Invoices",ImageResources.INSTANCE.addInvoiceIcon());
 		supplierBtn.addSelectHandler(new SelectHandler(){
 			@Override
 			public void onSelect(SelectEvent event) {
 				goTo(new SupplierListPlace());
 			}
 			
+		});
+		invoiceBtn.addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				goTo(new InvoiceListPlace());
+				
+			}
 		});
 		
 		toolBar.add(productBtn);
