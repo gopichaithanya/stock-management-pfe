@@ -34,16 +34,6 @@ public class ShipmentServiceImpl implements ShipmentService {
 	@Autowired
 	private DozerBeanMapper dozerMapper;
 
-	@Override
-	public void delete(ShipmentDTO shipment) throws BusinessException {
-		
-		//TODO manage exceptions : if not enough quantity in warehouse stock => cannot delete
-		
-		Long id = shipment.getId();
-		Shipment entity = dozerMapper.map(shipment, Shipment.class);
-		//dao.delete(entity);
-
-	}
 
 	@Override
 	public void deleteList(List<ShipmentDTO> shipments) throws BusinessException {
