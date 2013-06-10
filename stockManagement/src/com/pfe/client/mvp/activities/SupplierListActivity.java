@@ -219,6 +219,7 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void onSuccess(InvoiceDTO result) {
 				view.refreshEditSupplierWindow();
+				view.getEditSupplierView().getEditInvoiceView().hide();
 			}
 			
 			@Override
@@ -232,7 +233,6 @@ public class SupplierListActivity extends AbstractActivity implements
 			}
 			
 		});
-		view.getEditSupplierView().getEditInvoiceView().hide();
 	}
 	
 	@Override

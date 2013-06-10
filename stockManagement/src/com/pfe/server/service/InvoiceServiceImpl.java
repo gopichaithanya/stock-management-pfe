@@ -70,11 +70,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		
 		//Debt update
-		BigDecimal initialDebt = invoice.getRestToPay();
 		BigDecimal updatedDebt = new BigDecimal(updatedInvoice.getRestToPay());
-		if(!(initialDebt.compareTo(updatedDebt) == 0)){
-			invoice.setRestToPay(updatedDebt);
-		}
+		invoice.setRestToPay(updatedDebt);
 		
 		//Date update
 		invoice.setCreated(updatedInvoice.getCreated());
@@ -96,6 +93,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 			
 			updateStocks(shipment);
 			shipment.setCreated(invoice.getCreated());
+			if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
+				shipment.setPaid(true);
+			} else{
+				shipment.setPaid(false);
+			}
+			
 			shipment.setInvoice(invoice);
 			shipments.add(shipment);
 			
