@@ -67,7 +67,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private TextField paymentField;
 	private NumberField<Double> debtField;
 	private NumberField<Double> fractionField;
-	private TextButton payBtn;
+	//private TextButton payBtn;
 	private Grid<ShipmentDTO> grid;
 	private GridInlineEditing<ShipmentDTO> editingGrid;
 	private ListStore<ShipmentDTO> shipmentStore;
@@ -115,11 +115,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		debtField.setReadOnly(true);
 		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(".debt"));
 		fractionField = new NumberField<Double>(new NumberPropertyEditor.DoublePropertyEditor());
-		container.add(new FieldLabel(fractionField, "Debt fraction"), new HtmlData(".fr"));
-		//TODO remove pay button
-		payBtn = new TextButton("Pay");
-		payBtn.addSelectHandler(new PayBtnHandler());
-		container.add(new FieldLabel(payBtn, "Pay fraction"), new HtmlData(".pay"));
+		container.add(new FieldLabel(fractionField, "Pay debt fraction"), new HtmlData(".fr"));
 		
 		// Column configuration
 		int ratio = 1;
@@ -222,12 +218,17 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			
+			if(fractionField.getValue() != null){
+				double fraction = fractionField.getValue();
+				double newDebt = debtField.getValue() - fraction;
+				invoice.setRestToPay(newDebt);
+			}
 
 			invoice.setCode(codeField.getValue());
 			invoice.setCreated(dateField.getValue());
 			invoice.setPaymentType(paymentField.getValue());
 			invoice.setSupplier(supplierCombo.getValue());
-			invoice.setRestToPay(debtField.getValue());
 			//commit changes on grid
 			shipmentStore.commitChanges();
 			ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
@@ -239,28 +240,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			} else if (presenter instanceof InvoicePresenter) {
 				((InvoicePresenter) presenter).update(invoice);
 			}
-		}
-	}
-	
-	/**
-	 * Pay part of debt
-	 * TODO remove this
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class PayBtnHandler implements SelectHandler {
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			double fraction = fractionField.getValue();
-			if(fraction >= debtField.getValue()){
-				debtField.setValue(new Double(0));
-			}
-			else{
-				debtField.setValue(debtField.getValue() - fraction);
-			}
-			fractionField.clear();
 		}
 	}
 
@@ -353,9 +332,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private native String getTableMarkup() /*-{
 		return [
 				'<table width=100% cellpadding=10 cellspacing=10>',
-				'<tr><td class=code width=30%></td><td class=date width=40%></td><td class=payment width=30%></td> <td></td></tr>',
-				'<tr><td class=supplier width=50%></td><td class=debt width=15%></td></td> <td class=fr width=20%></td><td class=pay width=15%></td></tr>',
-				'<tr><td class=shipments colspan=4></tr>', '</table>'
+				'<tr><td class=code width=30%></td><td class=date width=40%></td><td class=payment width=30%></td></tr>',
+				'<tr><td class=supplier width=50%></td><td class=debt width=15%></td></td> <td class=fr width=20%></td></tr>',
+				'<tr><td class=shipments colspan=3></tr>', '</table>'
 
 		].join("");
 	}-*/;
