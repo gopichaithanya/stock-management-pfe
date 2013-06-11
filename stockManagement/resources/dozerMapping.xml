@@ -31,6 +31,12 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 			<a>shipments</a>
 			<b>shipments</b>
 		</field-exclude>
+		
+		<field map-id="miniSupplier">
+			<a>supplier</a>
+			<b>supplier</b>
+		</field>
+			
 	</mapping>
 	
 	<mapping map-id="fullInvoice">
