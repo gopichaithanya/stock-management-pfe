@@ -119,7 +119,21 @@ public class InvoiceListActivity extends AbstractActivity implements
 
 	@Override
 	public void update(InvoiceDTO updatedInvoice) {
-		// TODO Auto-generated method stub
+		invoiceService.update(updatedInvoice, new AsyncCallback<InvoiceDTO>() {
+			
+			@Override
+			public void onSuccess(InvoiceDTO result) {
+				view.updateData(result);
+				view.getEditView().hide();
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 
