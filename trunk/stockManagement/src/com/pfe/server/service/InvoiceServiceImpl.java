@@ -48,6 +48,32 @@ public class InvoiceServiceImpl implements InvoiceService {
 	private StockDAO stockDao;
 	@Autowired
 	private DozerBeanMapper dozerMapper;
+	
+
+	@Override
+	public InvoiceDTO find(Long id) {
+		Invoice invoice = invoiceDao.get(id);
+		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
+		return dto;
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
+	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
+		
+		int size = (int) invoiceDao.count();
+		int start = config.getOffset();
+		int limit = config.getLimit();
+		List<Invoice> sublist = invoiceDao.search(start, limit);
+		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
+
+		if (sublist.size() > 0) {
+			for (Invoice invoice : sublist) {
+				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, "miniInvoice"));
+			}
+		}
+		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
+	}
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
@@ -257,21 +283,4 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	}
 
-	@Override
-	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
-	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
-		
-		int size = (int) invoiceDao.count();
-		int start = config.getOffset();
-		int limit = config.getLimit();
-		List<Invoice> sublist = invoiceDao.search(start, limit);
-		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
-
-		if (sublist.size() > 0) {
-			for (Invoice invoice : sublist) {
-				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, "miniInvoice"));
-			}
-		}
-		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
-	}
 }

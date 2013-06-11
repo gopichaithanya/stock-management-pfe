@@ -121,6 +121,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		container.add(new FieldLabel(debtField, "Rest to pay"), new HtmlData(".debt"));
 		fractionField = new NumberField<Double>(new NumberPropertyEditor.DoublePropertyEditor());
 		container.add(new FieldLabel(fractionField, "Debt fraction"), new HtmlData(".fr"));
+		//TODO remove pay button
 		payBtn = new TextButton("Pay");
 		payBtn.addSelectHandler(new PayBtnHandler());
 		container.add(new FieldLabel(payBtn, "Pay fraction"), new HtmlData(".pay"));
@@ -217,7 +218,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	}
 	
 	/**
-	 * Save updates
+	 * Save invoice updates
 	 * 
 	 * @author Alexandra
 	 * 
@@ -248,6 +249,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	
 	/**
 	 * Pay part of debt
+	 * TODO remove this
 	 * 
 	 * @author Alexandra
 	 * 

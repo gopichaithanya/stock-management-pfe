@@ -12,4 +12,6 @@ public interface InvoiceServiceAsync {
 	void search(FilterPagingLoadConfig config,
 			AsyncCallback<PagingLoadResult<InvoiceDTO>> callback);
 
+	void find(Long id, AsyncCallback<InvoiceDTO> callback);
+
 }
