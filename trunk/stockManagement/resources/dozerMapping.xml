@@ -42,6 +42,11 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	<mapping map-id="fullInvoice">
 		<class-a>com.pfe.shared.model.Invoice</class-a>
 		<class-b>com.pfe.shared.dto.InvoiceDTO</class-b>
+		
+		<field map-id="miniSupplier">
+			<a>supplier</a>
+			<b>supplier</b>
+		</field>
 	</mapping>
 
 	<mapping>
