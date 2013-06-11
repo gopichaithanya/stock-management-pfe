@@ -46,5 +46,16 @@ public interface InvoicePresenter extends Presenter {
 	 */
 	public void delete(InvoiceDTO invoice);
 	
+	/**
+	 * Retrieves available types from database
+	 * 
+	 */
+	public void getProductTypes();
+	
+	/**
+	 * Retrieves all suppliers
+	 * 
+	 */
+	public void getSuppliers();
 	
 }

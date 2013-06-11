@@ -55,12 +55,9 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
-	private static final ShipmentProperties shipProps = GWT
-			.create(ShipmentProperties.class);
-	private static final SupplierProperties supplierProps = GWT
-			.create(SupplierProperties.class);
-	private static final ProductTypeProperties typeProps = GWT
-			.create(ProductTypeProperties.class);
+	private static final ShipmentProperties shipProps = GWT.create(ShipmentProperties.class);
+	private static final SupplierProperties supplierProps = GWT.create(SupplierProperties.class);
+	private static final ProductTypeProperties typeProps = GWT.create(ProductTypeProperties.class);
 
 	private Presenter presenter;
 
@@ -70,7 +67,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private TextField paymentField;
 	private NumberField<Double> debtField;
 	private NumberField<Double> fractionField;
-	private TextField supplierField;
 	private TextButton payBtn;
 	private Grid<ShipmentDTO> grid;
 	private GridInlineEditing<ShipmentDTO> editingGrid;
@@ -107,7 +103,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		container.add(new FieldLabel(paymentField, "Payment Type"),new HtmlData(".payment"));
 		
 		// Supplier combo
-		supplierField = new TextField();
 		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
 		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
 		supplierCombo.setEmptyText("Select a supplier...");
@@ -368,15 +363,15 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	@Override
 	public void setData(InvoiceDTO invoice) {
 		this.invoice = invoice;
+		
 		clearData();
 		codeField.setValue(invoice.getCode());
 		dateField.setValue(invoice.getCreated());
 		paymentField.setValue(invoice.getPaymentType());
 		debtField.setValue(invoice.getRestToPay());
-		supplierField.setValue(invoice.getSupplier().getName());
 		setHeadingText("Invoice " + invoice.getCode());
 		shipmentStore.addAll(invoice.getShipments());
-
+		supplierCombo.setValue(invoice.getSupplier());
 	}
 
 	@Override
@@ -386,7 +381,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		paymentField.clear();
 		fractionField.clear();
 		debtField.clear();
-		supplierField.clear();
+		//supplierField.clear();
 		shipmentStore.clear();
 
 	}
@@ -406,7 +401,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	public void setSuppliers(List<SupplierDTO> suppliers) {
 		supplierStore.clear();
 		supplierStore.addAll(suppliers);
-		supplierCombo.setValue(invoice.getSupplier());
 	}
 
 	@Override

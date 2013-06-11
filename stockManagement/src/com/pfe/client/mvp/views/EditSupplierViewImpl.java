@@ -56,7 +56,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		setResizable(false);
 		setClosable(false);
 
-		// column configuration
+		// Column configuration
 		int ratio = 1;
 		ColumnConfig<InvoiceDTO, Integer> codeCol = new ColumnConfig<InvoiceDTO, Integer>(
 				props.code(), ratio, "Code");
@@ -185,11 +185,12 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 				editInvoiceView = new EditInvoiceViewImpl();
 				editInvoiceView.setPresenter(presenter);
 			}
-			editInvoiceView.setData(invoice);
-			//get list of all suppliers
+			
+			//Get available suppliers for combo selection
 			presenter.getAll();
-			//get all types
+			//Get available types
 			presenter.getProductTypes();
+			editInvoiceView.setData(invoice);
 			editInvoiceView.show();
 		}
 
