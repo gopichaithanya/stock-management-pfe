@@ -43,7 +43,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
 	
-	//private CreateInvoiceView createView;
+	private CreateInvoiceView createView;
 	private EditInvoiceView editView;
 	
 	public InvoiceListViewImpl(){
@@ -104,7 +104,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
 
-		//toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
+		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		//toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
@@ -112,6 +112,25 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		// new ClearFilterBtnHandler());
 	}
 
+
+	/**
+	 * Add new invoice handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class AddBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (createView == null) {
+				createView = new CreateInvoiceViewImpl();
+				createView.setPresenter(presenter);
+			}
+			createView.clearData();
+			createView.show();
+		}
+	}
 	
 	/**
 	 * Edit invoice handler
