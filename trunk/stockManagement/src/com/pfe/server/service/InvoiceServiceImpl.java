@@ -258,6 +258,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
 		
 		int size = (int) invoiceDao.count();
@@ -268,7 +269,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		if (sublist.size() > 0) {
 			for (Invoice invoice : sublist) {
-				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class,"miniInvoice"));
+				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, "miniInvoice"));
 			}
 		}
 		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());

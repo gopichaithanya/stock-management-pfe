@@ -78,7 +78,7 @@ public class Invoice implements Serializable{
 		this.restToPay = restToPay;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
 	public List<Shipment> getShipments() {
 		return shipments;
 	}
