@@ -51,6 +51,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 
 	@Override
+	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public InvoiceDTO find(Long id) {
 		Invoice invoice = invoiceDao.get(id);
 		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
