@@ -38,8 +38,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 		if (suppliers.size() > 0) {
 			for (Supplier supplier : suppliers) {
-				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,
-						"miniSupplier"));
+				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,"miniSupplier"));
 			}
 		}
 		return dtos;
@@ -56,8 +55,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 		if (sublist.size() > 0) {
 			for (Supplier supplier : sublist) {
-				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,
-						"miniSupplier"));
+				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,"miniSupplier"));
 			}
 		}
 		return new PagingLoadResultBean<SupplierDTO>(dtos, size,
@@ -69,8 +67,7 @@ public class SupplierServiceImpl implements SupplierService {
 	public SupplierDTO find(Long id) {
 		Supplier supplier = supplierDao.get(id);
 		if (supplier != null) {
-			SupplierDTO dto = dozerMapper.map(supplier, SupplierDTO.class,
-					"fullSupplier");
+			SupplierDTO dto = dozerMapper.map(supplier, SupplierDTO.class,"fullSupplier");
 			return dto;
 		}
 		return null;

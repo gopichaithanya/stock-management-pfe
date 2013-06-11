@@ -59,7 +59,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
 		
 		int size = (int) invoiceDao.count();
