@@ -14,4 +14,6 @@ public interface InvoiceServiceAsync {
 
 	void find(Long id, AsyncCallback<InvoiceDTO> callback);
 
+	void create(InvoiceDTO invoice, AsyncCallback<InvoiceDTO> callback);
+
 }

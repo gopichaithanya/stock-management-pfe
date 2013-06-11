@@ -26,6 +26,15 @@ public interface InvoiceService extends RemoteService {
 	public InvoiceDTO find(Long id);
 
 	/**
+	 * Adds invoice in database
+	 * 
+	 * @param invoice
+	 * @return
+	 * @throws BusinessException
+	 */
+	public InvoiceDTO create(InvoiceDTO invoice) throws BusinessException;
+	
+	/**
 	 * Updates invoice
 	 * 
 	 * @param buffer
