@@ -21,6 +21,8 @@ import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -103,13 +105,34 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
 
 		//toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
-		//toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		//toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		// toolbar.getClearFilterBtn().addSelectHandler(
 		// new ClearFilterBtnHandler());
 	}
 
+	
+	/**
+	 * Edit invoice handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class EditBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (editView == null) {
+				editView = new EditInvoiceViewImpl();
+				editView.setPresenter(presenter);
+			}
+			InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
+			presenter.find(invoice.getId());
+		}
+	}
+	
+	
 	@Override
 	public Widget asWidget() {
 		return verticalCon;

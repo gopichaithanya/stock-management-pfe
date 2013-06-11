@@ -15,6 +15,15 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
  */
 @RemoteServiceRelativePath("gxt3/invoiceService")
 public interface InvoiceService extends RemoteService {
+	
+	
+	/**
+	 * Retrieves invoice by id
+	 * 
+	 * @param id
+	 * @return invoice
+	 */
+	public InvoiceDTO find(Long id);
 
 	/**
 	 * Updates invoice
