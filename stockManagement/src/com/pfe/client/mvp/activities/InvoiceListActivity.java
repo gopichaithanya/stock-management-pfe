@@ -94,7 +94,20 @@ public class InvoiceListActivity extends AbstractActivity implements
 
 	@Override
 	public void create(InvoiceDTO invoice) {
-		// TODO Auto-generated method stub
+		invoiceService.create(invoice, new AsyncCallback<InvoiceDTO>() {
+			
+			@Override
+			public void onSuccess(InvoiceDTO result) {
+				view.addData(result);
+				view.getCreateView().hide();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 
@@ -144,12 +157,16 @@ public class InvoiceListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void getProductTypes() {
+	public void getProductTypes(final String window) {
 		pTypeService.getAll(new AsyncCallback<List<ProductTypeDTO>>() {
 			
 			@Override
 			public void onSuccess(List<ProductTypeDTO> result) {
-				view.getEditView().setProductTypes(result);
+				if ("create".equals(window)) {
+					view.getCreateView().setProductTypes(result);
+				} else if ("edit".equals(window)) {
+					view.getEditView().setProductTypes(result);
+				}
 				
 			}
 			
@@ -163,13 +180,16 @@ public class InvoiceListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void getSuppliers() {
+	public void getSuppliers(final String window) {
 		supplierService.getAll(new AsyncCallback<List<SupplierDTO>>() {
 			
 			@Override
 			public void onSuccess(List<SupplierDTO> result) {
-				view.getEditView().setSuppliers(result);
-				
+				if("create".equals(window)){
+					view.getCreateView().setSuppliers(result);
+				} else if("edit".equals(window)){
+					view.getEditView().setSuppliers(result);
+				}
 			}
 			
 			@Override

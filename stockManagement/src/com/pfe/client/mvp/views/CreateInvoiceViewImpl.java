@@ -10,6 +10,7 @@ import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.ShipmentProperties;
 import com.pfe.client.ui.properties.SupplierProperties;
+import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
@@ -26,6 +27,8 @@ import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutP
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.DateField;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
@@ -38,6 +41,7 @@ import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.grid.Grid.GridCell;
 import com.sencha.gxt.widget.core.client.grid.editing.ClicksToEdit;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
@@ -79,20 +83,18 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		fpanel.setBorders(false);
 
 		codeField = new NumberField<Integer>(new IntegerPropertyEditor());
-		codeField.setReadOnly(true);
 		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
 		dateField = new DateField();
 		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(".date"));
 		paymentField = new TextField();
-		paymentField.setReadOnly(true);
 		container.add(new FieldLabel(paymentField, "Payment Type"),new HtmlData(".payment"));
 		
 		// Supplier combo
 		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
 		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
-		supplierCombo.setEmptyText("Select a supplier...");
 		supplierCombo.setWidth(200);
 		supplierCombo.setTypeAhead(true);
+		supplierCombo.setForceSelection(true);
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
 		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(".supplier"));
 		
@@ -121,7 +123,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		// Check box selection model
 		IdentityValueProvider<ShipmentDTO> identity = new IdentityValueProvider<ShipmentDTO>();
 		CheckBoxSelectionModel<ShipmentDTO> sm = new CheckBoxSelectionModel<ShipmentDTO>(identity);
-		sm.setSelectionMode(SelectionMode.MULTI);
+		sm.setSelectionMode(SelectionMode.SINGLE);
 		
 		List<ColumnConfig<ShipmentDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<ShipmentDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
@@ -146,8 +148,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		ToolBar toolBar = new ToolBar();
 		TextButton addBtn = new TextButton("Add");
 		TextButton deleteBtn = new TextButton("Delete");
-		//addBtn.addSelectHandler(new AddBtnHandler());
-		//deleteBtn.addSelectHandler(new DeleteBtnHandler());
+		addBtn.addSelectHandler(new AddBtnHandler());
+		deleteBtn.addSelectHandler(new DeleteBtnHandler());
 		toolBar.add(addBtn);
 		toolBar.add(deleteBtn);
 		gridPanel.add(toolBar, new VerticalLayoutData(1, -1));
@@ -165,8 +167,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
-		//submitBtn.addSelectHandler(new SubmitBtnHandler());
-		//cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		submitBtn.addSelectHandler(new SubmitBtnHandler());
+		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
@@ -175,6 +177,91 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 
 		vp.add(fpanel);
 		this.add(vp);
+	}
+	
+	/**
+	 * Add shipment handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class AddBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			ShipmentDTO shipment = new ShipmentDTO();
+			shipment.setProductType(typeStore.get(0));
+			shipment.setUnitPrice(0);
+			shipment.setInitialQuantity(0);	
+			editingGrid.cancelEditing();
+		    shipmentStore.add(0, shipment);
+		    editingGrid.startEditing(new GridCell(0, 0));	
+		}
+	}
+	
+	/**
+	 * Delete shipment handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class DeleteBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
+			for(ShipmentDTO shipment : shipments){
+				shipmentStore.remove(shipment);
+			}
+		}
+	}
+	
+	/**
+	 * Save invoice 
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class SubmitBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+	
+			InvoiceDTO invoice = new InvoiceDTO();
+			invoice.setCode(codeField.getValue());
+			invoice.setCreated(dateField.getValue());
+			invoice.setPaymentType(paymentField.getValue());
+			invoice.setSupplier(supplierCombo.getValue());
+			//commit changes on grid
+			shipmentStore.commitChanges();
+			ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
+			shipments.addAll(shipmentStore.getAll());
+			for(ShipmentDTO shipment : shipments){
+				shipment.setInvoice(invoice);
+			}
+			invoice.setShipments(shipments);
+			presenter.create(invoice);
+			
+		}
+	}
+	
+	/**
+	 * Close window
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class CancelBtnHandler implements SelectHandler {
+
+		private Window w;
+		public CancelBtnHandler(Window w) {
+			this.w = w;
+		}
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			w.hide();
+		}
 	}
 	
 	
@@ -193,7 +280,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	@Override
 	public void setSuppliers(List<SupplierDTO> suppliers) {
 		this.supplierStore.addAll(suppliers);
-
+		supplierCombo.setValue(suppliers.get(0));
 	}
 
 	@Override

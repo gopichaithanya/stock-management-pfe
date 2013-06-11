@@ -49,13 +49,15 @@ public interface InvoicePresenter extends Presenter {
 	/**
 	 * Retrieves available types from database
 	 * 
+	 * @param window receiving data : edit or create invoice
 	 */
-	public void getProductTypes();
+	public void getProductTypes(String window);
 	
 	/**
 	 * Retrieves all suppliers
 	 * 
+	 * @param window receiving data : edit or create invoice
 	 */
-	public void getSuppliers();
+	public void getSuppliers(String window);
 	
 }
