@@ -237,7 +237,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			if (presenter instanceof SupplierPresenter) {
 				((SupplierPresenter) presenter).updateInvoice(invoice);
 			} else if (presenter instanceof InvoicePresenter) {
-
+				((InvoicePresenter) presenter).update(invoice);
 			}
 		}
 	}
