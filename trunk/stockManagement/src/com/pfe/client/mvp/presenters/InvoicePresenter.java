@@ -1,6 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
 import com.google.gwt.place.shared.Place;
+import com.pfe.shared.dto.InvoiceDTO;
 
 
 /**
@@ -16,6 +17,34 @@ public interface InvoicePresenter extends Presenter {
 	 * @param place
 	 */
 	public void goTo(Place place);
+	
+	/**
+	 * Calls RPC service to add new invoice
+	 * 
+	 * @param invoice
+	 */
+	public void create(InvoiceDTO invoice);
+	
+	/**
+	 * Retrieves invoice by id
+	 * 
+	 * @param id
+	 */
+	public void find(Long id);
+	
+	/**
+	 * Calls update service
+	 * 
+	 * @param updatedInvoice
+	 */
+	public void update(InvoiceDTO updatedInvoice);
+
+	/**
+	 * Calls delete service
+	 * 
+	 * @param invoice
+	 */
+	public void delete(InvoiceDTO invoice);
 	
 	
 }
