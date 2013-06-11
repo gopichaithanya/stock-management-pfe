@@ -82,4 +82,28 @@ public class InvoiceListActivity extends AbstractActivity implements
 
 	}
 
+	@Override
+	public void create(InvoiceDTO invoice) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void find(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(InvoiceDTO updatedInvoice) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(InvoiceDTO invoice) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
