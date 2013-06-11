@@ -54,8 +54,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public InvoiceDTO find(Long id) {
 		Invoice invoice = invoiceDao.get(id);
-		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
-		return dto;
+		return dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
 	}
 	
 	@Override
@@ -75,6 +74,28 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
 	}
 
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public InvoiceDTO create(InvoiceDTO invoice) throws BusinessException {
+
+		Invoice entity = dozerMapper.map(invoice, Invoice.class, "fullInvoice");
+		
+		entity.setPaymentType(Invoice.ONSALE_PAY);
+		entity.setRestToPay(new BigDecimal(0));
+		
+		List<Shipment> shipments = entity.getShipments();
+		for(Shipment shipment : shipments){
+			shipment.setCreated(entity.getCreated());
+			shipment.setCurrentQuantity(shipment.getInitialQuantity());
+			shipment.setPaid(false);
+			updateStocks(shipment);
+		}
+		
+		Invoice merged = invoiceDao.merge(entity);
+		return dozerMapper.map(merged, InvoiceDTO.class, "miniInvoice");
+	}
+	
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public InvoiceDTO update(InvoiceDTO updatedInvoice) throws BusinessException {
@@ -282,5 +303,4 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 
 	}
-
 }
