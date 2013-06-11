@@ -127,8 +127,17 @@ public class InvoiceListViewImpl implements InvoiceListView {
 				editView = new EditInvoiceViewImpl();
 				editView.setPresenter(presenter);
 			}
+			
+			//Get available suppliers for combo selection
+			presenter.getSuppliers();
+			
+			//Get available product types 
+			presenter.getProductTypes();
+			
+			//Get invoice
 			InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
 			presenter.find(invoice.getId());
+			
 		}
 	}
 	
@@ -205,6 +214,11 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	public void unmaskGrid() {
 		grid.unmask();
 
+	}
+
+	@Override
+	public EditInvoiceView getEditView() {
+		return this.editView;
 	}
 
 }

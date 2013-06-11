@@ -14,7 +14,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoader;
  * Contains UI components to display a list of invoice
  * 
  * @author Alexandra
- *
+ * 
  */
 public interface InvoiceListView extends IsWidget {
 
@@ -24,7 +24,7 @@ public interface InvoiceListView extends IsWidget {
 	 * @param presenter
 	 */
 	public void setPresenter(InvoicePresenter presenter);
-	
+
 	/**
 	 * Sets data to be rendered
 	 * 
@@ -43,28 +43,28 @@ public interface InvoiceListView extends IsWidget {
 	 * Clears the view components
 	 */
 	public void clearData();
-	
+
 	/**
 	 * Adds new line in list
 	 * 
 	 * @param invoice
 	 */
 	public void addData(InvoiceDTO invoice);
-	
+
 	/**
 	 * Updates record in list
 	 * 
 	 * @param invoice
 	 */
 	public void updateData(InvoiceDTO invoice);
-	
+
 	/**
 	 * Deletes record from list
 	 * 
 	 * @param invoice
 	 */
 	public void deleteData(InvoiceDTO invioce);
-	
+
 	/**
 	 * Set loader for paging
 	 * 
@@ -72,28 +72,31 @@ public interface InvoiceListView extends IsWidget {
 	 */
 	public void setPagingLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader);
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	//public CreateInvoiceView getCreateView();
-	
+	// public CreateInvoiceView getCreateView();
+
 	/**
 	 * 
 	 * @return
 	 */
-	//public EditInvoiceView getEditSupplierView();
-	
-	
+	public EditInvoiceView getEditView();
+
 	/**
 	 * Refresh the grid view
 	 * 
 	 */
 	public void refreshGrid();
 
+	/**
+	 * Masks invoice list while data is loading
+	 * 
+	 */
 	public void maskGrid();
-	
+
 	public void unmaskGrid();
-	
+
 }
