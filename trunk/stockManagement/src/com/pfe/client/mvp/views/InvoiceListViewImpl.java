@@ -128,6 +128,9 @@ public class InvoiceListViewImpl implements InvoiceListView {
 				createView.setPresenter(presenter);
 			}
 			createView.clearData();
+			//Get available types and suppliers for combo selection
+			presenter.getProductTypes("create");
+			presenter.getSuppliers("create");
 			createView.show();
 		}
 	}
@@ -148,10 +151,10 @@ public class InvoiceListViewImpl implements InvoiceListView {
 			}
 			
 			//Get available suppliers for combo selection
-			presenter.getSuppliers();
+			presenter.getSuppliers("edit");
 			
 			//Get available product types 
-			presenter.getProductTypes();
+			presenter.getProductTypes("edit");
 			
 			//Get invoice
 			InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
@@ -238,6 +241,11 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	@Override
 	public EditInvoiceView getEditView() {
 		return this.editView;
+	}
+
+	@Override
+	public CreateInvoiceView getCreateView() {
+		return this.createView;
 	}
 
 }

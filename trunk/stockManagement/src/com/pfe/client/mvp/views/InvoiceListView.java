@@ -77,7 +77,7 @@ public interface InvoiceListView extends IsWidget {
 	 * 
 	 * @return
 	 */
-	// public CreateInvoiceView getCreateView();
+	public CreateInvoiceView getCreateView();
 
 	/**
 	 * 

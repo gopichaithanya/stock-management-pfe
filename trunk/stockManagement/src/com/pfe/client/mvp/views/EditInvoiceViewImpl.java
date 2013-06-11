@@ -271,7 +271,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			//TODO finish this
 			ShipmentDTO shipment = new ShipmentDTO();
 			shipment.setProductType(typeStore.get(0));
 			shipment.setUnitPrice(0);
