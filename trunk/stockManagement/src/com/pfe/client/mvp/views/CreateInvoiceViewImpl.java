@@ -1,6 +1,7 @@
 package com.pfe.client.mvp.views;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
+import com.sencha.gxt.widget.core.client.form.SpinnerField;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -64,6 +66,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	private ListStore<SupplierDTO> supplierStore;
 	private ComboBox<SupplierDTO> supplierCombo;
 	private ComboBoxCell<ProductTypeDTO> typeCombo;
+	private SpinnerField<Integer> hourField;
+	private SpinnerField<Integer> minuteField;
 	
 	public CreateInvoiceViewImpl(){
 		setBodyBorder(false);
@@ -83,9 +87,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		fpanel.setBorders(false);
 
 		codeField = new NumberField<Integer>(new IntegerPropertyEditor());
-		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
-		dateField = new DateField();
-		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(".date"));
+		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));	
 		paymentField = new TextField();
 		container.add(new FieldLabel(paymentField, "Payment Type"),new HtmlData(".payment"));
 		
@@ -97,6 +99,18 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		supplierCombo.setForceSelection(true);
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
 		container.add(new FieldLabel(supplierCombo, "Supplier"), new HtmlData(".supplier"));
+		
+		dateField = new DateField();
+		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(".date"));
+		hourField = new SpinnerField<Integer>(new IntegerPropertyEditor());
+		hourField.setMinValue(0);
+		hourField.setMaxValue(23);
+		container.add(new FieldLabel(hourField, "Hour"), new HtmlData(".hour"));
+		minuteField = new SpinnerField<Integer>(new IntegerPropertyEditor());
+		minuteField.setWidth(20);
+		minuteField.setMinValue(0);
+		hourField.setMaxValue(59);
+		container.add(new FieldLabel(minuteField, "Minutes"), new HtmlData(".min"));
 		
 		// Column configuration
 		int ratio = 1;
@@ -226,10 +240,18 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-	
+			
+			Date date = dateField.getValue();
+			if(hourField.getValue() != null){
+				date.setHours(hourField.getValue());
+			}
+			if(minuteField.getValue() != null){
+				date.setMinutes(minuteField.getValue());
+			}
+			
 			InvoiceDTO invoice = new InvoiceDTO();
 			invoice.setCode(codeField.getValue());
-			invoice.setCreated(dateField.getValue());
+			invoice.setCreated(date);
 			invoice.setPaymentType(paymentField.getValue());
 			invoice.setSupplier(supplierCombo.getValue());
 			//commit changes on grid
@@ -301,8 +323,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	private native String getTableMarkup() /*-{
 		return [
 				'<table width=100% cellpadding=10 cellspacing=10>',
-				'<tr><td class=code width=30%></td><td class=date width=40%></td><td class=payment width=30%></td></tr>',
-				'<tr><td class=supplier width=50%></td><td></td> <td></td></tr>',
+				'<tr><td class=code width=20%></td><td class=supplier width=60%></td><td class=payment width=20%></td></tr>',
+				'<tr><td class=date width=40%></td> <td class=hour width=10%></td><td class=min width=10%></td></tr>',
 				'<tr><td class=shipments colspan=3></tr>', '</table>'
 
 		].join("");
