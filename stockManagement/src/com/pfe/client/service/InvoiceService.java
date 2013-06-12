@@ -24,6 +24,14 @@ public interface InvoiceService extends RemoteService {
 	 * @return invoice
 	 */
 	public InvoiceDTO find(Long id);
+	
+	/**
+	 * Retrieves invoices with paging
+	 * 
+	 * @param config
+	 * @return
+	 */
+	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config);
 
 	/**
 	 * Adds invoice in database
@@ -44,10 +52,10 @@ public interface InvoiceService extends RemoteService {
 	public InvoiceDTO update(InvoiceDTO updatedInvoice) throws BusinessException;
 	
 	/**
-	 * Retrieves invoices with paging
+	 * Deletes invoice from database
 	 * 
-	 * @param config
-	 * @return
+	 * @param invoice
+	 * @throws BusinessException
 	 */
-	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config);
+	public void delete(InvoiceDTO invoice) throws BusinessException;
 }
