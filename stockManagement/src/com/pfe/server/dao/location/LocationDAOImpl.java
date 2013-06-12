@@ -28,4 +28,10 @@ public class LocationDAOImpl extends BaseDaoImpl<Long, Location> implements
 		return l; 
 	}
 
+	@Override
+	public List<Location> search(int start, int limit) {
+		return findByCriteria(start, limit, (Criterion[])null);
+		 
+	}
+
 }
