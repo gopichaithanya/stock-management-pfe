@@ -13,6 +13,7 @@ import com.pfe.client.mvp.views.InvoiceListView;
 import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.SupplierDTO;
@@ -22,6 +23,7 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class InvoiceListActivity extends AbstractActivity implements
 		InvoicePresenter {
@@ -151,8 +153,27 @@ public class InvoiceListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void delete(InvoiceDTO invoice) {
-		// TODO Auto-generated method stub
+	public void delete(final InvoiceDTO invoice) {
+		invoiceService.delete(invoice, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				view.deleteData(invoice);
+				view.refreshGrid();
+				view.unmaskGrid();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof BusinessException){
+					view.unmaskGrid();
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
+				
+			}
+		});
 		
 	}
 

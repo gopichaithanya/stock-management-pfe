@@ -20,9 +20,12 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
+import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
+import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
@@ -110,7 +113,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
-		//toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		// toolbar.getClearFilterBtn().addSelectHandler(
 		// new ClearFilterBtnHandler());
@@ -167,6 +170,41 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		}
 	}
 	
+	/**
+	 * Delete invoice handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class DeleteBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+
+			confirmBox = new ConfirmMessageBox("Delete", "Are you sure you want to delete the invoice?");
+			final HideHandler hideHandler = new HideHandler() {
+
+				@Override
+				public void onHide(HideEvent event) {
+					Dialog btn = (Dialog) event.getSource();
+					String msg = btn.getHideButton().getText();
+					if (msg.equals("Yes")) {
+
+						InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
+						if (invoice != null) {
+							maskGrid();
+							presenter.delete(invoice);
+						}
+
+					} else if (msg.equals("No")) {
+						confirmBox.hide();
+					}
+				}
+			};
+			confirmBox.addHideHandler(hideHandler);
+			confirmBox.show();
+		}
+	}
 	
 	@Override
 	public Widget asWidget() {
