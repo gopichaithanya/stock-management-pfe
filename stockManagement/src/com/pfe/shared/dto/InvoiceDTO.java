@@ -6,6 +6,9 @@ import java.util.Date;
 
 public class InvoiceDTO implements Serializable {
 	
+	public static final String IMMEDIATE_PAY = "immediate";
+	public static final String ONSALE_PAY = "onSale";
+	
 	private Long id;
 	private int code;
 	private SupplierDTO supplier;
