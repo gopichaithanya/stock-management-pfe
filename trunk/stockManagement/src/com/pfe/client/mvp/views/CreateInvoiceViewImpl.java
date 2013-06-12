@@ -19,8 +19,10 @@ import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
@@ -35,7 +37,8 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor.IntegerPropertyEditor;
-import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
+import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -54,7 +57,6 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	private InvoicePresenter presenter;
 	
 	private NumberField<Integer> codeField;
-	private TextField paymentField;
 	private Grid<ShipmentDTO> grid;
 	private GridInlineEditing<ShipmentDTO> editingGrid;
 	private ListStore<ShipmentDTO> shipmentStore;
@@ -62,6 +64,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	private ListStore<SupplierDTO> supplierStore;
 	private ComboBox<SupplierDTO> supplierCombo;
 	private ComboBoxCell<ProductTypeDTO> typeCombo;
+	private SimpleComboBox<String> paymentCombo;
 	
 	public CreateInvoiceViewImpl(){
 		setBodyBorder(false);
@@ -81,14 +84,18 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		fpanel.setBorders(false);
 
 		codeField = new NumberField<Integer>(new IntegerPropertyEditor());
-		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));	
-		paymentField = new TextField();
-		container.add(new FieldLabel(paymentField, "Payment Type"),new HtmlData(".payment"));
+		codeField.addValidator(new EmptyValidator<Integer>());
+		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
+		paymentCombo = new SimpleComboBox<String>(new StringLabelProvider<String>());
+		paymentCombo.add(InvoiceDTO.IMMEDIATE_PAY);
+		paymentCombo.add(InvoiceDTO.ONSALE_PAY);
+		paymentCombo.addValidator(new EmptyValidator<String>());
+		container.add(new FieldLabel(paymentCombo, "Payment Type"),new HtmlData(".payment"));
 		
 		// Supplier combo
 		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
 		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
-		supplierCombo.setWidth(200);
+		supplierCombo.setWidth(180);
 		supplierCombo.setTypeAhead(true);
 		supplierCombo.setForceSelection(true);
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
@@ -223,19 +230,25 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			
-			InvoiceDTO invoice = new InvoiceDTO();
-			invoice.setCode(codeField.getValue());
-			invoice.setPaymentType(paymentField.getValue());
-			invoice.setSupplier(supplierCombo.getValue());
-			//commit changes on grid
-			shipmentStore.commitChanges();
-			ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
-			shipments.addAll(shipmentStore.getAll());
-			for(ShipmentDTO shipment : shipments){
-				shipment.setInvoice(invoice);
+			if(!paymentCombo.isValid() || !codeField.isValid()){
+				AlertMessageBox alertBox = new AlertMessageBox("Bad input", 
+						"Please provide correct values for code and payment type");
+				alertBox.show();
+			}else{
+				InvoiceDTO invoice = new InvoiceDTO();
+				invoice.setCode(codeField.getValue());
+				invoice.setPaymentType(paymentCombo.getValue());
+				invoice.setSupplier(supplierCombo.getValue());
+				//commit changes on grid
+				shipmentStore.commitChanges();
+				ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
+				shipments.addAll(shipmentStore.getAll());
+				for(ShipmentDTO shipment : shipments){
+					shipment.setInvoice(invoice);
+				}
+				invoice.setShipments(shipments);
+				presenter.create(invoice);
 			}
-			invoice.setShipments(shipments);
-			presenter.create(invoice);
 			
 		}
 	}
@@ -281,7 +294,6 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	@Override
 	public void clearData() {
 		codeField.clear();
-		paymentField.clear();
 		typeStore.clear();
 		supplierStore.clear();
 		shipmentStore.clear();
@@ -294,8 +306,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	 */
 	private native String getTableMarkup() /*-{
 		return [
-				'<table width=100% cellpadding=10 cellspacing=10>',
-				'<tr><td class=code width=20%></td><td class=supplier width=60%></td><td class=payment width=20%></td></tr>',
+				'<table width=100% cellpadding=10 cellspacing=20>',
+				'<tr><td class=code width=20%></td><td class=supplier width=50%></td><td class=payment width=20%></td></tr>',
 				'<tr><td class=shipments colspan=3></tr>', '</table>'
 
 		].join("");

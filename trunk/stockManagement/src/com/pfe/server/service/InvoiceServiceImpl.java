@@ -84,7 +84,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Invoice entity = dozerMapper.map(invoice, Invoice.class, "fullInvoice");
 		//Get current date time
 		Date today = Calendar.getInstance().getTime();
-		entity.setPaymentType(Invoice.ONSALE_PAY);
+		entity.setPaymentType(invoice.getPaymentType());
 		entity.setRestToPay(new BigDecimal(0));
 		entity.setCreated(today);
 		
@@ -92,7 +92,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 		for(Shipment shipment : shipments){
 			shipment.setCreated(entity.getCreated());
 			shipment.setCurrentQuantity(shipment.getInitialQuantity());
-			shipment.setPaid(false);
+			
+			if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
+				//Shipment is considered paid and debt is increased by its price
+				shipment.setPaid(true);
+				BigDecimal price = new BigDecimal(shipment.getInitialQuantity()).multiply(shipment.getUnitPrice());
+				BigDecimal debt = entity.getRestToPay().add(price);
+				entity.setRestToPay(debt);
+			} else if(Invoice.ONSALE_PAY.equals(invoice.getPaymentType())){
+				//Shipment is unpaid until sold and has no effect on debt when created
+				shipment.setPaid(false);
+			}
+			
 			updateStocks(shipment);
 		}
 		
@@ -103,7 +114,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public InvoiceDTO update(InvoiceDTO updatedInvoice) throws BusinessException {
-				
+		
+		//We don't allow update on code, creation date or payment type
 		Long id = updatedInvoice.getId();
 		Invoice invoice = invoiceDao.get(id);
 		
@@ -136,26 +148,41 @@ public class InvoiceServiceImpl implements InvoiceService {
 			//Shipment is new
 			if(shipment.getId() == null){
 				shipment.setCurrentQuantity(shipment.getInitialQuantity());
+				
+				if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
+					//Shipment is considered paid and debt is increased by its price
+					shipment.setPaid(true);
+					BigDecimal price = new BigDecimal(shipment.getInitialQuantity()).multiply(shipment.getUnitPrice());
+					BigDecimal debt = invoice.getRestToPay().add(price);
+					invoice.setRestToPay(debt);
+				} else if(Invoice.ONSALE_PAY.equals(invoice.getPaymentType())){
+					//Shipment is unpaid until sold and has no effect on debt when created
+					shipment.setPaid(false);
+				}
+				
 			} 
 			//Shipment is updated
 			else{
 				manageShipmentExceptions(shipment);
+				
+				if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
+					//Shipment is paid but we have to recompute the debt
+					Shipment initial = shipmentDao.get(shipment.getId());
+					BigDecimal initialPrice = new BigDecimal(initial.getInitialQuantity()).multiply(initial.getUnitPrice());
+					BigDecimal currentPrice = new BigDecimal(shipment.getInitialQuantity()).multiply(shipment.getUnitPrice());
+					BigDecimal debt = invoice.getRestToPay().subtract(initialPrice).add(currentPrice);
+					invoice.setRestToPay(debt);
+					
+				} else if(Invoice.ONSALE_PAY.equals(invoice.getPaymentType())){
+					//Nothing to do for now; shipment is already unpaid
+				}
 			}
 			
 			updateStocks(shipment);
 			shipment.setCreated(invoice.getCreated());
-			if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
-				shipment.setPaid(true);
-			} else{
-				shipment.setPaid(false);
-			}
-			
 			shipment.setInvoice(invoice);
 			shipments.add(shipment);
 			
-			//Update debt
-			BigDecimal debtDifference = getDebtDifference(shipment);
-			invoice.setRestToPay(invoice.getRestToPay().add(debtDifference));
 		}
 		invoice.setShipments(shipments);
 		invoiceDao.merge(invoice);	
@@ -275,29 +302,4 @@ public class InvoiceServiceImpl implements InvoiceService {
 		locationDao.merge(warehouse);
 	}
 	
-	/**
-	 * Calculates debt difference to add to the invoice when updating or adding
-	 * a shipment
-	 * 
-	 * @param shipment
-	 * @return sum to add to invoice debt
-	 */
-	private BigDecimal getDebtDifference(Shipment shipment){
-		
-		//Compute shipment total price
-		BigDecimal debt = new BigDecimal(shipment.getInitialQuantity()).multiply(shipment.getUnitPrice());
-		
-		//For a new shipment add its price to the invoice debt
-		if(shipment.getId() == null){
-			return debt;
-		} 
-		//For an updated shipment compute new debt minus old debt 
-		else{
-			Shipment initialShipment = shipmentDao.get(shipment.getId());
-			BigDecimal initialDebt = new BigDecimal(initialShipment.getInitialQuantity()).
-					multiply(initialShipment.getUnitPrice());
-			return debt.subtract(initialDebt);
-		}
-
-	}
 }
