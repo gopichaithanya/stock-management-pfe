@@ -59,7 +59,17 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 		<class-b>com.pfe.shared.dto.ProductTypeDTO</class-b>
 	</mapping>
 
-	<mapping>
+	<mapping map-id="miniLocation">
+		<class-a>com.pfe.shared.model.Location</class-a>
+		<class-b>com.pfe.shared.dto.LocationDTO</class-b>
+		
+		<field-exclude>
+			<a>stocks</a>
+			<b>stocks</b>
+		</field-exclude>
+	</mapping>
+	
+	<mapping map-id="fullLocation">
 		<class-a>com.pfe.shared.model.Location</class-a>
 		<class-b>com.pfe.shared.dto.LocationDTO</class-b>
 	</mapping>
