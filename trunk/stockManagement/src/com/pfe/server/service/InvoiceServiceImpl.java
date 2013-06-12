@@ -2,6 +2,8 @@ package com.pfe.server.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
@@ -80,9 +82,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public InvoiceDTO create(InvoiceDTO invoice) throws BusinessException {
 
 		Invoice entity = dozerMapper.map(invoice, Invoice.class, "fullInvoice");
-		
+		//Get current date time
+		Date today = Calendar.getInstance().getTime();
 		entity.setPaymentType(Invoice.ONSALE_PAY);
 		entity.setRestToPay(new BigDecimal(0));
+		entity.setCreated(today);
 		
 		List<Shipment> shipments = entity.getShipments();
 		for(Shipment shipment : shipments){
@@ -122,9 +126,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 		//Debt update
 		BigDecimal updatedDebt = new BigDecimal(updatedInvoice.getRestToPay());
 		invoice.setRestToPay(updatedDebt);
-		
-		//Date update
-		invoice.setCreated(updatedInvoice.getCreated());
 		
 		//Shipments update
 		List<ShipmentDTO> shipmentDtos = updatedInvoice.getShipments();
@@ -210,11 +211,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			LocationType warehouseType = locationTypeDao.getWarehouseType();
 			Location warehouse = locationDao.get(warehouseType).get(0);
 			Stock stock = stockDao.get(warehouse, initialShipment.getProductType());
-			if(stock == null){
-				throw new BusinessException("Cannot update shipment : not enough goods to remove from the" +
-						" warehouse");
-			}
-			else if(stock.getQuantity() < removedQty){
+			if(stock == null || stock.getQuantity() < removedQty){
 				throw new BusinessException("Cannot update shipment : not enough goods to remove from the" +
 						" warehouse");
 			}

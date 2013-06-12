@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -63,8 +65,10 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		ColumnConfig<InvoiceDTO, Double> debtCol = new ColumnConfig<InvoiceDTO, Double>(
 				props.restToPay(), ratio, "Debt");
 		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(
-				props.created(), 3 * ratio, "Payment");
-
+				props.created(), 3 * ratio, "Created on");
+		DateCell dateCell = new DateCell(DateTimeFormat.getFormat("dd/MM/yyyy HH-mm-ss"));
+		dateCol.setCell(dateCell);
+		
 		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(codeCol);
