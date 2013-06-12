@@ -10,6 +10,7 @@ import com.pfe.client.mvp.views.SupplierDetailView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.mvp.views.WelcomeView;
 import com.pfe.client.service.InvoiceServiceAsync;
+import com.pfe.client.service.LocationServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.ShipmentServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
@@ -81,5 +82,12 @@ public interface ClientFactory {
 	 * @return
 	 */
 	public ShipmentServiceAsync getShipmentService();
+	
+	/**
+	 * Creates RPC service for operations on locations
+	 * 
+	 * @return
+	 */
+	public LocationServiceAsync getLocationService();
 
 }
