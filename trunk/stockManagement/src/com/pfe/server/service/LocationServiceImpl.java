@@ -32,6 +32,7 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public PagingLoadResult<LocationDTO> search(FilterPagingLoadConfig config) {
 		
+		//TODO retrieve ordered by date
 		int size = (int) locationDao.count();
 		int start = config.getOffset();
 		int limit = config.getLimit();

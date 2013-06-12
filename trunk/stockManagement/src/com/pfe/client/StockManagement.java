@@ -17,6 +17,7 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.ClientFactoryImpl;
 import com.pfe.client.mvp.DetailsActivityMapper;
 import com.pfe.client.mvp.places.InvoiceListPlace;
+import com.pfe.client.mvp.places.LocationListPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
 import com.pfe.client.mvp.places.SupplierListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
@@ -145,8 +146,10 @@ public class StockManagement implements EntryPoint {
 				MenuItem item = (MenuItem) event.getSelectedItem();
 				String text = item.getText();
 				if ("Location Types".equals(text)) {
-					//goTo(new ProductTypeListPlace());
-				} else if ("Locations".equals(text)) {}
+					//goTo(new LocationTypeListPlace());
+				} else if ("Locations".equals(text)) {
+					goTo(new LocationListPlace());
+				}
 				
 			}
 		});
