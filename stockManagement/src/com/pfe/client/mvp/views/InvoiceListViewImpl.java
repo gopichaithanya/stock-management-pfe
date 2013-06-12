@@ -66,7 +66,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 				props.restToPay(), ratio, "Debt");
 		ColumnConfig<InvoiceDTO, Date> dateCol = new ColumnConfig<InvoiceDTO, Date>(
 				props.created(), 3 * ratio, "Created on");
-		DateCell dateCell = new DateCell(DateTimeFormat.getFormat("dd/MM/yyyy HH-mm-ss"));
+		DateCell dateCell = new DateCell(DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss"));
 		dateCol.setCell(dateCell);
 		
 		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();

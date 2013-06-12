@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -97,7 +98,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		codeField = new NumberField<Integer>(new IntegerPropertyEditor());
 		codeField.setReadOnly(true);
 		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
-		DateTimePropertyEditor dateEditor = new DateTimePropertyEditor(DateTimeFormat.getFormat("dd/MM/yyyy HH-mm-ss"));
+		DateTimePropertyEditor dateEditor = new DateTimePropertyEditor(DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss"));
 		dateField = new DateField(dateEditor);
 		dateField.setReadOnly(true);
 		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(".date"));
@@ -134,6 +135,8 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 				shipProps.paid(), ratio, "Paid");
 		ColumnConfig<ShipmentDTO, Date> dateCol = new ColumnConfig<ShipmentDTO, Date>(
 				shipProps.created(), 3 * ratio, "Created");
+		DateCell dateCell = new DateCell(DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss"));
+		dateCol.setCell(dateCell);
 		
 		// Product type combo
 		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
