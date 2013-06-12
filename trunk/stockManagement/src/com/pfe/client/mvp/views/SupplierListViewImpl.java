@@ -53,13 +53,13 @@ public class SupplierListViewImpl implements SupplierListView {
 
 	public SupplierListViewImpl() {
 		
-		// check box selection model
+		// Check box selection model
 		IdentityValueProvider<SupplierDTO> identity = new IdentityValueProvider<SupplierDTO>();
 		CheckBoxSelectionModel<SupplierDTO> sm = new CheckBoxSelectionModel<SupplierDTO>(
 				identity);
 		sm.setSelectionMode(SelectionMode.SINGLE);
 
-		// column configuration
+		// Column configuration
 		int ratio = 1;
 		ColumnConfig<SupplierDTO, String> nameCol = new ColumnConfig<SupplierDTO, String>(
 				props.name(), ratio, "Name");
@@ -70,8 +70,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
 		columnConfigList.add(descCol);
-		ColumnModel<SupplierDTO> cm = new ColumnModel<SupplierDTO>(
-				columnConfigList);
+		ColumnModel<SupplierDTO> cm = new ColumnModel<SupplierDTO>(columnConfigList);
 		store = new ListStore<SupplierDTO>(props.key());
 
 		// Grid
@@ -157,7 +156,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	
 	
 	/**
-	 * Delete type handler
+	 * Delete supplier handler
 	 * 
 	 * @author Alexandra
 	 * 
@@ -166,9 +165,7 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-
-			confirmBox = new ConfirmMessageBox("Delete",
-					"Are you sure you want to delete the supplier?");
+			confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the supplier?");
 			final HideHandler hideHandler = new HideHandler() {
 
 				@Override
@@ -176,9 +173,7 @@ public class SupplierListViewImpl implements SupplierListView {
 					Dialog btn = (Dialog) event.getSource();
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
-
-						SupplierDTO supplier = grid.getSelectionModel()
-								.getSelectedItem();
+						SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
 						if (supplier != null) {
 							maskGrid();
 							presenter.delete(supplier);
