@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
@@ -37,6 +38,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.DateField;
+import com.sencha.gxt.widget.core.client.form.DateTimePropertyEditor;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
@@ -95,7 +97,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		codeField = new NumberField<Integer>(new IntegerPropertyEditor());
 		codeField.setReadOnly(true);
 		container.add(new FieldLabel(codeField, "Code"), new HtmlData(".code"));
-		dateField = new DateField();
+		DateTimePropertyEditor dateEditor = new DateTimePropertyEditor(DateTimeFormat.getFormat("dd/MM/yyyy HH-mm-ss"));
+		dateField = new DateField(dateEditor);
+		dateField.setReadOnly(true);
 		container.add(new FieldLabel(dateField, "Created On"), new HtmlData(".date"));
 		paymentField = new TextField();
 		paymentField.setReadOnly(true);
@@ -225,7 +229,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			}
 
 			invoice.setCode(codeField.getValue());
-			invoice.setCreated(dateField.getValue());
 			invoice.setPaymentType(paymentField.getValue());
 			invoice.setSupplier(supplierCombo.getValue());
 			//commit changes on grid
