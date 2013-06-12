@@ -4,10 +4,12 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.pfe.client.mvp.activities.InvoiceListActivity;
+import com.pfe.client.mvp.activities.LocationListActivity;
 import com.pfe.client.mvp.activities.ProductTypeListActivity;
 import com.pfe.client.mvp.activities.SupplierListActivity;
 import com.pfe.client.mvp.activities.WelcomeActivity;
 import com.pfe.client.mvp.places.InvoiceListPlace;
+import com.pfe.client.mvp.places.LocationListPlace;
 import com.pfe.client.mvp.places.ProductTypeDetailPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
 import com.pfe.client.mvp.places.SupplierDetailPlace;
@@ -29,6 +31,7 @@ public class AppActivityMapper implements ActivityMapper {
 	private ProductTypeListActivity productTypeActivity;
 	private SupplierListActivity supplierActivity;
 	private InvoiceListActivity invoiceActivity;
+	private LocationListActivity locationActivity;
 
 	public AppActivityMapper(ClientFactory clientFactory) {
 		super();
@@ -50,6 +53,10 @@ public class AppActivityMapper implements ActivityMapper {
 		} else if(place instanceof InvoiceListPlace){
 			invoiceActivity = new InvoiceListActivity(clientFactory);
 			return invoiceActivity;
+			
+		} else if(place instanceof LocationListPlace){
+			locationActivity = new LocationListActivity(clientFactory);
+			return locationActivity;
 			
 		} else if(place instanceof ProductTypeDetailPlace){
 			return productTypeActivity;
