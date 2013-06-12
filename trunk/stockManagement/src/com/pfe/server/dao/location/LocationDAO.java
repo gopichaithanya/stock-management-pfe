@@ -14,4 +14,13 @@ public interface LocationDAO extends IBaseDao<Long, Location> {
 	 * @return list of locations of given type
 	 */
 	public List<Location> get(LocationType type);
+	
+	/**
+	 * Retrieves records from start to limit index.
+	 * 
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	public List<Location> search(int start, int limit); 
 }
