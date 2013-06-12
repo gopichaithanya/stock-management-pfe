@@ -55,7 +55,7 @@ public class Location implements Serializable{
 		this.type = type;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "location")
 	public List<Stock> getStocks() {
 		return stocks;
 	}
