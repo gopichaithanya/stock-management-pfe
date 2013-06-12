@@ -121,37 +121,37 @@ public class StockManagement implements EntryPoint {
 	 * 
 	 */
 	public void buildToolbar() {
-
-		SelectionHandler<Item> handler = new SelectionHandler<Item>() {
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				MenuItem item = (MenuItem) event.getSelectedItem();
-				String text = item.getText();
-				if ("Product Types".equals(text)) {
-					goTo(new ProductTypeListPlace());
-				} else if ("Stocks".equals(text)) {}
-			}
-		};
-
+		
 		toolBar = new ToolBar();
 		toolBar.setSpacing(5);
 		toolBar.setPadding(new Padding(10));
 		toolBar.setHeight(40);
 
-		Menu productMenu = new Menu();
-		productMenu.addSelectionHandler(handler);
-		TextButton productBtn = new TextButton("Products",
-				ImageResources.INSTANCE.addProductIcon());
-		productBtn.setMenu(productMenu);
-		MenuItem pTypeItem = new MenuItem("Product Types");
-		MenuItem stockItem = new MenuItem("Stocks");
-		productMenu.add(pTypeItem);
-		productMenu.add(stockItem);
+		TextButton productBtn = new TextButton("Products",ImageResources.INSTANCE.addProductIcon());
+		productBtn.addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				goTo(new ProductTypeListPlace());
+				
+			}
+		});
 
 		Menu storageMenu = new Menu();
-		storageMenu.addSelectionHandler(handler);
-		TextButton storageBtn = new TextButton("Storage",
-				ImageResources.INSTANCE.addStoreItcon());
+		storageMenu.addSelectionHandler(new SelectionHandler<Item>() {
+
+			@Override
+			public void onSelection(SelectionEvent<Item> event) {
+				MenuItem item = (MenuItem) event.getSelectedItem();
+				String text = item.getText();
+				if ("Location Types".equals(text)) {
+					//goTo(new ProductTypeListPlace());
+				} else if ("Locations".equals(text)) {}
+				
+			}
+		});
+		
+		TextButton storageBtn = new TextButton("Storage",ImageResources.INSTANCE.addStoreItcon());
 		storageBtn.setMenu(storageMenu);
 		MenuItem lTypeItem = new MenuItem("Location Types");
 		MenuItem locationItem = new MenuItem("Locations");
@@ -159,7 +159,6 @@ public class StockManagement implements EntryPoint {
 		storageMenu.add(locationItem);
 
 		TextButton supplierBtn = new TextButton("Suppliers",ImageResources.INSTANCE.addSupplierIcon());
-		TextButton invoiceBtn = new TextButton("Invoices",ImageResources.INSTANCE.addInvoiceIcon());
 		supplierBtn.addSelectHandler(new SelectHandler(){
 			@Override
 			public void onSelect(SelectEvent event) {
@@ -167,6 +166,7 @@ public class StockManagement implements EntryPoint {
 			}
 			
 		});
+		TextButton invoiceBtn = new TextButton("Invoices",ImageResources.INSTANCE.addInvoiceIcon());
 		invoiceBtn.addSelectHandler(new SelectHandler() {
 			
 			@Override
@@ -175,11 +175,12 @@ public class StockManagement implements EntryPoint {
 				
 			}
 		});
-		
+		TextButton reportBtn = new TextButton("Reports",ImageResources.INSTANCE.addInvoiceIcon());
 		toolBar.add(productBtn);
 		toolBar.add(storageBtn);
 		toolBar.add(supplierBtn);
 		toolBar.add(invoiceBtn);
+		toolBar.add(reportBtn);
 	}
 
 	public void goTo(Place place) {
