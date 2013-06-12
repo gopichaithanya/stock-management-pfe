@@ -16,4 +16,6 @@ public interface InvoiceServiceAsync {
 
 	void create(InvoiceDTO invoice, AsyncCallback<InvoiceDTO> callback);
 
+	void delete(InvoiceDTO invoice, AsyncCallback<Void> callback);
+
 }

@@ -112,7 +112,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public InvoiceDTO update(InvoiceDTO updatedInvoice) throws BusinessException {
 		
 		//We don't allow update on code, creation date or payment type
@@ -163,7 +163,19 @@ public class InvoiceServiceImpl implements InvoiceService {
 			} 
 			//Shipment is updated
 			else{
-				manageShipmentExceptions(shipment);
+				//Retrieve original shipment form database
+				Shipment initialShipment = shipmentDao.get(shipment.getId());
+				manageShipmentExceptions(shipment, initialShipment);
+				int initialQty = initialShipment.getInitialQuantity();
+				int updatedQty =  shipment.getInitialQuantity();
+				if(initialQty < updatedQty){
+					//add quantity to current quantity
+					int surplus = updatedQty - initialQty;
+					shipment.setCurrentQuantity(shipment.getCurrentQuantity() + surplus);
+				} else if(initialQty > updatedQty){
+					int removed = initialQty - updatedQty;
+					shipment.setCurrentQuantity(shipment.getCurrentQuantity() - removed);
+				}
 				
 				if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
 					//Shipment is paid but we have to recompute the debt
@@ -189,18 +201,50 @@ public class InvoiceServiceImpl implements InvoiceService {
 		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
 		return dto;
 	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(InvoiceDTO invoice) throws BusinessException {
+		Invoice entity = invoiceDao.get(invoice.getId());
+		List<Shipment> shipments = entity.getShipments();
+		if(shipments.size() > 0){
+			LocationType warehouseType = locationTypeDao.getWarehouseType();
+			Location warehouse = locationDao.get(warehouseType).get(0);
+			
+			for(Shipment shipment : shipments){
+				if(shipment.getCurrentQuantity() != shipment.getInitialQuantity()){
+					throw new BusinessException("Invoice cannot be deleted : some items have been sold.");
+				}
+				Stock stock = stockDao.get(warehouse, shipment.getProductType());
+				int qty = shipment.getInitialQuantity();
+				if(stock == null || stock.getQuantity() < qty){
+					throw new BusinessException("Invoice cannot be deleted : not enough goods to remove from the" +
+							" warehouse");
+				}
+				int availableQty = stock.getQuantity();
+				stock.setQuantity(availableQty - qty);
+				stockDao.merge(stock);
+				shipmentDao.delete(shipment);
+				
+			}
+		}
+		Supplier supplier = entity.getSupplier();
+		supplier.getInvoices().remove(entity);
+		supplierDao.merge(supplier);
+		invoiceDao.delete(entity);
+	}
 
 	/**
 	 * Checks for business exceptions when updating a shipment. Exceptions may
 	 * occur when updating the shipment's initial quantity or product type.
 	 * 
-	 * @param updatedShipment
+	 * @param updatedShipment object after update in interface
+	 * @param initialShipment object as it is in database
 	 * @throws BusinessException
 	 */
-	private void manageShipmentExceptions(Shipment updatedShipment) throws BusinessException{
+	private void manageShipmentExceptions(Shipment updatedShipment, Shipment initialShipment) 
+			throws BusinessException{
 		
-		//Retrieve original shipment form database
-		Shipment initialShipment = shipmentDao.get(updatedShipment.getId());
 		int removedQty = 0;
 		
 		//Shipment type was changed 
@@ -220,7 +264,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		//Shipment type was not changed
 		else{
 			
-			//Current quantity greated than initial quantity
+			//Current quantity greater than initial quantity
 			if(initialShipment.getCurrentQuantity() > updatedShipment.getInitialQuantity()){
 				throw new BusinessException("Cannot update shipment : initial quantity is inferior " +
 						" to current quantity");
@@ -247,7 +291,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	/**
-	 * Updates stocks when adding or updating a shipment
+	 * Updates stocks when adding or updating a shipment.
+	 * Only warehouse stocks may be changed
 	 * 
 	 * @param shipment
 	 */
