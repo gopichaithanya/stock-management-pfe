@@ -9,7 +9,9 @@ import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.mvp.views.LocationListView;
 import com.pfe.client.service.LocationServiceAsync;
+import com.pfe.client.service.StockServiceAsync;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.StockDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
@@ -21,12 +23,14 @@ public class LocationListActivity extends AbstractActivity implements
 		LocationPresenter {
 	private ClientFactory clientFactory;
 	private LocationServiceAsync locationService;
+	private StockServiceAsync stockService;
 	
 	private LocationListView view;
 	
 	public LocationListActivity(ClientFactory clientFactory){
 		this.clientFactory = clientFactory;
 		this.locationService = clientFactory.getLocationService();
+		this.stockService = clientFactory.getStockService();
 	}
 	
 	@Override
@@ -98,6 +102,25 @@ public class LocationListActivity extends AbstractActivity implements
 			}
 		});
 
+	}
+
+	@Override
+	public void sell(StockDTO stock, int quantity) {
+		stockService.sell(stock, quantity, new AsyncCallback<StockDTO>() {
+			
+			@Override
+			public void onSuccess(StockDTO result) {
+				System.out.println("Success");
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 }

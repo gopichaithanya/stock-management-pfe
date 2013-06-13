@@ -33,7 +33,6 @@ import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.info.Info;
 
 public class EditLocationViewImpl extends Window implements EditLocationView {
 	
@@ -49,6 +48,8 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	private Window sellWindow;
 	private NumberField<Integer> sellQtyField;
 	private TextButton sellQtyBtn;
+	
+	private StockDTO selectedStock;
 
 	public EditLocationViewImpl(){
 		setModal(true);
@@ -150,10 +151,10 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			int row = event.getContext().getIndex();
-			StockDTO selected = store.get(row);
+			selectedStock = store.get(row);
 			sellQtyField.getValidators().clear();
-			sellQtyField.addValidator(new MaxNumberValidator<Integer>(selected.getQuantity()));
-			sellWindow.setHeadingText("Sell " + selected.getType().getName());
+			sellQtyField.addValidator(new MaxNumberValidator<Integer>(selectedStock.getQuantity()));
+			sellWindow.setHeadingText("Sell " + selectedStock.getType().getName());
 			sellWindow.show();
 		}
 		
@@ -170,7 +171,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			if(sellQtyField.isValid()){
-				//call presenter here
+				presenter.sell(selectedStock, sellQtyField.getValue());
 				sellWindow.hide();
 			}
 			else {

@@ -44,6 +44,7 @@ public class StockServiceImpl implements StockService {
 		//Retrieve shipments until we have the required to sell
 		while(retrievedQty < quantity){
 			
+			//TODO retrieve them ordered by date
 			List<Shipment> shipments = shipmentDao.search(start, 1, type);
 			if(shipments.size() == 0){
 				throw new BusinessException("Not enough goods.");
