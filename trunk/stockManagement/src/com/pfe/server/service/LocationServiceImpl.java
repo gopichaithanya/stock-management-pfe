@@ -6,6 +6,8 @@ import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.LocationService;
 import com.pfe.server.dao.location.LocationDAO;
@@ -45,6 +47,14 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return new PagingLoadResultBean<LocationDTO>(dtos, size, config.getOffset());
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
+	public LocationDTO find(Long id) {
+		Location entity = locationDao.get(id);
+		LocationDTO dto = dozerMapper.map(entity, LocationDTO.class, "fullLocation");
+		return dto;
 	}
 
 }
