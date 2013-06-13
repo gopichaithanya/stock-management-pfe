@@ -13,17 +13,27 @@ import com.sencha.gxt.cell.core.client.TextButtonCell;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
+import com.sencha.gxt.widget.core.client.form.NumberField;
+import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.info.Info;
 
 public class EditLocationViewImpl extends Window implements EditLocationView {
 	
@@ -35,9 +45,14 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	private TextField typeField;
 	private Grid<StockDTO> grid;
 	private ListStore<StockDTO> store;
+	
+	private Window sellWindow;
+	private NumberField<Integer> sellQtyField;
+	private TextButton sellQtyBtn;
 
 	public EditLocationViewImpl(){
 		setModal(true);
+		setMinHeight(430);
 		
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
@@ -69,6 +84,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		ColumnModel<StockDTO> cm = new ColumnModel<StockDTO>(columnConfigList);
 		TextButtonCell sellBtn = new TextButtonCell();
 		sellBtn.setText("Sell");
+		sellBtn.addSelectHandler(new SellBtnHandler());
 		sellCol.setCell(sellBtn);
 		TextButtonCell shipBtn = new TextButtonCell();
 		shipBtn.setText("Ship");
@@ -79,9 +95,11 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
-		grid.setBorders(true);
 		grid.setHeight(200);
-		container.add(new FieldLabel(grid, "Stocks"),new HtmlData(".stocks"));
+		grid.setBorders(true);
+		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
+		gridPanel.add(grid, new VerticalLayoutData(1, 1));
+		container.add(new FieldLabel(gridPanel, "Stocks"),new HtmlData(".stocks")); 
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
@@ -94,6 +112,18 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		vp.add(fpanel);
 		this.add(vp);
 		
+		//Sell window
+		sellWindow = new Window();
+		sellQtyBtn = new TextButton("Sell");
+		sellQtyBtn.setMinWidth(60);
+		sellQtyBtn.addSelectHandler(new SellQtyHandler());
+		sellQtyField = new NumberField<Integer>(new NumberPropertyEditor.IntegerPropertyEditor());
+		FieldLabel sellField = new FieldLabel(sellQtyField, "Please enter quantity to sell");
+		HorizontalLayoutContainer hc = new HorizontalLayoutContainer();
+		hc.add(sellField); hc.add(sellQtyBtn);
+		sellWindow.setWidget(hc);
+		sellWindow.setMinWidth(350);
+		sellWindow.setModal(true);
 	}
 	
 	/**
@@ -108,6 +138,49 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 				'<tr><td class=stocks colspan=2></tr>', '</table>'
 		].join("");
 	}-*/;
+	
+	/**
+	 * Sell button handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class SellBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			int row = event.getContext().getIndex();
+			StockDTO selected = store.get(row);
+			sellQtyField.getValidators().clear();
+			sellQtyField.addValidator(new MaxNumberValidator<Integer>(selected.getQuantity()));
+			sellWindow.setHeadingText("Sell " + selected.getType().getName());
+			sellWindow.show();
+		}
+		
+	}
+	
+	/**
+	 * Sell stock quantity handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class SellQtyHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if(sellQtyField.isValid()){
+				//call presenter here
+				sellWindow.hide();
+			}
+			else {
+				AlertMessageBox box = new AlertMessageBox("Sell error", "Not enough goods in stock.");
+				box.show();
+			}
+			sellQtyField.clear();
+		}
+		
+	}
 	
 	@Override
 	public void setPresenter(LocationPresenter presenter) {

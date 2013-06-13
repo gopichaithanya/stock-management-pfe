@@ -85,8 +85,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		setHeight(500);
 		setMinHeight(500);
 		setModal(true);
-		setResizable(false);
-		setClosable(false);
+		//setResizable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
@@ -186,15 +185,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		//Editing fields
 		editingGrid = new GridInlineEditing<ShipmentDTO>(grid);
 		NumberField<Integer> priceField = new NumberField<Integer>(new IntegerPropertyEditor());
-//		priceField.addParseErrorHandler(new ParseErrorHandler() {
-//			@Override
-//			public void onParseError(ParseErrorEvent event) {
-//				 Info.display("Parse Error", event.getErrorValue() + " could not be parsed as a number");
-//				
-//			}
-//		});
-//		priceField.setAllowBlank(false);
-//		priceField.addValidator(new MinNumberValidator<Integer>(1));
+
 		editingGrid.addEditor(priceCol, priceField);
 		editingGrid.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
 		editingGrid.setClicksToEdit(ClicksToEdit.TWO);
