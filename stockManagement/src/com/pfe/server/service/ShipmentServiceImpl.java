@@ -6,6 +6,8 @@ import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ShipmentService;
 import com.pfe.server.dao.location.LocationDAO;
@@ -35,8 +37,8 @@ public class ShipmentServiceImpl implements ShipmentService {
 	private DozerBeanMapper dozerMapper;
 
 	@Override
-	public void deleteList(List<ShipmentDTO> shipments)
-			throws BusinessException {
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteList(List<ShipmentDTO> shipments) throws BusinessException {
 
 		List<Shipment> entities = new ArrayList<Shipment>();
 		for (ShipmentDTO shipment : shipments) {
