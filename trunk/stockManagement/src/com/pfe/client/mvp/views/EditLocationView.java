@@ -1,6 +1,6 @@
 package com.pfe.client.mvp.views;
 
-import com.pfe.client.mvp.presenters.Presenter;
+import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.shared.dto.LocationDTO;
 
 /**
@@ -17,7 +17,7 @@ public interface EditLocationView {
 	 * 
 	 * @param presenter
 	 */
-	public void setPresenter(Presenter presenter);
+	public void setPresenter(LocationPresenter presenter);
 	
 	/**
 	 * Sets the view data
@@ -31,4 +31,15 @@ public interface EditLocationView {
 	 * 
 	 */
 	public void clearData();
+	
+	/**
+	 * Shows window
+	 */
+	public void show();
+
+	/**
+	 * Hides window
+	 */
+	public void hide();
+	
 }
