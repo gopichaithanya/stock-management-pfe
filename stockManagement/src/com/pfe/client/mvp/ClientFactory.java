@@ -13,6 +13,7 @@ import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.LocationServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.ShipmentServiceAsync;
+import com.pfe.client.service.StockServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
 
 /**
@@ -90,4 +91,10 @@ public interface ClientFactory {
 	 */
 	public LocationServiceAsync getLocationService();
 
+	/**
+	 * Creates RPC service for operations on stocks
+	 * 
+	 * @return
+	 */
+	public StockServiceAsync getStockService();
 }
