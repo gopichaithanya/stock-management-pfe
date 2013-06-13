@@ -19,6 +19,8 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -38,6 +40,7 @@ public class LocationListViewImpl implements LocationListView {
 	//private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
+	private EditLocationView editView;
 	
 	public LocationListViewImpl(){
 		// check box selection model
@@ -83,6 +86,7 @@ public class LocationListViewImpl implements LocationListView {
 		pagingToolBar = new PagingToolBar(4);
 				
 		toolbar = new GridToolbar();
+		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
@@ -90,6 +94,26 @@ public class LocationListViewImpl implements LocationListView {
 
 	}
 
+	/**
+	 * Edit type handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class EditBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (editView == null) {
+				editView = new EditLocationViewImpl();
+				editView.setPresenter(presenter);
+			}
+			LocationDTO location = grid.getSelectionModel().getSelectedItem();
+			presenter.find(location.getId());
+		}
+	}
+	
+	
 	@Override
 	public Widget asWidget() {
 		return verticalCon;
@@ -120,6 +144,11 @@ public class LocationListViewImpl implements LocationListView {
 	@Override
 	public ListStore<LocationDTO> getData() {
 		return this.store;
+	}
+
+	@Override
+	public EditLocationView getEditView() {
+		return editView;
 	}
 
 }

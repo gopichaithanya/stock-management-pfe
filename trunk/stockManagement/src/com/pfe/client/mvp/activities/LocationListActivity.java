@@ -82,7 +82,21 @@ public class LocationListActivity extends AbstractActivity implements
 
 	@Override
 	public void find(Long id) {
-		// TODO Auto-generated method stub
+		locationService.find(id, new AsyncCallback<LocationDTO>() {
+			
+			@Override
+			public void onSuccess(LocationDTO result) {
+				view.getEditView().setData(result);
+				view.getEditView().show();
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 	}
 

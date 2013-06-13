@@ -40,5 +40,12 @@ public interface LocationListView extends IsWidget {
 	 */
 	public void setPagingLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<LocationDTO>> remoteLoader);
+	
+	/**
+	 * Get edit location window
+	 * 
+	 * @return the edit window
+	 */
+	public EditLocationView getEditView();
 
 }
