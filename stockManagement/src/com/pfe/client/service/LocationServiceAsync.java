@@ -10,4 +10,6 @@ public interface LocationServiceAsync {
 	void search(FilterPagingLoadConfig config,
 			AsyncCallback<PagingLoadResult<LocationDTO>> callback);
 
+	void find(Long id, AsyncCallback<LocationDTO> callback);
+
 }

@@ -15,6 +15,13 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 @RemoteServiceRelativePath("gxt3/locationService")
 public interface LocationService extends RemoteService {
 
+	/**
+	 * Retrieves location by id
+	 * 
+	 * @param id
+	 * @return location
+	 */
+	public LocationDTO find(Long id);
 	
 	/**
 	 * Retrieves locations with paging
