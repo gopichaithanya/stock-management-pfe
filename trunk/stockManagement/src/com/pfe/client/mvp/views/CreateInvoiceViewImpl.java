@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
+import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.ShipmentProperties;
 import com.pfe.client.ui.properties.SupplierProperties;
@@ -149,8 +150,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		
 		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
 		ToolBar toolBar = new ToolBar();
-		TextButton addBtn = new TextButton("Add");
-		TextButton deleteBtn = new TextButton("Delete");
+		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
+		TextButton deleteBtn = new TextButton("Delete", ImageResources.INSTANCE.addDeleteIcon());
 		addBtn.addSelectHandler(new AddBtnHandler());
 		deleteBtn.addSelectHandler(new DeleteBtnHandler());
 		toolBar.add(addBtn);
