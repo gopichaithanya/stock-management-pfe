@@ -1,5 +1,7 @@
 package com.pfe.client.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.pfe.shared.dto.LocationDTO;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -11,5 +13,7 @@ public interface LocationServiceAsync {
 			AsyncCallback<PagingLoadResult<LocationDTO>> callback);
 
 	void find(Long id, AsyncCallback<LocationDTO> callback);
+
+	void getAll(AsyncCallback<List<LocationDTO>> callback);
 
 }
