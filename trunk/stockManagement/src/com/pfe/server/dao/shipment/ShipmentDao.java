@@ -16,9 +16,8 @@ public interface ShipmentDao extends IBaseDao<Long, Shipment> {
 	public void deleteList(List<Shipment> shipments);
 	
 	/**
-	 * Retrieves shipments from start index where product type like parameter.
-	 * The number if records retrieved is equal to limit parameter. Type is
-	 * ignored if null.
+	 * Return a list of shipments with given type, current quantity greater than
+	 * 0 and applying limit of results
 	 * 
 	 * @param start
 	 * @param limit
