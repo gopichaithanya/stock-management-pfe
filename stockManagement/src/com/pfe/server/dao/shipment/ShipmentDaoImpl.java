@@ -30,8 +30,9 @@ public class ShipmentDaoImpl extends BaseDaoImpl<Long, Shipment> implements Ship
 
 	@Override
 	public List<Shipment> search(int start, int limit, ProductType type) {
-		Criterion criterion = Restrictions.eq("productType", type);
-		return findByCriteria(start, limit, criterion);
+		Criterion criterion1 = Restrictions.eq("productType", type);
+		Criterion criterion2 = Restrictions.gt("currentQuantity", 0);
+		return findByCriteria(start, limit, criterion1, criterion2);
 	}
 	
 
