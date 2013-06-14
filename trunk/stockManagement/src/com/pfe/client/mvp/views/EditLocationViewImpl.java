@@ -129,6 +129,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		hc.add(sellField); hc.add(sellQtyBtn);
 		sellWindow.setWidget(hc);
 		sellWindow.setModal(true);
+		sellWindow.setMinHeight(100);
 		
 		//ShipWindow
 		shipWindow = new Window();
@@ -143,6 +144,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		vc.add(shipField); vc.add(locationField); vc.add(shipQtyBtn);
 		shipWindow.setWidget(vc); 
 		shipWindow.setModal(true);
+		shipWindow.setMinHeight(120);
 	}
 	
 	/**
