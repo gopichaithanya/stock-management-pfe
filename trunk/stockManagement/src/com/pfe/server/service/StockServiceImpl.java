@@ -11,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.StockService;
 import com.pfe.server.dao.invoice.InvoiceDao;
+import com.pfe.server.dao.location.LocationDAO;
 import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.shared.BusinessException;
+import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.pfe.shared.model.Invoice;
+import com.pfe.shared.model.Location;
 import com.pfe.shared.model.ProductType;
 import com.pfe.shared.model.Shipment;
 import com.pfe.shared.model.Stock;
@@ -29,6 +32,8 @@ public class StockServiceImpl implements StockService {
 	private ShipmentDao shipmentDao;
 	@Autowired
 	private InvoiceDao invoiceDao;
+	@Autowired
+	private LocationDAO locationDao;
 	@Autowired
 	private DozerBeanMapper dozerMapper;
 
@@ -91,6 +96,44 @@ public class StockServiceImpl implements StockService {
 		Stock merged = stockDao.merge(entity);
 		
 		return dozerMapper.map(merged, StockDTO.class);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public StockDTO ship(StockDTO stock, int quantity, LocationDTO destination) throws BusinessException {
+		
+		if(quantity > stock.getQuantity()){
+			throw new BusinessException("Not enough goods in the stock.");
+		}
+		
+		Stock sourceStock = dozerMapper.map(stock, Stock.class);
+		ProductType type = sourceStock.getType();
+		
+		Location destinationEntity = locationDao.get(destination.getId());
+		Stock destinationStock = stockDao.get(destinationEntity, type);
+		if(destinationStock == null){
+			//Create stock 
+			destinationStock = new Stock();
+			destinationStock.setLocation(destinationEntity);
+			destinationStock.setType(type);
+			destinationStock.setQuantity(0);
+		}
+		
+		destinationStock.setQuantity(destinationStock.getQuantity() + quantity);
+		int sourceQuantity = stock.getQuantity() - quantity;
+	
+		stockDao.merge(destinationStock);
+	
+		if(sourceQuantity == 0){
+			//If all remaining items are moved, delete source stock
+			stockDao.delete(sourceStock);
+			return null;
+		} else{
+			sourceStock.setQuantity(sourceQuantity);
+			Stock merged = stockDao.merge(sourceStock);
+			return dozerMapper.map(merged, StockDTO.class);
+		}
+
 	}
 
 }
