@@ -34,6 +34,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.NumberField;
@@ -105,8 +106,8 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		// Column configuration
 		int ratio = 1;
 		ColumnConfig<ShipmentDTO, ProductTypeDTO> typeCol = new ColumnConfig<ShipmentDTO, ProductTypeDTO>(
-				shipProps.productType(), 3 * ratio, "Type");
-		ColumnConfig<ShipmentDTO, Integer> priceCol = new ColumnConfig<ShipmentDTO, Integer>(
+				shipProps.productType(), 2 * ratio, "Type");
+		ColumnConfig<ShipmentDTO, Double> priceCol = new ColumnConfig<ShipmentDTO, Double>(
 				shipProps.unitPrice(), ratio, "Unit price");
 		ColumnConfig<ShipmentDTO, Integer> initQtyCol = new ColumnConfig<ShipmentDTO, Integer>(
 				shipProps.initialQty(), ratio, "Init. Qty");
@@ -115,14 +116,14 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		ColumnConfig<ShipmentDTO, Boolean> paidCol = new ColumnConfig<ShipmentDTO, Boolean>(
 				shipProps.paid(), ratio, "Paid");
 		ColumnConfig<ShipmentDTO, Date> dateCol = new ColumnConfig<ShipmentDTO, Date>(
-				shipProps.created(), 3 * ratio, "Created");
+				shipProps.created(), 2 * ratio, "Created");
 		
 		// Product type combo
 		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
 		typeCombo = new ComboBoxCell<ProductTypeDTO>(typeStore, typeProps.nameLabel());
 		typeCombo.setTriggerAction(TriggerAction.ALL);
 		typeCombo.setForceSelection(true);
-		typeCombo.setWidth(170);
+		typeCombo.setWidth(120);
 		 
 		// Check box selection model
 		IdentityValueProvider<ShipmentDTO> identity = new IdentityValueProvider<ShipmentDTO>();
@@ -164,7 +165,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		
 		//Editing fields
 		editingGrid = new GridInlineEditing<ShipmentDTO>(grid);
-		NumberField<Integer> priceField = new NumberField<Integer>(new IntegerPropertyEditor());
+		NumberField<Double> priceField = new NumberField<Double>(new NumberPropertyEditor.DoublePropertyEditor());
 		editingGrid.addEditor(priceCol, priceField);
 		editingGrid.addEditor(initQtyCol, new NumberField<Integer>(new IntegerPropertyEditor()));
 		editingGrid.setClicksToEdit(ClicksToEdit.TWO);
@@ -195,7 +196,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		public void onSelect(SelectEvent event) {
 			ShipmentDTO shipment = new ShipmentDTO();
 			shipment.setProductType(typeStore.get(0));
-			shipment.setUnitPrice(0);
+			shipment.setUnitPrice(new Double(0));
 			shipment.setInitialQuantity(0);	
 			editingGrid.cancelEditing();
 		    shipmentStore.add(0, shipment);

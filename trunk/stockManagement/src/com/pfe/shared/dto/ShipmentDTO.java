@@ -7,7 +7,7 @@ public class ShipmentDTO implements Serializable {
 
 	private Long id;
 	private ProductTypeDTO productType;
-	private int unitPrice;
+	private Double unitPrice;
 	private int initialQuantity;
 	private int currentQuantity;
 	private Boolean paid;
@@ -30,10 +30,10 @@ public class ShipmentDTO implements Serializable {
 	public void setProductType(ProductTypeDTO productType) {
 		this.productType = productType;
 	}
-	public int getUnitPrice() {
+	public Double getUnitPrice() {
 		return unitPrice;
 	}
-	public void setUnitPrice(int unitPrice) {
+	public void setUnitPrice(Double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 	public int getInitialQuantity() {
