@@ -306,7 +306,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 							if (presenter instanceof SupplierPresenter) {
 								((SupplierPresenter) presenter).deleteShipments(shipments);
 							} else if (presenter instanceof InvoicePresenter) {
-
+								((InvoicePresenter) presenter).deleteShipments(shipments);
 							}
 						}
 

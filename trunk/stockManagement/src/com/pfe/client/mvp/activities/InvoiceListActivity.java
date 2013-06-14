@@ -12,10 +12,12 @@ import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.views.InvoiceListView;
 import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
+import com.pfe.client.service.ShipmentServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
+import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -32,6 +34,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 	private InvoiceServiceAsync invoiceService;
 	private SupplierServiceAsync supplierService;
 	private ProductTypeServiceAsync pTypeService;
+	private ShipmentServiceAsync shipmentService;
 	
 	private InvoiceListView view;
 
@@ -40,6 +43,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 		invoiceService = clientFactory.getInvoiceService();
 		supplierService = clientFactory.getSupplierService();
 		pTypeService = clientFactory.getProductTypeService();
+		shipmentService = clientFactory.getShipmentService();
 	}
 
 	@Override
@@ -225,6 +229,30 @@ public class InvoiceListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void deleteShipments(final List<ShipmentDTO> shipments) {
+		shipmentService.deleteList(shipments, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				view.getEditView().deleteShipments(shipments);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof BusinessException){
+					view.unmaskGrid();
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
 				
 			}
 		});
