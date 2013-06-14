@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.ShipmentProperties;
 import com.pfe.client.ui.properties.SupplierProperties;
@@ -170,8 +171,8 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		
 		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
 		ToolBar toolBar = new ToolBar();
-		TextButton addBtn = new TextButton("Add");
-		TextButton deleteBtn = new TextButton("Delete");
+		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
+		TextButton deleteBtn = new TextButton("Delete", ImageResources.INSTANCE.addDeleteIcon());
 		addBtn.addSelectHandler(new AddBtnHandler());
 		deleteBtn.addSelectHandler(new DeleteBtnHandler());
 		toolBar.add(addBtn);

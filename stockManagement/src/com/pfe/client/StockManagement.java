@@ -178,7 +178,7 @@ public class StockManagement implements EntryPoint {
 				
 			}
 		});
-		TextButton reportBtn = new TextButton("Reports",ImageResources.INSTANCE.addInvoiceIcon());
+		TextButton reportBtn = new TextButton("Reports",ImageResources.INSTANCE.addReportIcon());
 		toolBar.add(productBtn);
 		toolBar.add(storageBtn);
 		toolBar.add(supplierBtn);

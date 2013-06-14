@@ -28,4 +28,7 @@ public interface ImageResources extends ClientBundle {
 	  
 	  @Source("invoice.png")
 	  ImageResource addInvoiceIcon();
+	  
+	  @Source("report.png")
+	  ImageResource addReportIcon();
 }
