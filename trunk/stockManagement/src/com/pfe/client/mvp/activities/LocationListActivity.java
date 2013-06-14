@@ -10,6 +10,7 @@ import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.mvp.views.LocationListView;
 import com.pfe.client.service.LocationServiceAsync;
 import com.pfe.client.service.StockServiceAsync;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
@@ -18,6 +19,7 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class LocationListActivity extends AbstractActivity implements
 		LocationPresenter {
@@ -105,18 +107,27 @@ public class LocationListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void sell(StockDTO stock, int quantity) {
+	public void sell(final StockDTO stock, int quantity) {
 		stockService.sell(stock, quantity, new AsyncCallback<StockDTO>() {
 			
 			@Override
 			public void onSuccess(StockDTO result) {
-				System.out.println("Success");
+				if(result == null){
+					view.getEditView().deleteData(stock);
+					
+				} else{
+					view.getEditView().updateData(result);
+				}
 				
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				if (caught instanceof BusinessException) {
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
 				
 			}
 		});

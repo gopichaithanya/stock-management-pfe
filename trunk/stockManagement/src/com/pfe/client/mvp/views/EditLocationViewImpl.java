@@ -208,4 +208,16 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 
 	}
 
+	@Override
+	public void deleteData(StockDTO stock) {
+		store.remove(stock);
+		
+	}
+
+	@Override
+	public void updateData(StockDTO stock) {
+		store.update(stock);
+		
+	}
+
 }
