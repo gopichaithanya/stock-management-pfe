@@ -102,6 +102,9 @@ public class InvoiceListActivity extends AbstractActivity implements
 			public void onSuccess(InvoiceDTO result) {
 				view.addData(result);
 				view.getCreateView().hide();
+				view.maskGrid();
+				view.refreshGrid();
+				view.unmaskGrid();
 			}
 			
 			@Override
@@ -145,8 +148,14 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
+				if(caught instanceof BusinessException){
+					view.unmaskGrid();
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
+				//Go back to initial values
+				view.refreshEditView();
 			}
 		});
 		

@@ -84,6 +84,12 @@ public interface InvoiceListView extends IsWidget {
 	 * @return
 	 */
 	public EditInvoiceView getEditView();
+	
+	/**
+	 * Refreshes view data
+	 * 
+	 */
+	public void refreshEditView();
 
 	/**
 	 * Refresh the grid view
