@@ -291,7 +291,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		@Override
 		public void onSelect(SelectEvent event) {
 
-			confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the type?");
+			confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the shipment?");
 			final HideHandler hideHandler = new HideHandler() {
 
 				@Override

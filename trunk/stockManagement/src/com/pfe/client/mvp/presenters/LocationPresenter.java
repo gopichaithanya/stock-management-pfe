@@ -33,4 +33,10 @@ public interface LocationPresenter extends Presenter {
 	 */
 	public void sell(StockDTO stock, int quantity);
 	
+	/**
+	 * Calls service to retrieve all available locations
+	 * 
+	 */
+	public void getAll();
+	
 }
