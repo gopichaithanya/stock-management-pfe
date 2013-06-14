@@ -53,8 +53,17 @@ public class LocationServiceImpl implements LocationService {
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public LocationDTO find(Long id) {
 		Location entity = locationDao.get(id);
-		LocationDTO dto = dozerMapper.map(entity, LocationDTO.class, "fullLocation");
-		return dto;
+		return dozerMapper.map(entity, LocationDTO.class, "fullLocation");	 
+	}
+
+	@Override
+	public List<LocationDTO> getAll() {
+		List<Location> locations = locationDao.findAll();
+		List<LocationDTO> dtos = new ArrayList<LocationDTO>();
+		for(Location location : locations){
+			dtos.add(dozerMapper.map(location, LocationDTO.class, "miniLocation"));
+		}
+		return dtos;
 	}
 
 }
