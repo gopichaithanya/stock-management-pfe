@@ -1,5 +1,7 @@
 package com.pfe.client.mvp.views;
 
+import java.util.List;
+
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.StockDTO;
@@ -46,6 +48,13 @@ public interface EditLocationView {
 	 * @param stock
 	 */
 	public void updateData(StockDTO stock);
+	
+	/**
+	 * Set available locations for shipping products
+	 * 
+	 * @param locations
+	 */
+	public void setLocations(List<LocationDTO> locations);
 	
 	/**
 	 * Shows window

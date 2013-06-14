@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.LocationPresenter;
+import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.client.ui.properties.StockProperties;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.StockDTO;
@@ -17,12 +18,12 @@ import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
-import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
@@ -36,21 +37,25 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public class EditLocationViewImpl extends Window implements EditLocationView {
 	
-	private static final StockProperties props = GWT.create(StockProperties.class);
+	private static final StockProperties stockProps = GWT.create(StockProperties.class);
+	private static final LocationProperties locationProps = GWT.create(LocationProperties.class);
 	
 	private LocationDTO location;
 	private LocationPresenter presenter;
 	private TextField nameField;
 	private TextField typeField;
 	private Grid<StockDTO> grid;
-	private ListStore<StockDTO> store;
+	private ListStore<StockDTO> stockStore;
+	private StockDTO selectedStock;
 	
 	private Window sellWindow;
 	private NumberField<Integer> sellQtyField;
-	private TextButton sellQtyBtn;
-	
-	private StockDTO selectedStock;
 
+	private Window shipWindow;
+	private NumberField<Integer> shipQtyField;
+	private ListStore<LocationDTO> locationStore;
+	private ComboBox<LocationDTO> locationCombo;
+	
 	public EditLocationViewImpl(){
 		setModal(true);
 		setMinHeight(430);
@@ -70,13 +75,13 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		//Stock grid
 		int ratio = 1;
 		ColumnConfig<StockDTO, String> typeCol = new ColumnConfig<StockDTO, String>(
-				props.type(), 3 * ratio, "Type");
+				stockProps.type(), 3 * ratio, "Type");
 		ColumnConfig<StockDTO, Integer> qtyCol = new ColumnConfig<StockDTO, Integer>(
-				props.quantity(), 3 * ratio, "Quantity");
+				stockProps.quantity(), 3 * ratio, "Quantity");
 		ColumnConfig<StockDTO, String> sellCol = new ColumnConfig<StockDTO, String>(
-				props.type(), 2 * ratio, "Sell");
+				stockProps.type(), 2 * ratio, "Sell");
 		ColumnConfig<StockDTO, String> shipCol = new ColumnConfig<StockDTO, String>(
-				props.type(), 2 * ratio, "Ship");
+				stockProps.type(), 2 * ratio, "Ship");
 		List<ColumnConfig<StockDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<StockDTO, ?>>();
 		columnConfigList.add(typeCol);
 		columnConfigList.add(qtyCol);
@@ -89,10 +94,11 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		sellCol.setCell(sellBtn);
 		TextButtonCell shipBtn = new TextButtonCell();
 		shipBtn.setText("Ship");
+		shipBtn.addSelectHandler(new ShipBtnHandler());
 		shipCol.setCell(shipBtn);
 		
-		store = new ListStore<StockDTO>(props.key());
-		grid = new Grid<StockDTO>(store, cm);
+		stockStore = new ListStore<StockDTO>(stockProps.key());
+		grid = new Grid<StockDTO>(stockStore, cm);
 		grid.getView().setStripeRows(true);
 		grid.getView().setColumnLines(true);
 		grid.getView().setAutoFill(true);
@@ -115,16 +121,28 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		
 		//Sell window
 		sellWindow = new Window();
-		sellQtyBtn = new TextButton("Sell");
-		sellQtyBtn.setMinWidth(60);
+		TextButton sellQtyBtn = new TextButton("Sell");
 		sellQtyBtn.addSelectHandler(new SellQtyHandler());
 		sellQtyField = new NumberField<Integer>(new NumberPropertyEditor.IntegerPropertyEditor());
-		FieldLabel sellField = new FieldLabel(sellQtyField, "Please enter quantity to sell");
-		HorizontalLayoutContainer hc = new HorizontalLayoutContainer();
+		FieldLabel sellField = new FieldLabel(sellQtyField, "Quantity");
+		VerticalLayoutContainer hc = new VerticalLayoutContainer();
 		hc.add(sellField); hc.add(sellQtyBtn);
 		sellWindow.setWidget(hc);
-		sellWindow.setMinWidth(350);
 		sellWindow.setModal(true);
+		
+		//ShipWindow
+		shipWindow = new Window();
+		shipQtyField = new NumberField<Integer>(new NumberPropertyEditor.IntegerPropertyEditor());
+		FieldLabel shipField = new FieldLabel(shipQtyField, "Quantity");
+		TextButton shipQtyBtn = new TextButton("Ship");
+		//shipQtyBtn.addSelectHandler(new Shi)
+		locationStore = new ListStore<LocationDTO>(locationProps.key());
+		locationCombo = new ComboBox<LocationDTO>(locationStore, locationProps.nameLabel()); 
+		FieldLabel locationField = new FieldLabel(locationCombo, "Destination");
+		VerticalLayoutContainer vc = new VerticalLayoutContainer();
+		vc.add(shipField); vc.add(locationField); vc.add(shipQtyBtn);
+		shipWindow.setWidget(vc); 
+		shipWindow.setModal(true);
 	}
 	
 	/**
@@ -151,11 +169,32 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			int row = event.getContext().getIndex();
-			selectedStock = store.get(row);
+			selectedStock = stockStore.get(row);
 			sellQtyField.getValidators().clear();
 			sellQtyField.addValidator(new MaxNumberValidator<Integer>(selectedStock.getQuantity()));
 			sellWindow.setHeadingText("Sell " + selectedStock.getType().getName());
 			sellWindow.show();
+		}
+		
+	}
+	
+	/**
+	 * Ship button handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class ShipBtnHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			int row = event.getContext().getIndex();
+			selectedStock = stockStore.get(row);
+			shipQtyField.getValidators().clear();
+			shipQtyField.addValidator(new MaxNumberValidator<Integer>(selectedStock.getQuantity()));
+			shipWindow.setHeadingText("Ship " + selectedStock.getType().getName());
+			presenter.getAll();
+			shipWindow.show();
 		}
 		
 	}
@@ -193,7 +232,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	public void setData(LocationDTO location) {
 		clearData();
 		this.location = location;
-		this.store.addAll(location.getStocks());
+		this.stockStore.addAll(location.getStocks());
 		nameField.setValue(location.getName());
 		typeField.setValue(location.getType().getDescription());
 		setHeadingText(location.getName());
@@ -204,20 +243,35 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	public void clearData() {
 		nameField.clear();
 		typeField.clear();
-		store.clear();
-
+		stockStore.clear();
+		locationStore.clear();
 	}
 
 	@Override
 	public void deleteData(StockDTO stock) {
-		store.remove(stock);
+		stockStore.remove(stock);
 		
 	}
 
 	@Override
 	public void updateData(StockDTO stock) {
-		store.update(stock);
+		stockStore.update(stock);
 		
+	}
+
+	@Override
+	public void setLocations(List<LocationDTO> locations) {
+		locationStore.clear();
+		locationStore.addAll(locations);
+		//Remove current location
+		for(LocationDTO l : locations){
+			if(l.getId().equals(location.getId())){
+				locationStore.remove(l);
+				break;
+			}
+		}
+		
+		locationCombo.setValue(null);
 	}
 
 }

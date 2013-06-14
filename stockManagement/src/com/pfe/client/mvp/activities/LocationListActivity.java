@@ -1,5 +1,7 @@
 package com.pfe.client.mvp.activities;
 
+import java.util.List;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
@@ -132,6 +134,24 @@ public class LocationListActivity extends AbstractActivity implements
 			}
 		});
 		
+	}
+
+	@Override
+	public void getAll() {
+		locationService.getAll(new AsyncCallback<List<LocationDTO>>() {
+			
+			@Override
+			public void onSuccess(List<LocationDTO> result) {
+				view.getEditView().setLocations(result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 }
