@@ -1,7 +1,10 @@
 package com.pfe.client.mvp.presenters;
 
+import java.util.List;
+
 import com.google.gwt.place.shared.Place;
 import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ShipmentDTO;
 
 
 /**
@@ -60,4 +63,10 @@ public interface InvoicePresenter extends Presenter {
 	 */
 	public void getSuppliers(String window);
 	
+	/**
+	 * Deletes shipments
+	 * 
+	 * @param shipments
+	 */
+	public void deleteShipments(List<ShipmentDTO> shipments);
 }

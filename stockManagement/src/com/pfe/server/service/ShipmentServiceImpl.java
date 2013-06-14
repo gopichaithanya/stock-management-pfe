@@ -77,6 +77,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 					} else {
 						
 						//Delete shipment and update warehouse stocks
+						//TODO if stock in warehouse has qty = 0; delete it
 						int remainingQty = availableQty - shipmentQty;
 						stock.setQuantity(remainingQty);
 						stockDao.merge(stock);
