@@ -155,12 +155,16 @@ public class LocationListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void ship(StockDTO fromStock, int quantity, LocationDTO toLocation) {
+	public void ship(final StockDTO fromStock, int quantity, LocationDTO toLocation) {
 		stockService.ship(fromStock, quantity, toLocation, new AsyncCallback<StockDTO>() {
 			
 			@Override
 			public void onSuccess(StockDTO result) {
-				System.out.println("Success");
+				if(result == null){
+					view.getEditView().deleteData(fromStock);
+				} else{
+					view.getEditView().updateData(result);
+				}
 				
 			}
 			
