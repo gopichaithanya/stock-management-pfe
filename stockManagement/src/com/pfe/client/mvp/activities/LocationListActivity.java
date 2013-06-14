@@ -109,13 +109,13 @@ public class LocationListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void sell(final StockDTO stock, int quantity) {
-		stockService.sell(stock, quantity, new AsyncCallback<StockDTO>() {
+	public void sell(final StockDTO fromStock, int quantity) {
+		stockService.sell(fromStock, quantity, new AsyncCallback<StockDTO>() {
 			
 			@Override
 			public void onSuccess(StockDTO result) {
 				if(result == null){
-					view.getEditView().deleteData(stock);
+					view.getEditView().deleteData(fromStock);
 					
 				} else{
 					view.getEditView().updateData(result);
@@ -152,6 +152,25 @@ public class LocationListActivity extends AbstractActivity implements
 				
 			}
 		});
+	}
+
+	@Override
+	public void ship(StockDTO fromStock, int quantity, LocationDTO toLocation) {
+		stockService.ship(fromStock, quantity, toLocation, new AsyncCallback<StockDTO>() {
+			
+			@Override
+			public void onSuccess(StockDTO result) {
+				System.out.println("Success");
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 }

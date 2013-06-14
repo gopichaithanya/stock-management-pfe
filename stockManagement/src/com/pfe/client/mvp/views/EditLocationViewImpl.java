@@ -135,7 +135,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		shipQtyField = new NumberField<Integer>(new NumberPropertyEditor.IntegerPropertyEditor());
 		FieldLabel shipField = new FieldLabel(shipQtyField, "Quantity");
 		TextButton shipQtyBtn = new TextButton("Ship");
-		//shipQtyBtn.addSelectHandler(new Shi)
+		shipQtyBtn.addSelectHandler(new ShipQtyHandler());
 		locationStore = new ListStore<LocationDTO>(locationProps.key());
 		locationCombo = new ComboBox<LocationDTO>(locationStore, locationProps.nameLabel()); 
 		FieldLabel locationField = new FieldLabel(locationCombo, "Destination");
@@ -218,6 +218,29 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 				box.show();
 			}
 			sellQtyField.clear();
+		}
+		
+	}
+	
+	/**
+	 * Ship stock quantity handler
+	 * 
+	 * @author Alexandra
+	 *
+	 */
+	private class ShipQtyHandler implements SelectHandler{
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if(shipQtyField.isValid()){
+				presenter.ship(selectedStock, shipQtyField.getValue(), locationCombo.getValue());
+				shipWindow.hide();
+			}
+			else {
+				AlertMessageBox box = new AlertMessageBox("Sell error", "Not enough goods in stock.");
+				box.show();
+			}
+			shipQtyField.clear();
 		}
 		
 	}

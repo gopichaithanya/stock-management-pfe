@@ -1,6 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
 import com.google.gwt.place.shared.Place;
+import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.StockDTO;
 
 /**
@@ -28,10 +29,19 @@ public interface LocationPresenter extends Presenter {
 	/**
 	 * Calls service to sell the given quantity from stock
 	 * 
-	 * @param stock
+	 * @param fromStock
 	 * @param quantity
 	 */
-	public void sell(StockDTO stock, int quantity);
+	public void sell(StockDTO fromStock, int quantity);
+	
+	/**
+	 * Calls service to ship items from stock to another location
+	 * 
+	 * @param fromStock
+	 * @param quantity
+	 * @param toLocation
+	 */
+	public void ship(StockDTO fromStock, int quantity, LocationDTO toLocation);
 	
 	/**
 	 * Calls service to retrieve all available locations
