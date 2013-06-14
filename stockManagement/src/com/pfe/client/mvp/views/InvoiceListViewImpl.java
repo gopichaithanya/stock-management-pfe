@@ -152,22 +152,31 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (editView == null) {
-				editView = new EditInvoiceViewImpl();
-				editView.setPresenter(presenter);
-			}
-			
-			//Get available suppliers for combo selection
-			presenter.getSuppliers("edit");
-			
-			//Get available product types 
-			presenter.getProductTypes("edit");
-			
-			//Get invoice
-			InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
-			presenter.find(invoice.getId());
+			refreshEditView();
 			
 		}
+	}
+	
+	/**
+	 * Sets EditView data
+	 * 
+	 */
+	@Override
+	public void refreshEditView(){
+		if (editView == null) {
+			editView = new EditInvoiceViewImpl();
+			editView.setPresenter(presenter);
+		}
+		
+		//Get available suppliers for combo selection
+		presenter.getSuppliers("edit");
+		
+		//Get available product types 
+		presenter.getProductTypes("edit");
+		
+		//Get invoice
+		InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
+		presenter.find(invoice.getId());
 	}
 	
 	/**
