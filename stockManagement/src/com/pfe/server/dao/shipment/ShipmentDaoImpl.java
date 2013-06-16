@@ -1,14 +1,19 @@
 package com.pfe.server.dao.shipment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pfe.server.dao.BaseDaoImpl;
+import com.pfe.server.dao.OrderAlias;
+import com.pfe.server.dao.SortField;
+import com.pfe.server.dao.shipment.sort.ShipmentCreatedSortField;
 import com.pfe.shared.model.ProductType;
 import com.pfe.shared.model.Shipment;
 
@@ -32,6 +37,11 @@ public class ShipmentDaoImpl extends BaseDaoImpl<Long, Shipment> implements Ship
 	public List<Shipment> search(int start, int limit, ProductType type) {
 		Criterion criterion1 = Restrictions.eq("productType", type);
 		Criterion criterion2 = Restrictions.gt("currentQuantity", 0);
+		List<SortField> sorts = new ArrayList<SortField>();
+		sorts.add(new ShipmentCreatedSortField());
+		List<OrderAlias> orderAliases = getOrderAliases(sorts);
+		List<Order> orders = getOrders(sorts);
+		findByCriteria(start, limit, orderAliases, orders, criterion1, criterion2);
 		return findByCriteria(start, limit, criterion1, criterion2);
 	}
 	
