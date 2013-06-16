@@ -31,4 +31,7 @@ public interface ImageResources extends ClientBundle {
 	  
 	  @Source("report.png")
 	  ImageResource addReportIcon();
+	  
+	  @Source("btn_search.png")
+	  ImageResource addSearchIcon();
 }

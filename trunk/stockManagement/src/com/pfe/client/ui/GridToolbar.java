@@ -21,9 +21,8 @@ public class GridToolbar extends ToolBar {
 		
 		addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
 		editBtn = new TextButton("Edit", ImageResources.INSTANCE.addEditIcon());
-		deleteBtn = new TextButton("Delete",
-				ImageResources.INSTANCE.addDeleteIcon());
-		filterBtn = new TextButton("Find");
+		deleteBtn = new TextButton("Delete", ImageResources.INSTANCE.addDeleteIcon());
+		filterBtn = new TextButton("Find", ImageResources.INSTANCE.addSearchIcon());
 		filterText = new TextField();
 		clearFilterBtn = new TextButton("Clear filter");
 		
