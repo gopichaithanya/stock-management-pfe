@@ -8,14 +8,16 @@ import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.properties.InvoiceProperties;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
-import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -55,7 +57,6 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		// check box selection model
 		IdentityValueProvider<InvoiceDTO> identity = new IdentityValueProvider<InvoiceDTO>();
 		CheckBoxSelectionModel<InvoiceDTO> sm = new CheckBoxSelectionModel<InvoiceDTO>(identity);
-		sm.setSelectionMode(SelectionMode.MULTI);
 
 		// column configuration
 		int ratio = 1;
@@ -84,6 +85,14 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 		// Grid
 		grid = new Grid<InvoiceDTO>(store, cm) {
+			
+			@Override
+			protected void onDoubleClick(Event e) {
+				refreshEditView();
+				//Element target = Element.as(e.getEventTarget());
+				//int rowIndex = view.findRowIndex(target);
+			}
+			
 			@Override
 			protected void onAfterFirstAttach() {
 				super.onAfterFirstAttach();
@@ -102,7 +111,22 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		grid.setStateful(true);
 		grid.getView().setAutoFill(true);
 		grid.setHeight("100%");
-		//grid.addRowClickHandler(new GridRowClickHandler());
+		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<InvoiceDTO>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<InvoiceDTO> arg0) {
+				if (grid.getSelectionModel().getSelectedItems().size() > 1) { // if more then one item is selected, enable only the delete button
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else if (grid.getSelectionModel().getSelectedItems().size() == 1) { // if one item is selected, enable delete and edit buttons
+					toolbar.getEditBtn().setEnabled(true);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else { // if no selection, then disable the edit and delete buttons
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(false);
+				}
+			}
+		});
 		pagingToolBar = new PagingToolBar(4);
 
 		toolbar = new GridToolbar();
@@ -114,6 +138,9 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+		toolbar.getEditBtn().setEnabled(false);
+		toolbar.getDeleteBtn().setEnabled(false);
+		
 		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		// toolbar.getClearFilterBtn().addSelectHandler(
 		// new ClearFilterBtnHandler());
@@ -163,6 +190,9 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	 */
 	@Override
 	public void refreshEditView(){
+		if (grid.getSelectionModel().getSelectedItem() == null) { // double check for selected item
+			return;
+		}
 		if (editView == null) {
 			editView = new EditInvoiceViewImpl();
 			editView.setPresenter(presenter);
@@ -189,6 +219,9 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			if (grid.getSelectionModel().getSelectedItem() == null) { // double check for selected item
+				return;
+			}
 
 			confirmBox = new ConfirmMessageBox("Delete", "Are you sure you want to delete the invoice?");
 			final HideHandler hideHandler = new HideHandler() {
