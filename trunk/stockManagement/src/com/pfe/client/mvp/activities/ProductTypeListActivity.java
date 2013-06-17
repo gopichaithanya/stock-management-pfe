@@ -182,8 +182,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 	@Override
 	public void displayDetailsView(ProductType productType) {
-		String token = productType.getName() + " \t\n\r\f"
-				+ productType.getDescription();
+		String token = productType.getName() + " \t\n\r\f" + productType.getDescription();
 		goTo(new ProductTypeDetailPlace(token));
 
 	}
