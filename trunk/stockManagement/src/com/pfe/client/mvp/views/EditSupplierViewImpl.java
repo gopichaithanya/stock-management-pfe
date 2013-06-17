@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.properties.InvoiceProperties;
@@ -73,6 +75,8 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		detailBtn.setText("Details");
 		detailBtn.addSelectHandler(new DetailsBtnHandler());
 		detailCol.setCell(detailBtn);
+		DateCell dateCell = new DateCell(DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss"));
+		dateCol.setCell(dateCell);
 
 		List<ColumnConfig<InvoiceDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<InvoiceDTO, ?>>();
 		columnConfigList.add(codeCol);
@@ -80,8 +84,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		columnConfigList.add(debtCol);
 		columnConfigList.add(dateCol);
 		columnConfigList.add(detailCol);
-		ColumnModel<InvoiceDTO> cm = new ColumnModel<InvoiceDTO>(
-				columnConfigList);
+		ColumnModel<InvoiceDTO> cm = new ColumnModel<InvoiceDTO>(columnConfigList);
 		store = new ListStore<InvoiceDTO>(props.key());
 
 		grid = new Grid<InvoiceDTO>(store, cm);
