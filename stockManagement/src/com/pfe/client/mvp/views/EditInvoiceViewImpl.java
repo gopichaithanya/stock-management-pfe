@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
@@ -78,6 +80,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private ComboBox<SupplierDTO> supplierCombo;
 	private ComboBoxCell<ProductTypeDTO> typeCombo;
 	private ConfirmMessageBox confirmBox;
+	private TextButton deleteBtn; // used to delete shipments displayed in the grid
 
 	public EditInvoiceViewImpl() {
 		setBodyBorder(false);
@@ -170,13 +173,26 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		VerticalLayoutContainer gridPanel = new VerticalLayoutContainer();
 		ToolBar toolBar = new ToolBar();
 		TextButton addBtn = new TextButton("Add", ImageResources.INSTANCE.addCreateIcon());
-		TextButton deleteBtn = new TextButton("Delete", ImageResources.INSTANCE.addDeleteIcon());
+		deleteBtn = new TextButton("Delete", ImageResources.INSTANCE.addDeleteIcon());
+		deleteBtn.setEnabled(false);
 		addBtn.addSelectHandler(new AddBtnHandler());
 		deleteBtn.addSelectHandler(new DeleteBtnHandler());
 		toolBar.add(addBtn);
 		toolBar.add(deleteBtn);
 		gridPanel.add(toolBar, new VerticalLayoutData(1, -1));
 		gridPanel.add(grid, new VerticalLayoutData(1, 1));
+		
+		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<ShipmentDTO>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<ShipmentDTO> arg0) {
+				if (grid.getSelectionModel().getSelectedItems().size() >= 1) {
+					deleteBtn.setEnabled(true);
+				} else { // if no selection disable delete button
+					deleteBtn.setEnabled(false);
+				}
+			}
+		});
 
 		FieldLabel gridField = new FieldLabel(gridPanel, "Shipments");
 		container.add(gridField, new HtmlData(".shipments"));
