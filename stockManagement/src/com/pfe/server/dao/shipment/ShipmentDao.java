@@ -17,7 +17,8 @@ public interface ShipmentDao extends IBaseDao<Long, Shipment> {
 	
 	/**
 	 * Return a list of shipments with given type, current quantity greater than
-	 * 0 and applying limit of results
+	 * 0 and applying limit of results. Shipments must be ordered by creation date
+	 * in ascending order.
 	 * 
 	 * @param start
 	 * @param limit
