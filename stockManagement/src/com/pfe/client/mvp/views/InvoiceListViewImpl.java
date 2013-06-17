@@ -112,9 +112,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		grid.getView().setColumnLines(true);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
-		grid.setStateful(true);
 		grid.getView().setAutoFill(true);
-		grid.setHeight("100%");
 		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<InvoiceDTO>() {
 			
 			@Override
@@ -225,11 +223,10 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (grid.getSelectionModel().getSelectedItem() == null) { // double check for selected item
+			if (grid.getSelectionModel().getSelectedItems() == null) { // double check for selected item
 				return;
 			}
-
-			confirmBox = new ConfirmMessageBox("Delete", "Are you sure you want to delete the invoice?");
+			confirmBox = new ConfirmMessageBox("Delete", "Delete invoice(s)?");
 			final HideHandler hideHandler = new HideHandler() {
 
 				@Override
@@ -237,13 +234,10 @@ public class InvoiceListViewImpl implements InvoiceListView {
 					Dialog btn = (Dialog) event.getSource();
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
-
+						
 						List<InvoiceDTO> invoices = grid.getSelectionModel().getSelectedItems();
-						if (invoices != null) {
-							maskGrid();
-							presenter.delete(invoices);
-						}
-
+						maskGrid();
+						presenter.delete(invoices);
 					} else if (msg.equals("No")) {
 						confirmBox.hide();
 					}
