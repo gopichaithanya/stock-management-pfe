@@ -22,5 +22,7 @@ public interface SupplierServiceAsync {
 
 	void delete(SupplierDTO supplier, AsyncCallback<Void> callback);
 
+	void delete(List<SupplierDTO> suppliers, AsyncCallback<Void> callback);
+
 
 }
