@@ -30,6 +30,7 @@ import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -49,6 +50,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
+	private CheckBox checkBox;
 	
 	private CreateInvoiceView createView;
 	private EditInvoiceView editView;
@@ -140,6 +142,9 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
+		checkBox = new CheckBox();
+		checkBox.setBoxLabel("Show paid");
+		toolbar.addTool(checkBox);
 		
 		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		// toolbar.getClearFilterBtn().addSelectHandler(
