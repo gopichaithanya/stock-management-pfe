@@ -41,13 +41,13 @@ public interface InvoicePresenter extends Presenter {
 	 * @param updatedInvoice
 	 */
 	public void update(InvoiceDTO updatedInvoice);
-
+	
 	/**
-	 * Calls delete service
+	 * Calls delete for a list of invoices
 	 * 
-	 * @param invoice
+	 * @param invoices
 	 */
-	public void delete(InvoiceDTO invoice);
+	public void delete(List<InvoiceDTO> invoices);
 	
 	/**
 	 * Retrieves available types from database

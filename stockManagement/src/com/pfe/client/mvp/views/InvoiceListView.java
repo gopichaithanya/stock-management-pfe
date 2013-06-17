@@ -59,11 +59,11 @@ public interface InvoiceListView extends IsWidget {
 	public void updateData(InvoiceDTO invoice);
 
 	/**
-	 * Deletes record from list
+	 * Deletes records from list
 	 * 
-	 * @param invoice
+	 * @param invoices
 	 */
-	public void deleteData(InvoiceDTO invioce);
+	public void deleteData(List<InvoiceDTO> invoices);
 
 	/**
 	 * Set loader for paging

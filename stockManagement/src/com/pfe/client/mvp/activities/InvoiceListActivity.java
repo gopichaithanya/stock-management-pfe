@@ -86,8 +86,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 		};
 		remoteLoader.setRemoteSort(true);
 		remoteLoader
-				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, InvoiceDTO, PagingLoadResult<InvoiceDTO>>(
-						view.getData()));
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, InvoiceDTO, PagingLoadResult<InvoiceDTO>>(view.getData()));
 
 		view.setPagingLoader(remoteLoader);
 	}
@@ -164,14 +163,14 @@ public class InvoiceListActivity extends AbstractActivity implements
 		});
 		
 	}
-
+	
 	@Override
-	public void delete(final InvoiceDTO invoice) {
-		invoiceService.delete(invoice, new AsyncCallback<Void>() {
+	public void delete(final List<InvoiceDTO> invoices) {
+		invoiceService.delete(invoices, new AsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
-				view.deleteData(invoice);
+				view.deleteData(invoices);
 				view.refreshGrid();
 				view.unmaskGrid();
 			}
@@ -183,11 +182,9 @@ public class InvoiceListActivity extends AbstractActivity implements
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
-				}
-				
+				}	
 			}
-		});
-		
+		});	
 	}
 
 	@Override
@@ -200,8 +197,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 					view.getCreateView().setProductTypes(result);
 				} else if ("edit".equals(window)) {
 					view.getEditView().setProductTypes(result);
-				}
-				
+				}	
 			}
 			
 			@Override
@@ -209,8 +205,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 				// TODO Auto-generated method stub
 				
 			}
-		});
-		
+		});	
 	}
 
 	@Override
@@ -228,11 +223,9 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub	
 			}
-		});
-		
+		});	
 	}
 
 	@Override
@@ -241,8 +234,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(Void result) {
-				view.getEditView().deleteShipments(shipments);
-				
+				view.getEditView().deleteShipments(shipments);	
 			}
 			
 			@Override
@@ -255,8 +247,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 				}
 				
 			}
-		});
-		
+		});	
 	}
 
 }
