@@ -1,5 +1,6 @@
 package com.pfe.client.ui;
 
+import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.ui.images.ImageResources;
 import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -39,6 +40,11 @@ public class GridToolbar extends ToolBar {
 		add(new SeparatorToolItem());
 		add(clearFilterBtn);
 
+	}
+	
+	public void addTool(Widget widget){
+		add(new SeparatorToolItem());
+		add(widget);
 	}
 	
 	public TextButton getAddBtn() {
