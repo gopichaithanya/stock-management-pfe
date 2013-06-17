@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -80,7 +79,6 @@ public class Invoice implements Serializable{
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
-	@OrderBy ("created")
 	public List<Shipment> getShipments() {
 		return shipments;
 	}
