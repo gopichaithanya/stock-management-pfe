@@ -291,32 +291,32 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			
+			if(grid.getSelectionModel().getSelectedItems() != null &&
+					 grid.getSelectionModel().getSelectedItems().size() > 0){
+				confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the shipment(s)?");
+				final HideHandler hideHandler = new HideHandler() {
 
-			confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the shipment?");
-			final HideHandler hideHandler = new HideHandler() {
-
-				@Override
-				public void onHide(HideEvent event) {
-					Dialog btn = (Dialog) event.getSource();
-					String msg = btn.getHideButton().getText();
-					if (msg.equals("Yes")) {
-
-						List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
-						if (shipments.size() > 0) {
+					@Override
+					public void onHide(HideEvent event) {
+						Dialog btn = (Dialog) event.getSource();
+						String msg = btn.getHideButton().getText();
+						if (msg.equals("Yes")) {
+							List<ShipmentDTO> shipments = grid.getSelectionModel().getSelectedItems();
 							if (presenter instanceof SupplierPresenter) {
 								((SupplierPresenter) presenter).deleteShipments(shipments);
 							} else if (presenter instanceof InvoicePresenter) {
 								((InvoicePresenter) presenter).deleteShipments(shipments);
-							}
-						}
+							}	
 
-					} else if (msg.equals("No")) {
-						confirmBox.hide();
+						} else if (msg.equals("No")) {
+							confirmBox.hide();
+						}
 					}
-				}
-			};
-			confirmBox.addHideHandler(hideHandler);
-			confirmBox.show();
+				};
+				confirmBox.addHideHandler(hideHandler);
+				confirmBox.show();
+			}			
 		}
 	}
 
