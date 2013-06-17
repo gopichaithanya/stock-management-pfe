@@ -308,7 +308,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			
 			if(grid.getSelectionModel().getSelectedItems() != null &&
 					 grid.getSelectionModel().getSelectedItems().size() > 0){
-				confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the shipment(s)?");
+				confirmBox = new ConfirmMessageBox("Delete","Delete shipment(s)?");
 				final HideHandler hideHandler = new HideHandler() {
 
 					@Override
