@@ -1,5 +1,6 @@
 package com.pfe.server.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +11,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ShipmentService;
+import com.pfe.server.dao.invoice.InvoiceDao;
 import com.pfe.server.dao.location.LocationDAO;
 import com.pfe.server.dao.locationtype.LocationTypeDAO;
 import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ShipmentDTO;
+import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.LocationType;
 import com.pfe.shared.model.ProductType;
@@ -29,6 +32,8 @@ public class ShipmentServiceImpl implements ShipmentService {
 	private ShipmentDao shipmentDao;
 	@Autowired
 	private StockDAO stockDao;
+	@Autowired
+	private InvoiceDao invoiceDao;
 	@Autowired
 	private LocationDAO locationDao;
 	@Autowired
@@ -54,34 +59,48 @@ public class ShipmentServiceImpl implements ShipmentService {
 				//Part of the shipment was sold
 				if (entity.getCurrentQuantity() != entity.getInitialQuantity()) {
 					throw new BusinessException(
-							"Some of the shipments are impossible to delete because"
-									+ " items have been sold.");
+						"Some shipments are impossible to delete because items have been sold.");
 				}
 
-				//Not enough goods in warehouse
+				//Not enough goods in the warehouse
 				LocationType warehouseType = locationTypeDao.getWarehouseType();
 				Location warehouse = locationDao.get(warehouseType).get(0);
 				ProductType type = entity.getProductType();
 				Stock stock = stockDao.get(warehouse, type);
 				if (stock == null) {
 					throw new BusinessException(
-							"Some of the shipments are impossible to delete because"
-									+ " there are not enought goods in the warehouse");
+						"Some shipments are impossible to delete because there are not enought goods in the warehouse");
 				} else {
 					int availableQty = stock.getQuantity();
 					int shipmentQty = entity.getInitialQuantity();
 					if (availableQty < shipmentQty) {
 						throw new BusinessException(
-								"Some of the shipments are impossible to delete because"
-										+ " there are not enought goods in the warehouse");
+							"Some shipments are impossible to delete because there are not enought goods in the warehouse");
 					} else {
 						
-						//Delete shipment and update warehouse stocks
-						//TODO if stock in warehouse has qty = 0; delete it
-						//TODO update debt in invoice
+						//Update debt
+						Invoice invoice = entity.getInvoice();
+						if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
+							BigDecimal oldDebt = invoice.getRestToPay();
+							BigDecimal price = entity.getUnitPrice().multiply(new BigDecimal(entity.getInitialQuantity()));
+							BigDecimal newDebt = oldDebt.subtract(price);
+							if(newDebt.compareTo(new BigDecimal(0)) == -1){
+								invoice.setRestToPay(new BigDecimal(0));
+							} else{
+								invoice.setRestToPay(newDebt);
+							}
+							invoiceDao.merge(invoice);
+						}
+						
 						int remainingQty = availableQty - shipmentQty;
-						stock.setQuantity(remainingQty);
-						stockDao.merge(stock);
+						if(remainingQty == 0){
+							//Delete empty warehouse stock
+							stockDao.delete(stock);
+						} else{
+							stock.setQuantity(remainingQty);
+							stockDao.merge(stock);
+						}
+						//Delete shipment
 						shipmentDao.delete(entity);
 					}
 				}
