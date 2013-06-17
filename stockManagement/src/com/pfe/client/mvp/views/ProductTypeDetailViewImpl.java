@@ -4,22 +4,20 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.ContentPanel;
-import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
-import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.ExpandMode;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
 public class ProductTypeDetailViewImpl implements ProductTypeDetailView {
 	
-	private AccordionLayoutContainer detailsCon;
+	private VerticalLayoutContainer detailsCon;
 	private String data;
 	private Label descriptionLabel;
 	private Label nameLabel;
 	
 	public ProductTypeDetailViewImpl(){
 		
-		detailsCon = new AccordionLayoutContainer();
-		AccordionLayoutAppearance appearance = GWT
-				.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
+		detailsCon = new VerticalLayoutContainer();
+		AccordionLayoutAppearance appearance = GWT.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
 		// details : Name tab
 		descriptionLabel = new Label();
 		nameLabel = new Label();
@@ -38,7 +36,6 @@ public class ProductTypeDetailViewImpl implements ProductTypeDetailView {
 		
 		detailsCon.add(namePanel);
 		detailsCon.add(descPanel);
-		detailsCon.setExpandMode(ExpandMode.MULTI);
 		
 	}
 	

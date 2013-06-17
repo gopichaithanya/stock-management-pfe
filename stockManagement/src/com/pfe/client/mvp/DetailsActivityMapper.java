@@ -26,11 +26,9 @@ public class DetailsActivityMapper implements ActivityMapper {
 
 	public Activity getActivity(Place place) {
 		if (place instanceof ProductTypeDetailPlace) {
-			return new ProductTypeDetailActivity(clientFactory,
-					(ProductTypeDetailPlace) place);
+			return new ProductTypeDetailActivity(clientFactory, (ProductTypeDetailPlace) place);
 		} else if (place instanceof SupplierDetailPlace) {
-			return new SupplierDetailActivity(clientFactory,
-					(SupplierDetailPlace) place);
+			return new SupplierDetailActivity(clientFactory, (SupplierDetailPlace) place);
 		} else
 			return null;
 	}

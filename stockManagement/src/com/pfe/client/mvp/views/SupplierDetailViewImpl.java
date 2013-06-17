@@ -8,13 +8,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.widget.core.client.ContentPanel;
-import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.AccordionLayoutAppearance;
-import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.ExpandMode;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
 public class SupplierDetailViewImpl implements SupplierDetailView {
 	
-	private AccordionLayoutContainer detailsCon;
+	private VerticalLayoutContainer detailsCon;
 	private SupplierDTO supplier;
 	private Label descriptionLabel;
 	private Label nameLabel;
@@ -22,7 +21,7 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 
 	public SupplierDetailViewImpl(){
 		
-		detailsCon = new AccordionLayoutContainer();
+		detailsCon = new VerticalLayoutContainer();
 		AccordionLayoutAppearance appearance = GWT
 				.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
 		// details : Name tab
@@ -52,7 +51,6 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 		detailsCon.add(namePanel);
 		detailsCon.add(descPanel);
 		detailsCon.add(invoicePanel);
-		detailsCon.setExpandMode(ExpandMode.MULTI);
 	}
 	
 	@Override
