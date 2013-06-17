@@ -10,6 +10,8 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
@@ -144,6 +146,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getDeleteBtn().setEnabled(false);
 		checkBox = new CheckBox();
 		checkBox.setBoxLabel("Show paid");
+		checkBox.addValueChangeHandler(new CheckBoxHandler());
 		toolbar.addTool(checkBox);
 		
 		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
@@ -249,6 +252,21 @@ public class InvoiceListViewImpl implements InvoiceListView {
 			confirmBox.addHideHandler(hideHandler);
 			confirmBox.show();
 		}
+	}
+	
+	private class CheckBoxHandler implements ValueChangeHandler<Boolean>{
+
+		@Override
+		public void onValueChange(ValueChangeEvent<Boolean> event) {
+			Boolean checked = event.getValue();
+			if(checked){
+				presenter.search();
+			} else{
+				presenter.searchUnpaid();
+			}
+			
+		}
+		
 	}
 	
 	@Override

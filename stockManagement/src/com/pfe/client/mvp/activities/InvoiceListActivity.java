@@ -57,22 +57,20 @@ public class InvoiceListActivity extends AbstractActivity implements
 		view = clientFactory.getInvoiceListView();
 		view.maskGrid();
 		bind();
-		loadPages();
+		searchUnpaid();
 		view.unmaskGrid();
 		panel.setWidget(view.asWidget());
 	}
 	
 	
-	/**
-	 * Sets paging parameters and loads list pages
-	 */
-	private void loadPages() {
+	@Override
+	public void searchUnpaid() {
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>() {
 
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig,
 					AsyncCallback<PagingLoadResult<InvoiceDTO>> callback) {
-				invoiceService.search(loadConfig, callback);
+				invoiceService.searchUnpaid(loadConfig, callback);
 
 			}
 
@@ -91,6 +89,32 @@ public class InvoiceListActivity extends AbstractActivity implements
 		view.setPagingLoader(remoteLoader);
 	}
 
+	@Override
+	public void search() {
+		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>() {
+
+			@Override
+			public void load(FilterPagingLoadConfig loadConfig,
+					AsyncCallback<PagingLoadResult<InvoiceDTO>> callback) {
+				invoiceService.search(loadConfig, callback);
+
+			}
+
+		};
+		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>(proxy) {
+			
+			@Override
+			protected FilterPagingLoadConfig newLoadConfig() {
+				return new FilterPagingLoadConfigBean();
+			}
+		};
+		remoteLoader.setRemoteSort(true);
+		remoteLoader
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, InvoiceDTO, PagingLoadResult<InvoiceDTO>>(view.getData()));
+
+		view.setPagingLoader(remoteLoader);
+	}
+	
 	@Override
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
@@ -145,6 +169,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 			@Override
 			public void onSuccess(InvoiceDTO result) {
 				view.updateData(result);
+				view.refreshGrid();
 				view.getEditView().hide();
 				
 			}
