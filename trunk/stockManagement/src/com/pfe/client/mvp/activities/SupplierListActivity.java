@@ -144,12 +144,12 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void delete(final SupplierDTO supplier) {
-		supplierService.delete(supplier, new AsyncCallback<Void>() {
+	public void delete(final List<SupplierDTO> suppliers) {
+		supplierService.delete(suppliers, new AsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
-				view.deleteData(supplier);
+				view.deleteData(suppliers);
 				view.refreshGrid();
 				view.unmaskGrid();
 			}

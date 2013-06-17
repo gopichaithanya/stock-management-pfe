@@ -6,13 +6,14 @@ import java.util.List;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.properties.SupplierProperties;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
-import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -35,8 +36,7 @@ import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 
 public class SupplierListViewImpl implements SupplierListView {
 
-	private static final SupplierProperties props = GWT
-			.create(SupplierProperties.class);
+	private static final SupplierProperties props = GWT.create(SupplierProperties.class);
 
 	private SupplierPresenter presenter;
 	private Grid<SupplierDTO> grid;
@@ -55,16 +55,12 @@ public class SupplierListViewImpl implements SupplierListView {
 		
 		// Check box selection model
 		IdentityValueProvider<SupplierDTO> identity = new IdentityValueProvider<SupplierDTO>();
-		CheckBoxSelectionModel<SupplierDTO> sm = new CheckBoxSelectionModel<SupplierDTO>(
-				identity);
-		sm.setSelectionMode(SelectionMode.SINGLE);
+		CheckBoxSelectionModel<SupplierDTO> sm = new CheckBoxSelectionModel<SupplierDTO>(identity);
 
 		// Column configuration
 		int ratio = 1;
-		ColumnConfig<SupplierDTO, String> nameCol = new ColumnConfig<SupplierDTO, String>(
-				props.name(), ratio, "Name");
-		ColumnConfig<SupplierDTO, String> descCol = new ColumnConfig<SupplierDTO, String>(
-				props.description(), 3 * ratio, "Description");
+		ColumnConfig<SupplierDTO, String> nameCol = new ColumnConfig<SupplierDTO, String>(props.name(), ratio, "Name");
+		ColumnConfig<SupplierDTO, String> descCol = new ColumnConfig<SupplierDTO, String>(props.description(), 3 * ratio, "Description");
 
 		List<ColumnConfig<SupplierDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<SupplierDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
@@ -90,9 +86,7 @@ public class SupplierListViewImpl implements SupplierListView {
 		grid.getView().setColumnLines(true);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
-		grid.setStateful(true);
 		grid.getView().setAutoFill(true);
-		grid.setHeight("100%");
 		grid.addRowClickHandler(new GridRowClickHandler());
 		pagingToolBar = new PagingToolBar(4);
 
@@ -101,6 +95,23 @@ public class SupplierListViewImpl implements SupplierListView {
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
+		
+		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<SupplierDTO>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<SupplierDTO> arg0) {
+				if (grid.getSelectionModel().getSelectedItems().size() > 1) { // if more then one item is selected, enable only the delete button
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else if (grid.getSelectionModel().getSelectedItems().size() == 1) { // if one item is selected, enable delete and edit buttons
+					toolbar.getEditBtn().setEnabled(true);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else { // if no selection, then disable the edit and delete buttons
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(false);
+				}
+			}
+		});
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
@@ -146,10 +157,9 @@ public class SupplierListViewImpl implements SupplierListView {
 	
 	@Override
 	public void refreshEditSupplierWindow(){
-		if (editView == null) {
-			editView = new EditSupplierViewImpl();
-			editView.setPresenter(presenter);
-		}
+		
+		editView = new EditSupplierViewImpl();
+		editView.setPresenter(presenter);
 		SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
 		presenter.find(supplier.getId());
 	}
@@ -165,7 +175,11 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			confirmBox = new ConfirmMessageBox("Delete","Are you sure you want to delete the supplier?");
+			
+			if (grid.getSelectionModel().getSelectedItems() == null) { // double check for selected item
+				return;
+			}
+			confirmBox = new ConfirmMessageBox("Delete","Delete supplier(s)?");
 			final HideHandler hideHandler = new HideHandler() {
 
 				@Override
@@ -173,11 +187,9 @@ public class SupplierListViewImpl implements SupplierListView {
 					Dialog btn = (Dialog) event.getSource();
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
-						SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
-						if (supplier != null) {
-							maskGrid();
-							presenter.delete(supplier);
-						}
+						List<SupplierDTO> suppliers = grid.getSelectionModel().getSelectedItems();
+						maskGrid();
+						presenter.delete(suppliers);
 
 					} else if (msg.equals("No")) {
 						confirmBox.hide();
@@ -248,14 +260,15 @@ public class SupplierListViewImpl implements SupplierListView {
 	}
 
 	@Override
-	public void deleteData(SupplierDTO supplier) {
-		store.remove(supplier);
+	public void deleteData(List<SupplierDTO> suppliers) {
+		for(SupplierDTO supplier : suppliers){
+			store.remove(supplier);
+		}	
 		
 	}
 
 	@Override
-	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> remoteLoader) {
+	public void setPagingLoader(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> remoteLoader) {
 		loader = remoteLoader;
 		pagingToolBar.bind(loader);
 		pagingToolBar.first();
