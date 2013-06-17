@@ -7,7 +7,7 @@ import com.pfe.shared.dto.ShipmentDTO;
 
 public interface ShipmentServiceAsync {
 
-	void deleteList(List<ShipmentDTO> shipments, AsyncCallback<Void> callback);
+	void delete(List<ShipmentDTO> shipments, AsyncCallback<Void> callback);
 
 
 }

@@ -237,7 +237,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	
 	@Override
 	public void deleteShipments(final List<ShipmentDTO> shipments) {
-		shipmentService.deleteList(shipments, new AsyncCallback<Void>() {
+		shipmentService.delete(shipments, new AsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
