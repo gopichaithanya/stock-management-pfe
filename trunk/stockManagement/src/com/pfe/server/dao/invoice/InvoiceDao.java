@@ -17,11 +17,27 @@ public interface InvoiceDao extends IBaseDao<Long, Invoice> {
 	public List<Invoice> getBySupplier(Supplier supplier);
 	
 	/**
-	 * Retrieves records from start to limit index.
+	 * Retrieves invoices applying limit of results
 	 * 
 	 * @param start
 	 * @param limit
 	 * @return
 	 */
 	public List<Invoice> search(int start, int limit); 
+	
+	/**
+	 * Retrieves invoices where restToPay greater than 0 and applying limit of results.
+	 * 
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	public List<Invoice> searchUnpaid(int start, int limit); 
+	
+	/**
+	 * Counts invoices with restToPay greater than 0
+	 * 
+	 * @return
+	 */
+	public long countUnpaid();
 }

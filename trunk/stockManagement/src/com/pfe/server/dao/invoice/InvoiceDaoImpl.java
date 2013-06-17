@@ -1,5 +1,6 @@
 package com.pfe.server.dao.invoice;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -23,15 +24,29 @@ public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
 
 	@Override
 	public List<Invoice> getBySupplier(Supplier supplier) {
-		Criterion criterion1 = Restrictions.eq("supplier", supplier);
-		List<Invoice> l = findByCriteria(criterion1);
-		return l;
+		
+		Criterion criterion = Restrictions.eq("supplier", supplier);
+		return findByCriteria(criterion);
 	}
 
 	@Override
 	public List<Invoice> search(int start, int limit) {
 		List<Invoice> results = findByCriteria(start, limit, (Criterion[])null);
 		return results;
+	}
+
+	@Override
+	public List<Invoice> searchUnpaid(int start, int limit) {
+		
+		Criterion criterion = Restrictions.gt("restToPay", new BigDecimal(0));
+		return findByCriteria(start, limit, criterion);
+		
+	}
+
+	@Override
+	public long countUnpaid() {
+		Criterion criterion = Restrictions.gt("restToPay", new BigDecimal(0));
+		return countByCriteria(criterion);
 	}
 	
 }
