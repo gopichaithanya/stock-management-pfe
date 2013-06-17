@@ -198,10 +198,8 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		if (grid.getSelectionModel().getSelectedItem() == null) { // double check for selected item
 			return;
 		}
-		if (editView == null) {
-			editView = new EditInvoiceViewImpl();
-			editView.setPresenter(presenter);
-		}
+		editView = new EditInvoiceViewImpl();
+		editView.setPresenter(presenter);
 		
 		//Get available suppliers for combo selection
 		presenter.getSuppliers("edit");
