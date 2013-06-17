@@ -1,5 +1,7 @@
 package com.pfe.client.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -17,5 +19,7 @@ public interface InvoiceServiceAsync {
 	void create(InvoiceDTO invoice, AsyncCallback<InvoiceDTO> callback);
 
 	void delete(InvoiceDTO invoice, AsyncCallback<Void> callback);
+
+	void delete(List<InvoiceDTO> invoices, AsyncCallback<Void> callback);
 
 }

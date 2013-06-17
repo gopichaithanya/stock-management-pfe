@@ -1,5 +1,7 @@
 package com.pfe.client.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
@@ -58,4 +60,13 @@ public interface InvoiceService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public void delete(InvoiceDTO invoice) throws BusinessException;
+
+	/**
+	 * Deletes list of records from database
+	 * 
+	 * @param invoices
+	 * @throws BusinessException
+	 */
+	public void delete(List<InvoiceDTO> invoices) throws BusinessException;
 }
+
