@@ -59,11 +59,11 @@ public interface SupplierListView extends IsWidget {
 	public void updateData(SupplierDTO supplier);
 
 	/**
-	 * Deletes type from the displayed list
+	 * Deletes suppliers from the displayed list
 	 * 
-	 * @param supplier
+	 * @param suppliers
 	 */
-	public void deleteData(SupplierDTO supplier);
+	public void deleteData(List<SupplierDTO> suppliers);
 
 	/**
 	 * Set loader for paging

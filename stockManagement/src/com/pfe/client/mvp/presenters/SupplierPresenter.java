@@ -50,12 +50,12 @@ public interface SupplierPresenter extends Presenter {
 	 */
 	public void update(SupplierDTO updatedSupplier);
 
-	/***
-	 * Deletes supplier
+	/**
+	 * Calls service to delete suppliers from database
 	 * 
-	 * @param supplier
+	 * @param suppliers
 	 */
-	public void delete(SupplierDTO supplier);
+	public void delete(List<SupplierDTO> suppliers);
 
 	/**
 	 * Filters list by name. Creates new paging load configuration corresponding
