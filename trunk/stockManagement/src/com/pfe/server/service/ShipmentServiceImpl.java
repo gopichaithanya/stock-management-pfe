@@ -38,7 +38,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteList(List<ShipmentDTO> shipments) throws BusinessException {
+	public void delete(List<ShipmentDTO> shipments) throws BusinessException {
 
 		List<Shipment> entities = new ArrayList<Shipment>();
 		for (ShipmentDTO shipment : shipments) {

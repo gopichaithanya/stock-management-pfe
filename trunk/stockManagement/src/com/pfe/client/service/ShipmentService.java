@@ -17,10 +17,10 @@ import com.pfe.shared.dto.ShipmentDTO;
 public interface ShipmentService extends RemoteService {
 	
 	/**
-	 * Deletes shipments
+	 * Deletes list of records
 	 * 
 	 * @param shipments
 	 * @throws BusinessException
 	 */
-	public void deleteList(List<ShipmentDTO> shipments) throws BusinessException;
+	public void delete(List<ShipmentDTO> shipments) throws BusinessException;
 }
