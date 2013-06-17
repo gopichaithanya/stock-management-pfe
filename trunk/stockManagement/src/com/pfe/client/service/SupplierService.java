@@ -66,4 +66,12 @@ public interface SupplierService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public void delete(SupplierDTO supplier) throws BusinessException;
+	
+	/**
+	 * Deletes list of suppliers from database
+	 * 
+	 * @param suppliers
+	 * @throws BusinessException
+	 */
+	public void delete(List<SupplierDTO> suppliers) throws BusinessException;
 }

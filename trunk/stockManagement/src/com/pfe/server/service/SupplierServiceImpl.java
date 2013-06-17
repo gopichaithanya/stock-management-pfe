@@ -128,11 +128,20 @@ public class SupplierServiceImpl implements SupplierService {
 		List<Invoice> invoices = invoiceDao.getBySupplier(entity);
 		if (invoices.size() > 0) {
 			throw new BusinessException(
-					"This supplier has one or several invoices associated to it and cannot be deleted.");
+					"Supplier has one or several invoices associated to it and cannot be deleted.");
 		} else {
 			supplierDao.delete(entity);
 		}
 
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(List<SupplierDTO> suppliers) throws BusinessException {
+		for(SupplierDTO supplier : suppliers){
+			delete(supplier);
+		}
+		
 	}
 
 }
