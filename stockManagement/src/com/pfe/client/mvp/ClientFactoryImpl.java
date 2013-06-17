@@ -43,14 +43,14 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static LocationServiceAsync locationService;
 	private static StockServiceAsync stockService;
 
-	private static WelcomeView welcomeView;
-	
-	private static ProductTypeListView productTypeListView;
-	private static ProductTypeDetailView productTypeDetailView;
-	private static SupplierListView supplierListView;
-	private static SupplierDetailView supplierDetailView; 
-	private static InvoiceListView invoiceListView;
-	private static LocationListView locationListView;
+//	private static WelcomeView welcomeView;
+//	
+//	private static ProductTypeListView productTypeListView;
+//	private static ProductTypeDetailView productTypeDetailView;
+//	private static SupplierListView supplierListView;
+//	private static SupplierDetailView supplierDetailView; 
+//	private static InvoiceListView invoiceListView;
+//	private static LocationListView locationListView;
 
 	@Override
 	public EventBus getEventBus() {
@@ -121,63 +121,63 @@ public class ClientFactoryImpl implements ClientFactory {
 	
 	@Override
 	public ProductTypeListView getProductTypeListView() {
-		if (productTypeListView == null) {
-			productTypeListView = new ProductTypeListViewImpl();
-		}
-		return productTypeListView;
+//		if (productTypeListView == null) {
+//			productTypeListView = new ProductTypeListViewImpl();
+//		}
+		return new ProductTypeListViewImpl();
 	}
 
 	@Override
 	public ProductTypeDetailView getProductTypeDetailView() {
-		if (productTypeDetailView == null) {
-			productTypeDetailView = new ProductTypeDetailViewImpl();
-		}
-		return productTypeDetailView;
+//		if (productTypeDetailView == null) {
+//			productTypeDetailView = new ProductTypeDetailViewImpl();
+//		}
+		return new ProductTypeDetailViewImpl();
 	}
 
 
 	@Override
 	public WelcomeView getWelcomeView() {
-		if (welcomeView == null) {
-			welcomeView = new WelcomeViewImpl();
-		}
-		return welcomeView;
+//		if (welcomeView == null) {
+//			welcomeView = new WelcomeViewImpl();
+//		}
+		return new WelcomeViewImpl();
 	}
 
 
 	@Override
 	public SupplierListView getSupplierListView() {
-		if (supplierListView == null) {
-			supplierListView = new SupplierListViewImpl();
-		}
-		return supplierListView;
+//		if (supplierListView == null) {
+//			supplierListView = new SupplierListViewImpl();
+//		}
+		return new SupplierListViewImpl();
 	}
 
 
 	@Override
 	public SupplierDetailView getSupplierDetailView() {
-		if (supplierDetailView == null) {
-			supplierDetailView = new SupplierDetailViewImpl();
-		}
-		return supplierDetailView;
+//		if (supplierDetailView == null) {
+//			supplierDetailView = new SupplierDetailViewImpl();
+//		}
+		return new SupplierDetailViewImpl();
 	}
 
 
 	@Override
 	public InvoiceListView getInvoiceListView() {
-		if (invoiceListView == null) {
-			invoiceListView = new InvoiceListViewImpl();
-		}
-		return invoiceListView;
+//		if (invoiceListView == null) {
+//			invoiceListView = new InvoiceListViewImpl();
+//		}
+		return new InvoiceListViewImpl();
 	}
 
 
 	@Override
 	public LocationListView getLocationListView() {
-		if (locationListView == null) {
-			locationListView = new LocationListViewImpl();
-		}
-		return locationListView;
+//		if (locationListView == null) {
+//			locationListView = new LocationListViewImpl();
+//		}
+		return new LocationListViewImpl();
 	}
 
 }
