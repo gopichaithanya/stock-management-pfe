@@ -1,6 +1,5 @@
 package com.pfe.server.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ShipmentDTO;
-import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.LocationType;
 import com.pfe.shared.model.ProductType;
@@ -78,19 +76,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 							"Some shipments are impossible to delete because there are not enought goods in the warehouse");
 					} else {
 						
-						//Update debt
-						Invoice invoice = entity.getInvoice();
-						if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
-							BigDecimal oldDebt = invoice.getRestToPay();
-							BigDecimal price = entity.getUnitPrice().multiply(new BigDecimal(entity.getInitialQuantity()));
-							BigDecimal newDebt = oldDebt.subtract(price);
-							if(newDebt.compareTo(new BigDecimal(0)) == -1){
-								invoice.setRestToPay(new BigDecimal(0));
-							} else{
-								invoice.setRestToPay(newDebt);
-							}
-							invoiceDao.merge(invoice);
-						}
+						//TODO Update debt
 						
 						int remainingQty = availableQty - shipmentQty;
 						if(remainingQty == 0){
