@@ -205,6 +205,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(InvoiceDTO invoice) throws BusinessException {
+		
 		Invoice entity = invoiceDao.get(invoice.getId());
 		List<Shipment> shipments = entity.getShipments();
 		if(shipments.size() > 0){
@@ -242,8 +243,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	 * @param initialShipment object as it is in database
 	 * @throws BusinessException
 	 */
-	private void manageShipmentExceptions(Shipment updatedShipment, Shipment initialShipment) 
-			throws BusinessException{
+	private void manageShipmentExceptions(Shipment updatedShipment, Shipment initialShipment) throws BusinessException{
 		
 		int removedQty = 0;
 		
@@ -347,4 +347,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 		locationDao.merge(warehouse);
 	}
 	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(List<InvoiceDTO> invoices) throws BusinessException {
+		for(InvoiceDTO invoice : invoices){
+			delete(invoice);
+		}
+		
+	}
 }
