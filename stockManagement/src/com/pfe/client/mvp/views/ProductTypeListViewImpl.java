@@ -35,8 +35,7 @@ import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 
 public class ProductTypeListViewImpl implements ProductTypeListView {
 
-	private static final ProductTypeProps props = GWT
-			.create(ProductTypeProps.class);
+	private static final ProductTypeProps props = GWT.create(ProductTypeProps.class);
 
 	private ProductTypePresenter presenter;
 	private Grid<ProductType> grid;
@@ -61,17 +60,14 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		// column configuration
 		int ratio = 1;
-		ColumnConfig<ProductType, String> nameCol = new ColumnConfig<ProductType, String>(
-				props.name(), ratio, "Name");
-		ColumnConfig<ProductType, String> descCol = new ColumnConfig<ProductType, String>(
-				props.description(), 3 * ratio, "Description");
+		ColumnConfig<ProductType, String> nameCol = new ColumnConfig<ProductType, String>(props.name(), ratio, "Name");
+		ColumnConfig<ProductType, String> descCol = new ColumnConfig<ProductType, String>(props.description(), 3 * ratio, "Description");
 
 		List<ColumnConfig<ProductType, ?>> columnConfigList = new ArrayList<ColumnConfig<ProductType, ?>>();
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
 		columnConfigList.add(descCol);
-		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(
-				columnConfigList);
+		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(columnConfigList);
 		store = new ListStore<ProductType>(props.key());
 
 		//Grid
@@ -91,9 +87,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		grid.getView().setColumnLines(true);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
-		grid.setStateful(true);
 		grid.getView().setAutoFill(true);
-		grid.setHeight("100%");
 		grid.addRowClickHandler(new GridRowClickHandler());
 		pagingToolBar = new PagingToolBar(2);
 
@@ -179,9 +173,11 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			if (grid.getSelectionModel().getSelectedItems() == null) { 
+				return;
+			}
 
-			confirmBox = new ConfirmMessageBox("Delete",
-					"Are you sure you want to delete the type?");
+			confirmBox = new ConfirmMessageBox("Delete","Delete the type(s)?");
 			final HideHandler hideHandler = new HideHandler() {
 
 				@Override
@@ -190,8 +186,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
 
-						ProductType productType = grid.getSelectionModel()
-								.getSelectedItem();
+						ProductType productType = grid.getSelectionModel().getSelectedItem();
 						if (productType != null) {
 							maskGrid();
 							presenter.delete(productType);

@@ -12,7 +12,6 @@ import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.shared.dto.LocationDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
-import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -46,7 +45,6 @@ public class LocationListViewImpl implements LocationListView {
 		// check box selection model
 		IdentityValueProvider<LocationDTO> identity = new IdentityValueProvider<LocationDTO>();
 		CheckBoxSelectionModel<LocationDTO> sm = new CheckBoxSelectionModel<LocationDTO>(identity);
-		sm.setSelectionMode(SelectionMode.MULTI);
 
 		// column configuration
 		int ratio = 1;
@@ -79,9 +77,7 @@ public class LocationListViewImpl implements LocationListView {
 		grid.getView().setColumnLines(true);
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
-		grid.setStateful(true);
 		grid.getView().setAutoFill(true);
-		grid.setHeight("100%");
 		//grid.addRowClickHandler(new GridRowClickHandler());
 		pagingToolBar = new PagingToolBar(4);
 				
