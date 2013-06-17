@@ -69,4 +69,15 @@ public interface InvoicePresenter extends Presenter {
 	 * @param shipments
 	 */
 	public void deleteShipments(List<ShipmentDTO> shipments);
+
+	/**
+	 * Sets paging parameters and loads list pages for unpaid invoices
+	 */
+	public void searchUnpaid();
+	
+	/**
+	 * Sets paging parameters and loads list pages for all invoices
+	 */
+	public void search();
 }
+
