@@ -232,10 +232,10 @@ public class InvoiceListViewImpl implements InvoiceListView {
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
 
-						InvoiceDTO invoice = grid.getSelectionModel().getSelectedItem();
-						if (invoice != null) {
+						List<InvoiceDTO> invoices = grid.getSelectionModel().getSelectedItems();
+						if (invoices != null) {
 							maskGrid();
-							presenter.delete(invoice);
+							presenter.delete(invoices);
 						}
 
 					} else if (msg.equals("No")) {
@@ -289,8 +289,10 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	}
 
 	@Override
-	public void deleteData(InvoiceDTO invioce) {
-		store.remove(invioce);
+	public void deleteData(List<InvoiceDTO> invoices) {
+		for(InvoiceDTO invoice : invoices){
+			store.remove(invoice);
+		}
 
 	}
 
