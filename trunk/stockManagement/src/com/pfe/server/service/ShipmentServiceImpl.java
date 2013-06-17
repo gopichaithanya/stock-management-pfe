@@ -78,6 +78,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 						
 						//Delete shipment and update warehouse stocks
 						//TODO if stock in warehouse has qty = 0; delete it
+						//TODO update debt in invoice
 						int remainingQty = availableQty - shipmentQty;
 						stock.setQuantity(remainingQty);
 						stockDao.merge(stock);
