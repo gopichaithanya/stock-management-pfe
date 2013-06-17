@@ -14,6 +14,7 @@ import com.pfe.server.dao.BaseDaoImpl;
 import com.pfe.server.dao.OrderAlias;
 import com.pfe.server.dao.SortField;
 import com.pfe.server.dao.shipment.sort.ShipmentCreatedSortField;
+import com.pfe.server.dao.shipment.sort.ShipmentSortField;
 import com.pfe.shared.model.ProductType;
 import com.pfe.shared.model.Shipment;
 
@@ -41,9 +42,13 @@ public class ShipmentDaoImpl extends BaseDaoImpl<Long, Shipment> implements Ship
 		sorts.add(new ShipmentCreatedSortField());
 		List<OrderAlias> orderAliases = getOrderAliases(sorts);
 		List<Order> orders = getOrders(sorts);
-		findByCriteria(start, limit, orderAliases, orders, criterion1, criterion2);
-		return findByCriteria(start, limit, criterion1, criterion2);
+		return findByCriteria(start, limit, orderAliases, orders, criterion1, criterion2);
+		//return findByCriteria(start, limit, criterion1, criterion2);
 	}
 	
+	@Override
+	protected Class<? extends SortField> getSortType() {
+		return ShipmentSortField.class;			
+	}
 
 }
