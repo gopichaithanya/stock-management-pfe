@@ -22,4 +22,7 @@ public interface InvoiceServiceAsync {
 
 	void delete(List<InvoiceDTO> invoices, AsyncCallback<Void> callback);
 
+	void searchUnpaid(FilterPagingLoadConfig config,
+			AsyncCallback<PagingLoadResult<InvoiceDTO>> callback);
+
 }

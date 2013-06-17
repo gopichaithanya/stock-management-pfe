@@ -28,12 +28,20 @@ public interface InvoiceService extends RemoteService {
 	public InvoiceDTO find(Long id);
 	
 	/**
-	 * Retrieves invoices with paging
+	 * Retrieves all invoices with paging
 	 * 
 	 * @param config
 	 * @return
 	 */
 	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config);
+	
+	/**
+	 * Retrieves invoices with debt greater than zero
+	 * 
+	 * @param config
+	 * @return
+	 */
+	public PagingLoadResult<InvoiceDTO> searchUnpaid(FilterPagingLoadConfig config);
 
 	/**
 	 * Adds invoice in database

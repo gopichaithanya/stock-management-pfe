@@ -75,6 +75,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
 	}
+	
+	@Override
+	public PagingLoadResult<InvoiceDTO> searchUnpaid(FilterPagingLoadConfig config) {
+		int size = (int) invoiceDao.countUnpaid();
+		int start = config.getOffset();
+		int limit = config.getLimit();
+		List<Invoice> sublist = invoiceDao.searchUnpaid(start, limit);
+		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
+
+		if (sublist.size() > 0) {
+			for (Invoice invoice : sublist) {
+				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, "miniInvoice"));
+			}
+		}
+		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
+	}
 
 
 	@Override
