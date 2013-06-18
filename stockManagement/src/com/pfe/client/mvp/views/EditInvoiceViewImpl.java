@@ -28,6 +28,7 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
@@ -237,13 +238,21 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 				invoice.setRestToPay(newDebt);
 			}
 
-			invoice.setCode(codeField.getValue());
-			invoice.setPaymentType(paymentField.getValue());
-			invoice.setSupplier(supplierCombo.getValue());
 			//commit changes on grid
 			shipmentStore.commitChanges();
 			ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
 			shipments.addAll(shipmentStore.getAll());
+			for(ShipmentDTO shipment : shipments){
+				if(shipment.getInitialQuantity() == 0){
+					AlertMessageBox alertBox = new AlertMessageBox("Bat input", 
+							"Shipment's initial quantity must be greater than 0.");
+					alertBox.show();
+					return;
+				}
+			}
+			invoice.setCode(codeField.getValue());
+			invoice.setPaymentType(paymentField.getValue());
+			invoice.setSupplier(supplierCombo.getValue());
 			invoice.setShipments(shipments);
 			
 			if (presenter instanceof SupplierPresenter) {
