@@ -94,16 +94,13 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	}
 
 	@Override
-	public PagingLoadResult<ProductType> filter(FilterPagingLoadConfig config,
-			String filterValue) {
+	public PagingLoadResult<ProductType> filter(FilterPagingLoadConfig config, String filterValue) {
 
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<ProductType> sublist = dao.searchLike(start, limit,
-				filterValue);
+		List<ProductType> sublist = dao.searchLike(start, limit,filterValue);
 		int size = (int) dao.countLike(filterValue);
-		return new PagingLoadResultBean<ProductType>(sublist, size,
-				config.getOffset());
+		return new PagingLoadResultBean<ProductType>(sublist, size, config.getOffset());
 	}
 
 }
