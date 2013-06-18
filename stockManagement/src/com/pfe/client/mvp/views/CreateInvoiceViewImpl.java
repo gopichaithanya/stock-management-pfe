@@ -236,21 +236,33 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 				AlertMessageBox alertBox = new AlertMessageBox("Bad input", 
 						"Please provide correct values for code and payment type");
 				alertBox.show();
-			}else{
-				InvoiceDTO invoice = new InvoiceDTO();
-				invoice.setCode(codeField.getValue());
-				invoice.setPaymentType(paymentCombo.getValue());
-				invoice.setSupplier(supplierCombo.getValue());
-				//commit changes on grid
-				shipmentStore.commitChanges();
-				ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
-				shipments.addAll(shipmentStore.getAll());
-				for(ShipmentDTO shipment : shipments){
-					shipment.setInvoice(invoice);
-				}
-				invoice.setShipments(shipments);
-				presenter.create(invoice);
+				return;
 			}
+			
+			//commit changes on grid
+			shipmentStore.commitChanges();
+			ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
+			shipments.addAll(shipmentStore.getAll());
+			
+			for(ShipmentDTO shipment : shipments){
+				if(shipment.getInitialQuantity() == 0){
+					AlertMessageBox alertBox = new AlertMessageBox("Bat input", 
+							"Shipment's initial quantity must be greater than 0.");
+					alertBox.show();
+					return;
+				}
+			}
+			
+			InvoiceDTO invoice = new InvoiceDTO();
+			invoice.setCode(codeField.getValue());
+			invoice.setPaymentType(paymentCombo.getValue());
+			invoice.setSupplier(supplierCombo.getValue());
+			for(ShipmentDTO shipment : shipments){
+				shipment.setInvoice(invoice);
+			}
+			invoice.setShipments(shipments);
+			presenter.create(invoice);
+			
 			
 		}
 	}
