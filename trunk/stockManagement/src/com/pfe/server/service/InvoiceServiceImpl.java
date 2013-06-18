@@ -233,14 +233,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 					throw new BusinessException("Invoice cannot be deleted : some items have been sold.");
 				}
 				Stock stock = stockDao.get(warehouse, shipment.getProductType());
-				int qty = shipment.getInitialQuantity();
-				if(stock == null || stock.getQuantity() < qty){
+				int shipmentQty = shipment.getInitialQuantity();
+				if(stock == null || stock.getQuantity() < shipmentQty){
 					throw new BusinessException("Invoice cannot be deleted : not enough goods to remove from the" +
 							" warehouse");
 				}
-				int availableQty = stock.getQuantity();
-				stock.setQuantity(availableQty - qty);
-				stockDao.merge(stock);
+				
+				//Compute quantity after removing shipment
+				int updatedQty = stock.getQuantity() - shipmentQty;
+				if(updatedQty == 0){
+					//Delete stock if empty
+					stockDao.delete(stock);
+				} else{
+					stock.setQuantity(updatedQty);
+					stockDao.merge(stock);
+				}
+				
 				shipmentDao.delete(shipment);
 				
 			}
@@ -355,7 +363,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 				stock.setQuantity(updatedQty);
 			}
 		}
-		stockDao.merge(stock);
+		
+		if(stock.getQuantity() > 0){
+			stockDao.merge(stock);
+		} else if(stock.getQuantity() == 0 && stock.getId() != null){
+			stockDao.delete(stock);
+		}
+		
 	}
 	
 	@Override
