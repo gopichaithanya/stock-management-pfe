@@ -28,6 +28,13 @@ public interface EditSupplierView {
 	public void setData(SupplierDTO supplier);
 	
 	/**
+	 * Gets the view data
+	 * 
+	 * @param supplier
+	 */
+	public SupplierDTO gettData();
+	
+	/**
 	 * Deletes invoice
 	 * 
 	 * @param invoice

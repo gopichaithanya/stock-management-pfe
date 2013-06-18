@@ -88,12 +88,6 @@ public interface SupplierListView extends IsWidget {
 	public EditSupplierView getEditSupplierView();
 
 	/**
-	 * Retrieves supplier details from server and renders edit supplier window
-	 * 
-	 */
-	public void refreshEditSupplierWindow();
-
-	/**
 	 * Refresh the grid view
 	 * 
 	 */

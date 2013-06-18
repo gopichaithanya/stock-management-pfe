@@ -260,4 +260,9 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		store.update(invoice);
 		
 	}
+
+	@Override
+	public SupplierDTO gettData() {
+		return supplier;
+	}
 }
