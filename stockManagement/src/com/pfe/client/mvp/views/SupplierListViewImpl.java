@@ -142,7 +142,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	}
 	
 	/**
-	 * Edit type handler
+	 * Edit supplier handler
 	 * 
 	 * @author Alexandra
 	 * 
@@ -151,12 +151,15 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			refreshEditSupplierWindow();
+			displayEditSupplierWindow();
 		}
 	}
 	
-	@Override
-	public void refreshEditSupplierWindow(){
+	/**
+	 * Loads and displays edit window
+	 * 
+	 */
+	private void displayEditSupplierWindow(){
 		
 		editView = new EditSupplierViewImpl();
 		editView.setPresenter(presenter);

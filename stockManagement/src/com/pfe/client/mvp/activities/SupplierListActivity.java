@@ -93,6 +93,44 @@ public class SupplierListActivity extends AbstractActivity implements
 		view.setPagingLoader(remoteLoader);
 	}
 
+	
+	@Override
+	public void getAll() {
+		supplierService.getAll(new AsyncCallback<List<SupplierDTO>>() {
+			
+			@Override
+			public void onSuccess(List<SupplierDTO> result) {
+				view.getEditSupplierView().getEditInvoiceView().setSuppliers(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				//TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+	
+	@Override
+	public void find(Long id) {
+		supplierService.find(id, new AsyncCallback<SupplierDTO>() {
+
+			@Override
+			public void onSuccess(SupplierDTO result) {
+				view.getEditSupplierView().setData(result);
+				view.getEditSupplierView().show();
+
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+	
 	@Override
 	public void create(SupplierDTO supplier) {
 		supplierService.create(supplier, new AsyncCallback<SupplierDTO>() {
@@ -120,7 +158,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void update(SupplierDTO updatedSupplier) {
+	public void update(final SupplierDTO updatedSupplier) {
 		supplierService.update(updatedSupplier, new AsyncCallback<SupplierDTO>() {
 
 					@Override
@@ -133,7 +171,8 @@ public class SupplierListActivity extends AbstractActivity implements
 					@Override
 					public void onFailure(Throwable caught) {
 						if (caught instanceof BusinessException){
-							view.refreshEditSupplierWindow();
+							//Go back to initial data
+							find(updatedSupplier.getId());
 							BusinessException exp = (BusinessException) caught;
 							AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 							alertBox.show();
@@ -193,39 +232,22 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void find(Long id) {
-		supplierService.find(id, new AsyncCallback<SupplierDTO>() {
-
-			@Override
-			public void onSuccess(SupplierDTO result) {
-				view.getEditSupplierView().setData(result);
-				view.getEditSupplierView().show();
-
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
-
-	@Override
 	public void updateInvoice(InvoiceDTO updatedInvoice) {
-		
+		final long supplierId = view.getEditSupplierView().gettData().getId();
 		invoiceService.update(updatedInvoice, new AsyncCallback<InvoiceDTO>() {
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
-				view.refreshEditSupplierWindow();
+				//Reload supplier view (parent window)
+				find(supplierId);
 				view.getEditSupplierView().getEditInvoiceView().hide();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
+				//Reload supplier view (parent window)
+				find(supplierId);
 				if (caught instanceof BusinessException){
-					view.refreshEditSupplierWindow();
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
@@ -233,43 +255,32 @@ public class SupplierListActivity extends AbstractActivity implements
 			}
 			
 		});
+
 	}
 	
 	@Override
 	public void deleteShipments(final List<ShipmentDTO> shipments) {
+		
+		final long supplierId = view.getEditSupplierView().gettData().getId();
 		shipmentService.delete(shipments, new AsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
-				view.refreshEditSupplierWindow();
+				//Reload supplier view (parent window)
+				find(supplierId);
 				view.getEditSupplierView().getEditInvoiceView().deleteShipments(shipments);
+				//TODO retrieve invoice here to update debt
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 				if (caught instanceof BusinessException){
+					//Reload supplier view (parent window)
+					find(supplierId);
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
 				}
-				
-			}
-		});
-		
-	}
-
-	@Override
-	public void getAll() {
-		supplierService.getAll(new AsyncCallback<List<SupplierDTO>>() {
-			
-			@Override
-			public void onSuccess(List<SupplierDTO> result) {
-				view.getEditSupplierView().getEditInvoiceView().setSuppliers(result);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				//TODO Auto-generated method stub
 				
 			}
 		});
@@ -291,7 +302,6 @@ public class SupplierListActivity extends AbstractActivity implements
 				
 			}
 		});
-		
 	}
 
 }
