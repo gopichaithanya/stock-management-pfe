@@ -70,8 +70,7 @@ public interface InvoiceListView extends IsWidget {
 	 * 
 	 * @param loader
 	 */
-	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader);
+	public void setPagingLoader(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader);
 
 	/**
 	 * 
@@ -84,12 +83,6 @@ public interface InvoiceListView extends IsWidget {
 	 * @return
 	 */
 	public EditInvoiceView getEditView();
-	
-	/**
-	 * Refreshes view data
-	 * 
-	 */
-	public void refreshEditView();
 
 	/**
 	 * Refresh the grid view

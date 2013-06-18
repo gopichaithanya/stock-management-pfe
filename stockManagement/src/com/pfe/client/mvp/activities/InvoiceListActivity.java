@@ -163,13 +163,12 @@ public class InvoiceListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void update(InvoiceDTO updatedInvoice) {
+	public void update(final InvoiceDTO updatedInvoice) {
 		invoiceService.update(updatedInvoice, new AsyncCallback<InvoiceDTO>() {
 			
 			@Override
 			public void onSuccess(InvoiceDTO result) {
 				view.updateData(result);
-				view.refreshGrid();
 				view.getEditView().hide();
 				
 			}
@@ -177,13 +176,12 @@ public class InvoiceListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				if(caught instanceof BusinessException){
-					view.unmaskGrid();
+					//Go back to initial data
+					find(updatedInvoice.getId());
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
 					alertBox.show();
 				}
-				//Go back to initial values
-				view.refreshEditView();
 			}
 		});
 		
