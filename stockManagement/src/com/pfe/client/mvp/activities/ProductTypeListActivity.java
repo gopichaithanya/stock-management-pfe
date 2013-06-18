@@ -117,7 +117,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 					}
 				});
-
 	}
 
 	@Override
@@ -143,12 +142,10 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void filter(final String name) {
 
-		view = clientFactory.getProductTypeListView();
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
 
 			@Override
-			public void load(FilterPagingLoadConfig loadConfig,
-					AsyncCallback<PagingLoadResult<ProductType>> callback) {
+			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ProductType>> callback) {
 				rpcService.filter(loadConfig, name, callback);
 
 			}
@@ -173,8 +170,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 	@Override
 	public void clearFilter() {
-
-		view = clientFactory.getProductTypeListView();
 		loadPages();
 		view.refreshGrid();
 		view.unmaskGrid();
