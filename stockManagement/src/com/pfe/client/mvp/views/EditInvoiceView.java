@@ -32,6 +32,13 @@ public interface EditInvoiceView {
 	public void setData(InvoiceDTO invoice);
 	
 	/**
+	 * Returns the displayed invoice
+	 * 
+	 * @return
+	 */
+	public InvoiceDTO getData();
+	
+	/**
 	 * Clears the UI components
 	 * 
 	 */

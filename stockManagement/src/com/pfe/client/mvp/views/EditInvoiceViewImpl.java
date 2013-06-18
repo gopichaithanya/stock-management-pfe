@@ -404,4 +404,9 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		}
 		
 	}
+
+	@Override
+	public InvoiceDTO getData() {
+		return invoice;
+	}
 }
