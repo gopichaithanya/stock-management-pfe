@@ -92,7 +92,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 			
 			@Override
 			protected void onDoubleClick(Event e) {
-				refreshEditView();
+				displayEditView();
 				//Element target = Element.as(e.getEventTarget());
 				//int rowIndex = view.findRowIndex(target);
 			}
@@ -185,17 +185,16 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			refreshEditView();
+			displayEditView();
 			
 		}
 	}
 	
 	/**
-	 * Sets EditView data
+	 * Loads and displays edit invoice window
 	 * 
 	 */
-	@Override
-	public void refreshEditView(){
+	private void displayEditView(){
 		if (grid.getSelectionModel().getSelectedItem() == null) { // double check for selected item
 			return;
 		}
