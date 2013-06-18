@@ -255,8 +255,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	 * Checks for business exceptions when updating a shipment. Exceptions may
 	 * occur when updating the shipment's initial quantity or product type.
 	 * 
-	 * @param updatedShipment object after update in interface
-	 * @param initialShipment object as it is in database
+	 * @param updatedShipment object after update in GUI
+	 * @param initialShipment object as it is in the database
 	 * @throws BusinessException
 	 */
 	private void manageShipmentExceptions(Shipment updatedShipment, Shipment initialShipment) throws BusinessException{
@@ -268,8 +268,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			
 			//Can't change type for sold items
 			if(initialShipment.getCurrentQuantity() != initialShipment.getInitialQuantity()){
-				throw new BusinessException("Cannot change type of shipment because" +
-						" part of its items have already been sold.");
+				throw new BusinessException("Cannot change type of shipment : some items have been sold.");
 			} 
 			//Shipments items are not sold
 			else{
@@ -279,15 +278,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		//Shipment type was not changed
 		else{
-			
-			//Current quantity greater than initial quantity
-			if(initialShipment.getCurrentQuantity() > updatedShipment.getInitialQuantity()){
-				throw new BusinessException("Cannot update shipment : initial quantity is inferior " +
-						" to current quantity");
-			}
 			int initial = initialShipment.getInitialQuantity();
 			int updated = updatedShipment.getInitialQuantity();
-			
 			if(initial > updated){
 				removedQty = initial - updated;
 			}
@@ -299,16 +291,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 			Location warehouse = locationDao.get(warehouseType).get(0);
 			Stock stock = stockDao.get(warehouse, initialShipment.getProductType());
 			if(stock == null || stock.getQuantity() < removedQty){
-				throw new BusinessException("Cannot update shipment : not enough goods to remove from the" +
-						" warehouse");
+				throw new BusinessException("Cannot update shipment : not enough goods to remove from warehouse.");
 			}
 		}
 		
 	}
 	
 	/**
-	 * Updates stocks when adding or updating a shipment.
-	 * Only warehouse stocks may be changed
+	 * Updates stocks when adding or updating a shipment. Only warehouse stocks may be changed.
 	 * 
 	 * @param shipment
 	 */
@@ -316,20 +306,20 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		LocationType warehouseType = locationTypeDao.getWarehouseType();
 		Location warehouse = locationDao.get(warehouseType).get(0);
+		//Get warehouse stock corresponding to the shipment type
 		Stock stock = stockDao.get(warehouse, shipment.getProductType());
 		
-		//Create stock of given type if it doesn't exist
+		//Initialize stock of given type if it doesn't exist
 		if(stock == null){
 			stock = new Stock();
 			stock.setLocation(warehouse);
 			stock.setType(shipment.getProductType());
 			stock.setQuantity(0);
-			warehouse.getStocks().add(stock);
 		}
 		
-		int updatedQty;
+		int updatedQty; 
 		
-		//Shipment is new. Add its quantity to the stock
+		//If shipment is new then add its quantity to the stock
 		if(shipment.getId() == null){
 			updatedQty = stock.getQuantity() + shipment.getInitialQuantity();
 			stock.setQuantity(updatedQty);
@@ -347,8 +337,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 				//Remove ancient type items from stocks
 				Stock ancientStock = stockDao.get(warehouse, initialType);
 				updatedQty =  ancientStock.getQuantity() - initialShipment.getInitialQuantity();
-				ancientStock.setQuantity(updatedQty);
-				stockDao.merge(ancientStock);
+				//Remove ancient stock if empty
+				if(updatedQty == 0){
+					stockDao.delete(ancientStock);
+				} else{
+					ancientStock.setQuantity(updatedQty);
+					stockDao.merge(ancientStock);
+				}
 				
 				//Add new quantity in stock
 				updatedQty = stock.getQuantity() + shipment.getInitialQuantity();
@@ -360,7 +355,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 				stock.setQuantity(updatedQty);
 			}
 		}
-		locationDao.merge(warehouse);
+		stockDao.merge(stock);
 	}
 	
 	@Override

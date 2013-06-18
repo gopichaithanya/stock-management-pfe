@@ -1,5 +1,6 @@
 package com.pfe.server.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ShipmentDTO;
+import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.LocationType;
 import com.pfe.shared.model.ProductType;
@@ -45,7 +47,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
 		List<Shipment> entities = new ArrayList<Shipment>();
 		for (ShipmentDTO shipment : shipments) {
-			entities.add(dozerMapper.map(shipment, Shipment.class));
+			entities.add(shipmentDao.get(shipment.getId()));
 		}
 
 		//Manage exceptions
@@ -75,9 +77,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 						throw new BusinessException(
 							"Some shipments are impossible to delete because there are not enought goods in the warehouse");
 					} else {
-						
-						//TODO Update debt
-						
+
 						int remainingQty = availableQty - shipmentQty;
 						if(remainingQty == 0){
 							//Delete empty warehouse stock
@@ -86,7 +86,32 @@ public class ShipmentServiceImpl implements ShipmentService {
 							stock.setQuantity(remainingQty);
 							stockDao.merge(stock);
 						}
-						//Delete shipment
+						
+						//Update debt
+						Invoice invoice = entity.getInvoice();
+						BigDecimal newDebt = new BigDecimal(0);
+						BigDecimal unitPrice = entity.getUnitPrice();
+						
+						//If shipment was paid, remove its total price from the debt
+						if(Invoice.IMMEDIATE_PAY.equals(invoice.getPaymentType())){
+							BigDecimal shipmentPrice = unitPrice.multiply(new BigDecimal(entity.getInitialQuantity()));
+							newDebt = invoice.getRestToPay().subtract(shipmentPrice);							
+						} 
+						//If shipment is paid on sale, remove the debt corresponding to the sold quantity
+						else if(Invoice.ONSALE_PAY.equals(invoice.getPaymentType())){
+							int soldQty = entity.getInitialQuantity() - entity.getCurrentQuantity();
+							BigDecimal price = unitPrice.multiply(new BigDecimal(soldQty));
+							newDebt = invoice.getRestToPay().subtract(price);
+						}
+						//set debt to 0 if negative
+						if(newDebt.compareTo(new BigDecimal(0)) == -1){
+							invoice.setRestToPay(new BigDecimal(0));
+						} else{
+							invoice.setRestToPay(newDebt);
+						}
+						
+						//Merge invoice and delete shipment
+						invoiceDao.merge(invoice);
 						shipmentDao.delete(entity);
 					}
 				}
