@@ -9,8 +9,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.ui.GridToolbar;
-import com.pfe.client.ui.properties.ProductTypeProps;
-import com.pfe.shared.model.ProductType;
+import com.pfe.client.ui.properties.ProductTypeProperties;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
@@ -35,13 +35,13 @@ import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 
 public class ProductTypeListViewImpl implements ProductTypeListView {
 
-	private static final ProductTypeProps props = GWT.create(ProductTypeProps.class);
+	private static final ProductTypeProperties props = GWT.create(ProductTypeProperties.class);
 
 	private ProductTypePresenter presenter;
-	private Grid<ProductType> grid;
-	private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader;
+	private Grid<ProductTypeDTO> grid;
+	private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> loader;
 	private PagingToolBar pagingToolBar;
-	private ListStore<ProductType> store;
+	private ListStore<ProductTypeDTO> store;
 
 	private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
@@ -53,25 +53,24 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	public ProductTypeListViewImpl() {
 
 		// check box selection model
-		IdentityValueProvider<ProductType> identity = new IdentityValueProvider<ProductType>();
-		CheckBoxSelectionModel<ProductType> sm = new CheckBoxSelectionModel<ProductType>(
-				identity);
+		IdentityValueProvider<ProductTypeDTO> identity = new IdentityValueProvider<ProductTypeDTO>();
+		CheckBoxSelectionModel<ProductTypeDTO> sm = new CheckBoxSelectionModel<ProductTypeDTO>(identity);
 		sm.setSelectionMode(SelectionMode.SINGLE);
 
 		// column configuration
 		int ratio = 1;
-		ColumnConfig<ProductType, String> nameCol = new ColumnConfig<ProductType, String>(props.name(), ratio, "Name");
-		ColumnConfig<ProductType, String> descCol = new ColumnConfig<ProductType, String>(props.description(), 3 * ratio, "Description");
+		ColumnConfig<ProductTypeDTO, String> nameCol = new ColumnConfig<ProductTypeDTO, String>(props.name(), ratio, "Name");
+		ColumnConfig<ProductTypeDTO, String> descCol = new ColumnConfig<ProductTypeDTO, String>(props.description(), 3 * ratio, "Description");
 
-		List<ColumnConfig<ProductType, ?>> columnConfigList = new ArrayList<ColumnConfig<ProductType, ?>>();
+		List<ColumnConfig<ProductTypeDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<ProductTypeDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
 		columnConfigList.add(descCol);
-		ColumnModel<ProductType> cm = new ColumnModel<ProductType>(columnConfigList);
-		store = new ListStore<ProductType>(props.key());
+		ColumnModel<ProductTypeDTO> cm = new ColumnModel<ProductTypeDTO>(columnConfigList);
+		store = new ListStore<ProductTypeDTO>(props.key());
 
 		//Grid
-		grid = new Grid<ProductType>(store, cm) {
+		grid = new Grid<ProductTypeDTO>(store, cm) {
 			@Override
 			protected void onAfterFirstAttach() {
 				super.onAfterFirstAttach();
@@ -115,7 +114,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		@Override
 		public void onRowClick(RowClickEvent event) {
 			int row = event.getRowIndex();
-			ProductType selected = store.get(row);
+			ProductTypeDTO selected = store.get(row);
 			presenter.displayDetailsView(selected);
 
 		}
@@ -154,8 +153,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 				editView = new EditProductTypeViewImpl();
 				editView.setPresenter(presenter);
 			}
-			ProductType productType = grid.getSelectionModel()
-					.getSelectedItem();
+			ProductTypeDTO productType = grid.getSelectionModel().getSelectedItem();
 			if (productType != null) {
 				editView.setData(productType);
 				editView.show();
@@ -186,7 +184,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
 
-						ProductType productType = grid.getSelectionModel().getSelectedItem();
+						ProductTypeDTO productType = grid.getSelectionModel().getSelectedItem();
 						if (productType != null) {
 							maskGrid();
 							presenter.delete(productType);
@@ -251,12 +249,12 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	@Override
-	public void setData(List<ProductType> productTypes) {
+	public void setData(List<ProductTypeDTO> productTypes) {
 		this.store.addAll(productTypes);
 	}
 
 	@Override
-	public ListStore<ProductType> getData() {
+	public ListStore<ProductTypeDTO> getData() {
 		return this.store;
 	}
 
@@ -266,17 +264,17 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	@Override
-	public void addData(ProductType productType) {
+	public void addData(ProductTypeDTO productType) {
 		store.add(productType);
 	}
 
 	@Override
-	public void updateData(ProductType productType) {
+	public void updateData(ProductTypeDTO productType) {
 		store.update(productType);
 	}
 
 	@Override
-	public void deleteData(ProductType productType) {
+	public void deleteData(ProductTypeDTO productType) {
 		store.remove(productType);
 	}
 
@@ -291,8 +289,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	@Override
-	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> remoteLoader) {
+	public void setPagingLoader(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> remoteLoader) {
 		loader = remoteLoader;
 		pagingToolBar.bind(loader);
 		pagingToolBar.first();

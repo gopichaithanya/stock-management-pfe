@@ -11,7 +11,7 @@ import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.shared.BusinessException;
-import com.pfe.shared.model.ProductType;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
@@ -34,7 +34,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-
 		view = clientFactory.getProductTypeListView();
 		view.maskGrid();
 		bind();
@@ -48,17 +47,16 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	 * Sets paging parameters and loads list pages
 	 */
 	private void loadPages() {
-		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
+		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>() {
 
 			@Override
-			public void load(FilterPagingLoadConfig loadConfig,
-					AsyncCallback<PagingLoadResult<ProductType>> callback) {
+			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ProductTypeDTO>> callback) {
 				rpcService.search(loadConfig, callback);
 
 			}
 
 		};
-		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>>(
+		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>(
 				proxy) {
 			@Override
 			protected FilterPagingLoadConfig newLoadConfig() {
@@ -67,16 +65,34 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		};
 		remoteLoader.setRemoteSort(true);
 		remoteLoader
-				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductTypeDTO, PagingLoadResult<ProductTypeDTO>>(
 						view.getData()));
 
 		view.setPagingLoader(remoteLoader);
 	}
+	
+	@Override
+	public void find(Long id) {
+		rpcService.find(id, new AsyncCallback<ProductTypeDTO>() {
+			
+			@Override
+			public void onSuccess(ProductTypeDTO result) {
+				view.getEditView().setData(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
 
 	@Override
-	public void create(ProductType productType) {
+	public void create(ProductTypeDTO productType) {
 
-		rpcService.create(productType, new AsyncCallback<ProductType>() {
+		rpcService.create(productType, new AsyncCallback<ProductTypeDTO>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -88,7 +104,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 			}
 
 			@Override
-			public void onSuccess(ProductType result) {
+			public void onSuccess(ProductTypeDTO result) {
 				view.addData(result);
 				view.getCreateView().hide();
 				view.refreshGrid();
@@ -97,18 +113,19 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void update(ProductType initial, ProductType updatedBuffer) {
-		rpcService.update(initial, updatedBuffer,
-				new AsyncCallback<ProductType>() {
+	public void update(final ProductTypeDTO updatedType) {
+		rpcService.update(updatedType, new AsyncCallback<ProductTypeDTO>() {
 
 					@Override
-					public void onSuccess(ProductType result) {
+					public void onSuccess(ProductTypeDTO result) {
 						view.updateData(result);
 						view.getEditView().hide();
 					}
 
 					@Override
 					public void onFailure(Throwable caught) {
+						//Reload initial data
+						find(updatedType.getId());
 						if (caught instanceof BusinessException) {
 							BusinessException exp = (BusinessException) caught;
 							AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
@@ -120,7 +137,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void delete(final ProductType productType) {
+	public void delete(final ProductTypeDTO productType) {
 		rpcService.delete(productType, new AsyncCallback<Void>() {
 
 			@Override
@@ -142,16 +159,16 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	@Override
 	public void filter(final String name) {
 
-		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductType>>() {
+		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>() {
 
 			@Override
-			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ProductType>> callback) {
+			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ProductTypeDTO>> callback) {
 				rpcService.filter(loadConfig, name, callback);
 
 			}
 
 		};
-		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>>(
+		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>(
 				proxy) {
 			@Override
 			protected FilterPagingLoadConfig newLoadConfig() {
@@ -160,7 +177,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		};
 		remoteLoader.setRemoteSort(true);
 		remoteLoader
-				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductType, PagingLoadResult<ProductType>>(
+				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductTypeDTO, PagingLoadResult<ProductTypeDTO>>(
 						view.getData()));
 
 		view.setPagingLoader(remoteLoader);
@@ -176,7 +193,7 @@ public class ProductTypeListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void displayDetailsView(ProductType productType) {
+	public void displayDetailsView(ProductTypeDTO productType) {
 		String token = productType.getName() + " \t\n\r\f" + productType.getDescription();
 		goTo(new ProductTypeDetailPlace(token));
 
