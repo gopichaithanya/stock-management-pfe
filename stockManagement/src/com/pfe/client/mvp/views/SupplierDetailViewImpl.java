@@ -22,15 +22,13 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 	public SupplierDetailViewImpl(){
 		
 		detailsCon = new VerticalLayoutContainer();
-		AccordionLayoutAppearance appearance = GWT
-				.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
+		AccordionLayoutAppearance appearance = GWT.<AccordionLayoutAppearance> create(AccordionLayoutAppearance.class);
 		// details : Name tab
 		nameLabel = new Label();
 		ContentPanel namePanel = new ContentPanel(appearance);
 		namePanel.setBodyStyleName("rawText");
 		namePanel.setHeadingText("Supplier");
 		namePanel.add(nameLabel);
-		namePanel.setExpanded(true);
 
 		// details : Description tab
 		descriptionLabel = new Label();
@@ -38,7 +36,6 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 		descPanel.setBodyStyleName("rawText");
 		descPanel.setHeadingText("Description");
 		descPanel.add(descriptionLabel);
-		descPanel.setExpanded(true);
 		
 		// details : Description tab
 		invoiceLabel = new Label();
@@ -46,7 +43,6 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 		invoicePanel.setBodyStyleName("rawText");
 		invoicePanel.setHeadingText("Invoices");
 		invoicePanel.add(invoiceLabel);
-		invoicePanel.setExpanded(true);
 		
 		detailsCon.add(namePanel);
 		detailsCon.add(descPanel);
@@ -55,6 +51,17 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 	
 	@Override
 	public Widget asWidget() {
+		return detailsCon;
+	}
+	
+	@Override
+	public void clearData() {
+
+	}
+
+	@Override
+	public void setData(SupplierDTO data) {
+		this.supplier = data;
 		nameLabel.setText(supplier.getName());
 		descriptionLabel.setText(supplier.getDescription());
 		ArrayList<InvoiceDTO> invoices = supplier.getInvoices();
@@ -71,17 +78,6 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 			text += " Total debt : " + debt + ".";
 		}
 		invoiceLabel.setText(text);
-		return detailsCon;
-	}
-	
-	@Override
-	public void clearData() {
-
-	}
-
-	@Override
-	public void setData(SupplierDTO supplier) {
-		this.supplier = supplier;
 
 	}
 

@@ -6,6 +6,8 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.pfe.client.mvp.views.InvoiceListView;
 import com.pfe.client.mvp.views.InvoiceListViewImpl;
+import com.pfe.client.mvp.views.LocationDetailView;
+import com.pfe.client.mvp.views.LocationDetailViewImpl;
 import com.pfe.client.mvp.views.LocationListView;
 import com.pfe.client.mvp.views.LocationListViewImpl;
 import com.pfe.client.mvp.views.ProductTypeDetailView;
@@ -178,6 +180,12 @@ public class ClientFactoryImpl implements ClientFactory {
 //			locationListView = new LocationListViewImpl();
 //		}
 		return new LocationListViewImpl();
+	}
+
+
+	@Override
+	public LocationDetailView getLocationDetailView() {
+		return new LocationDetailViewImpl();
 	}
 
 }
