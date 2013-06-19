@@ -232,7 +232,7 @@ public class SupplierListActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void updateInvoice(InvoiceDTO updatedInvoice) {
+	public void updateInvoice(final InvoiceDTO updatedInvoice) {
 		final long supplierId = view.getEditSupplierView().gettData().getId();
 		invoiceService.update(updatedInvoice, new AsyncCallback<InvoiceDTO>() {
 			
@@ -247,6 +247,8 @@ public class SupplierListActivity extends AbstractActivity implements
 			public void onFailure(Throwable caught) {
 				//Reload supplier view (parent window)
 				find(supplierId);
+				//Reload invoice view to display initial data
+				findInvoice(updatedInvoice.getId());
 				if (caught instanceof BusinessException){
 					BusinessException exp = (BusinessException) caught;
 					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
@@ -294,6 +296,28 @@ public class SupplierListActivity extends AbstractActivity implements
 			@Override
 			public void onSuccess(List<ProductTypeDTO> result) {
 				view.getEditSupplierView().getEditInvoiceView().setProductTypes(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	/**
+	 * Retrieves invoice and loads data in edit invoice view
+	 * 
+	 * @param id
+	 */
+	private void findInvoice(Long id){
+		invoiceService.find(id, new AsyncCallback<InvoiceDTO>() {
+			
+			@Override
+			public void onSuccess(InvoiceDTO result) {
+				view.getEditSupplierView().getEditInvoiceView().setData(result);
+				
 			}
 			
 			@Override
