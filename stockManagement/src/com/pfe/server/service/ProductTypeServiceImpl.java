@@ -41,66 +41,84 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	}
 	
 	@Override
+	public ProductTypeDTO find(Long id) {
+		ProductType entity = dao.get(id);
+		return dozerMapper.map(entity, ProductTypeDTO.class);
+	}
+	
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public ProductType create(ProductType productType) throws BusinessException {
+	public ProductTypeDTO create(ProductTypeDTO productType) throws BusinessException {
 
 		ProductType pt = dao.search(productType.getName());
 		if (pt != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
-		return dao.merge(productType);
+		ProductType entity = dozerMapper.map(productType, ProductType.class);
+		ProductType merged = dao.merge(entity);
+		return dozerMapper.map(merged, ProductTypeDTO.class);
 
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public ProductType update(ProductType initial, ProductType updatedBuffer)
-			throws BusinessException {
+	public ProductTypeDTO update(ProductTypeDTO updatedType) throws BusinessException {
 
-		ProductType duplicate = dao.getDuplicateName(initial.getId(),
-				updatedBuffer.getName());
-
+		ProductType duplicate = dao.getDuplicateName(updatedType.getId(), updatedType.getName());
 		if (duplicate != null) {
-			BusinessException ex = new BusinessException(
-					"The name you chose is already in use.");
-			throw ex;
+			throw new BusinessException("The name you chose is already in use.");
 		}
+		ProductType entity = dozerMapper.map(updatedType, ProductType.class);
+		ProductType merged = dao.merge(entity);
 
-		initial.setDescription(updatedBuffer.getDescription());
-		initial.setName(updatedBuffer.getName());
-		return dao.merge(initial);
-
+		return dozerMapper.map(merged, ProductTypeDTO.class);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(ProductType productType) throws BusinessException {
+	public void delete(ProductTypeDTO productType) throws BusinessException {
 		// TODO check if at least one shipment with this type in DB and throw
 		// exception
-		dao.delete(productType);
+		ProductType entity = dozerMapper.map(productType, ProductType.class);
+		dao.delete(entity);
 
 	}
 
 	@Override
-	public PagingLoadResult<ProductType> search(FilterPagingLoadConfig config) {
+	public PagingLoadResult<ProductTypeDTO> search(FilterPagingLoadConfig config) {
 
 		int size = (int) dao.count();
 		int start = config.getOffset();
 		int limit = config.getLimit();
 		List<ProductType> sublist = dao.search(start, limit, null);
-		return new PagingLoadResultBean<ProductType>(sublist, size,
-				config.getOffset());
+		List<ProductTypeDTO> dtos = new ArrayList<ProductTypeDTO>();
+		
+		if(sublist.size() > 0){
+			for(ProductType type : sublist){
+				dtos.add(dozerMapper.map(type, ProductTypeDTO.class));
+			}
+		}
+		return new PagingLoadResultBean<ProductTypeDTO>(dtos, size, config.getOffset());
 
 	}
 
 	@Override
-	public PagingLoadResult<ProductType> filter(FilterPagingLoadConfig config, String filterValue) {
+	public PagingLoadResult<ProductTypeDTO> filter(FilterPagingLoadConfig config, String filterValue) {
 
 		int start = config.getOffset();
 		int limit = config.getLimit();
 		List<ProductType> sublist = dao.searchLike(start, limit,filterValue);
 		int size = (int) dao.countLike(filterValue);
-		return new PagingLoadResultBean<ProductType>(sublist, size, config.getOffset());
+		
+		List<ProductTypeDTO> dtos = new ArrayList<ProductTypeDTO>();
+		
+		if(sublist.size() > 0){
+			for(ProductType type : sublist){
+				dtos.add(dozerMapper.map(type, ProductTypeDTO.class));
+			}
+		}
+		
+		return new PagingLoadResultBean<ProductTypeDTO>(dtos, size, config.getOffset());
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
-import com.pfe.shared.model.ProductType;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -41,8 +41,7 @@ public class CreateProductTypeViewImpl extends Window implements
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
-		HtmlLayoutContainer container = new HtmlLayoutContainer(
-				getTableMarkup());
+		HtmlLayoutContainer container = new HtmlLayoutContainer(getTableMarkup());
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
@@ -106,7 +105,7 @@ public class CreateProductTypeViewImpl extends Window implements
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				ProductType productType = new ProductType();
+				ProductTypeDTO productType = new ProductTypeDTO();
 				productType.setName(nameField.getValue());
 				productType.setDescription(descriptionEditor.getValue());
 				presenter.create(productType);

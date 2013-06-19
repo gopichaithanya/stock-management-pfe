@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ProductTypeDTO;
-import com.pfe.shared.model.ProductType;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
@@ -25,6 +24,14 @@ public interface ProductTypeService extends RemoteService {
 	 * @return
 	 */
 	public List<ProductTypeDTO> getAll();
+	
+	/**
+	 * Gets type by id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ProductTypeDTO find(Long id);
 
 	/**
 	 * Adds new product type in database
@@ -33,19 +40,16 @@ public interface ProductTypeService extends RemoteService {
 	 * @return 
 	 * @throws BusinessException
 	 */
-	public ProductType create(ProductType productType)
-			throws BusinessException;
+	public ProductTypeDTO create(ProductTypeDTO productType) throws BusinessException;
 
 	/**
-	 *  Updates product type in database
+	 * Updates product type in database
 	 * 
-	 * @param initial type 
-	 * @param updatedBuffer 
-	 * @return updated type retrieved from database
+	 * @param updatedType
+	 * @return
 	 * @throws BusinessException
 	 */
-	public ProductType update(ProductType initial, ProductType updatedBuffer)
-			throws BusinessException;
+	public ProductTypeDTO update(ProductTypeDTO updatedType) throws BusinessException;
 	
 	/**
 	 * Removes type from database
@@ -53,7 +57,7 @@ public interface ProductTypeService extends RemoteService {
 	 * @param productType
 	 * @throws BusinessException
 	 */
-	public void delete(ProductType productType) throws BusinessException;
+	public void delete(ProductTypeDTO productType) throws BusinessException;
 	
 	
 	/**
@@ -62,7 +66,14 @@ public interface ProductTypeService extends RemoteService {
 	 * @param config
 	 * @return
 	 */
-	public PagingLoadResult<ProductType> search(FilterPagingLoadConfig config);
+	public PagingLoadResult<ProductTypeDTO> search(FilterPagingLoadConfig config);
 	
-	public PagingLoadResult<ProductType> filter(FilterPagingLoadConfig config, String name);
+	/**
+	 * Retrieves types with paging and filter value
+	 * 
+	 * @param config
+	 * @param name
+	 * @return
+	 */
+	public PagingLoadResult<ProductTypeDTO> filter(FilterPagingLoadConfig config, String name);
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
-import com.pfe.shared.model.ProductType;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -31,14 +31,14 @@ public interface ProductTypeListView extends IsWidget {
 	 * 
 	 * @param productTypes
 	 */
-	public void setData(List<ProductType> productTypes);
+	public void setData(List<ProductTypeDTO> productTypes);
 
 	/**
 	 * Gets the view data
 	 * 
 	 * @return
 	 */
-	public ListStore<ProductType> getData();
+	public ListStore<ProductTypeDTO> getData();
 
 	/**
 	 * Clears the view components
@@ -48,21 +48,21 @@ public interface ProductTypeListView extends IsWidget {
 	/**
 	 * Adds new line in the list
 	 */
-	public void addData(ProductType productType);
+	public void addData(ProductTypeDTO productType);
 	
 	/**
 	 * Updates a line in the list
 	 * 
 	 * @param productType
 	 */
-	public void updateData(ProductType productType);
+	public void updateData(ProductTypeDTO productType);
 	
 	/**
 	 * Deletes type from the displayed list
 	 * 
 	 * @param productType
 	 */
-	public void deleteData(ProductType productType);
+	public void deleteData(ProductTypeDTO productType);
 	
 	/**
 	 * Get the window for product type creation
@@ -84,8 +84,7 @@ public interface ProductTypeListView extends IsWidget {
 	 * 
 	 * @param loader
 	 */
-	public void setPagingLoader(
-			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductType>> loader);
+	public void setPagingLoader(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> loader);
 	
 
 	/**

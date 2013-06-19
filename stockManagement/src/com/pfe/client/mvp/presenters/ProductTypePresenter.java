@@ -1,7 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
 import com.google.gwt.place.shared.Place;
-import com.pfe.shared.model.ProductType;
+import com.pfe.shared.dto.ProductTypeDTO;
 
 /**
  * Controls ProductTypeListView
@@ -19,26 +19,32 @@ public interface ProductTypePresenter extends Presenter {
 	public void goTo(Place place);
 
 	/**
+	 * Calls service to retrieve type by id
+	 * 
+	 * @param id
+	 */
+	public void find(Long id);
+	
+	/**
 	 * Calls RPC service to create a new product type
 	 * 
 	 * @param productType
 	 */
-	public void create(ProductType productType);
+	public void create(ProductTypeDTO productType);
 
 	/**
 	 * Updates product type
 	 * 
-	 * @param initial
-	 * @param updatedBuffer
+	 * @param updatedType
 	 */
-	public void update(ProductType initial, ProductType updatedBuffer);
+	public void update(ProductTypeDTO updatedType);
 
 	/**
 	 * Deletes type
 	 * 
 	 * @param productType
 	 */
-	public void delete(ProductType productType);
+	public void delete(ProductTypeDTO productType);
 
 	/**
 	 * Filters list by name. Creates new paging load configuration corresponding
@@ -59,6 +65,6 @@ public interface ProductTypePresenter extends Presenter {
 	 * 
 	 * @param productType
 	 */
-	public void displayDetailsView(ProductType productType);
+	public void displayDetailsView(ProductTypeDTO productType);
 
 }

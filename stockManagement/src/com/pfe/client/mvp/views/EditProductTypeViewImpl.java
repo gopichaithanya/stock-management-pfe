@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
-import com.pfe.shared.model.ProductType;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -24,7 +24,7 @@ import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 public class EditProductTypeViewImpl extends Window implements
 		EditProductTypeView {
 
-	private ProductType productType;
+	private ProductTypeDTO productType;
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
 	private ProductTypePresenter presenter;
@@ -41,8 +41,7 @@ public class EditProductTypeViewImpl extends Window implements
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
-		HtmlLayoutContainer container = new HtmlLayoutContainer(
-				getTableMarkup());
+		HtmlLayoutContainer container = new HtmlLayoutContainer(getTableMarkup());
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
@@ -87,11 +86,9 @@ public class EditProductTypeViewImpl extends Window implements
 		@Override
 		public void onSelect(SelectEvent event) {
 			if (nameField.isValid()) {
-				
-				ProductType updated = new ProductType();
-				updated.setDescription(descriptionEditor.getValue());
-				updated.setName(nameField.getValue());
-				presenter.update(productType, updated);
+				productType.setDescription(descriptionEditor.getValue());
+				productType.setName(nameField.getValue());
+				presenter.update(productType);
 			}
 		}
 	}
@@ -135,7 +132,7 @@ public class EditProductTypeViewImpl extends Window implements
 	}
 
 	@Override
-	public void setData(ProductType data) {
+	public void setData(ProductTypeDTO data) {
 		this.productType = data;
 		nameField.setValue(productType.getName());
 		descriptionEditor.setValue(productType.getDescription());
