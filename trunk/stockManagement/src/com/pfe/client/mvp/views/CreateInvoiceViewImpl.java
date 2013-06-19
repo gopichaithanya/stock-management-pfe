@@ -322,7 +322,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		return [
 				'<table width=100% cellpadding=10 cellspacing=20>',
 				'<tr><td class=code width=20%></td><td class=supplier width=50%></td><td class=payment width=20%></td></tr>',
-				'<tr><td class=shipments colspan=3></tr>', '</table>'
+				'<tr><td class=shipments colspan=3></td></tr>', '</table>'
 
 		].join("");
 	}-*/;
