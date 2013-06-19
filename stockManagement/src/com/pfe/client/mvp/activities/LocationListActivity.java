@@ -23,8 +23,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
-public class LocationListActivity extends AbstractActivity implements
-		LocationPresenter {
+public class LocationListActivity extends AbstractActivity implements LocationPresenter {
 	private ClientFactory clientFactory;
 	private LocationServiceAsync locationService;
 	private StockServiceAsync stockService;
