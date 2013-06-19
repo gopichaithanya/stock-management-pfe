@@ -1,22 +1,22 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * A product type has a unique name and a detailed description that should
+ * differentiate the type from all other types of products.
+ * 
+ * @author Alexandra
+ * 
+ */
 @Entity
 @Table(name = "ProductTypes")
-public class ProductType implements Serializable {
+public class ProductType {
 
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1872543578036486550L;
 	private Long id;
 	private String name;
 	private String description;

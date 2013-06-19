@@ -1,21 +1,21 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * A location type has a unique description. 
+ * 
+ * @author Alexandra
+ *
+ */
 @Entity
 @Table(name = "LocationTypes")
-public class LocationType implements Serializable{
+public class LocationType{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7116461845966072872L;
 	private Long id;
 	private String description;
 

@@ -1,6 +1,5 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -16,14 +15,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * An invoice is created when merchandise is received. Attributes: a unique
+ * code, the supplier of the products, the type of payment (immediate or on
+ * product sale), a list of shipments, the debt and the date of creation. All
+ * shipments come from the same supplier.
+ * 
+ * @author Alexandra
+ * 
+ */
 @Entity
 @Table(name = "Invoices")
-public class Invoice implements Serializable{
+public class Invoice {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4084206672442119994L;
 	public static final String IMMEDIATE_PAY = "immediate";
 	public static final String ONSALE_PAY = "onSale";
 	private Long id;
@@ -35,7 +39,7 @@ public class Invoice implements Serializable{
 	private Date created;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}

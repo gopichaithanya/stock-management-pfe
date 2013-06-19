@@ -1,7 +1,5 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,14 +8,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * A stock contains information on products stored in a certain location : the
+ * type of products, the quantity and the location.
+ * 
+ * @author Alexandra
+ * 
+ */
 @Entity
 @Table(name = "Stocks")
-public class Stock implements Serializable{
+public class Stock {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7504325518351447362L;
 	private Long id;
 	private int quantity;
 	private ProductType type;

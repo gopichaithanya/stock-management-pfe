@@ -1,6 +1,5 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,14 +11,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * A shipment is a bundle of products of the same type belonging to the same
+ * invoice. The current quantity of the shipment is changed when products are
+ * sold, whereas its initial quantity remains unchanged. The shipment is paid if
+ * its total price (unit price times initial quantity) has been added to the
+ * invoice debt, unpaid otherwise. The date of creation is the invoice date of
+ * creation.
+ * 
+ * @author Alexandra
+ * 
+ */
 @Entity
 @Table(name = "Shipments")
-public class Shipment implements Serializable{
+public class Shipment {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5994857716826535757L;
 	private Long id;
 	private ProductType productType;
 	private BigDecimal unitPrice;

@@ -1,6 +1,5 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,14 +11,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+/**
+ * A supplier has a unique name, a description and a list of invoices. 
+ * 
+ * @author Alexandra
+ *
+ */
 @Entity
 @Table(name = "Suppliers")
-public class Supplier implements Serializable{
+public class Supplier {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5157092452859752797L;
 	private Long id;
 	private String name;
 	private String description;
