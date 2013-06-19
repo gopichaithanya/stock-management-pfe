@@ -1,6 +1,5 @@
 package com.pfe.shared.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,14 +13,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * The location stores products for sale. Attributes : a unique name, the type
+ * (store, warehouse) and a list of stocks. Products can be sold from a location
+ * in the limits of the available quantity in the stocks. Locations can ship or
+ * receive products from other locations.
+ * 
+ * @author Alexandra
+ * 
+ */
 @Entity
 @Table(name = "Locations")
-public class Location implements Serializable{
+public class Location{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5698122348547121174L;
 	private Long id;
 	private String name;
 	private LocationType type;

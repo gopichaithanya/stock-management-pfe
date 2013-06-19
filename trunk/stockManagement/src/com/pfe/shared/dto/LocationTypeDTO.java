@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class LocationTypeDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3888513144445378457L;
 	private Long id;
 	private String description;
 	
