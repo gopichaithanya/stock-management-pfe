@@ -257,7 +257,6 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(Void result) {
-				//view.getEditView().deleteShipments(shipments);
 				//Retrieve updated invoice (debt may change)
 				find(view.getEditView().getData().getId());
 			}

@@ -58,8 +58,7 @@ public class SupplierServiceImpl implements SupplierService {
 				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,"miniSupplier"));
 			}
 		}
-		return new PagingLoadResultBean<SupplierDTO>(dtos, size,
-				config.getOffset());
+		return new PagingLoadResultBean<SupplierDTO>(dtos, size, config.getOffset());
 	}
 
 	@Override
@@ -83,8 +82,7 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		
 		// here the supplier has no invoices
-		Supplier entity = dozerMapper.map(supplier, Supplier.class,
-				"miniSupplier");
+		Supplier entity = dozerMapper.map(supplier, Supplier.class, "miniSupplier");
 		Supplier merged = supplierDao.merge(entity);
 		if (merged != null) {
 			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");
@@ -94,27 +92,19 @@ public class SupplierServiceImpl implements SupplierService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public SupplierDTO update(SupplierDTO updatedSupplier)
-			throws BusinessException {
+	public SupplierDTO update(SupplierDTO updatedSupplier) throws BusinessException {
 	
-		Long id = updatedSupplier.getId();
-		
-		Supplier duplicate = supplierDao.getDuplicateName(id, updatedSupplier.getName());
+		Supplier duplicate = supplierDao.getDuplicateName(updatedSupplier.getId(), updatedSupplier.getName());
 		if (duplicate != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
 
 		// we don't update invoices from the supplier view
-		Supplier supplier = supplierDao.get(id);
-		
-		supplier.setName(updatedSupplier.getName());
-		supplier.setDescription(updatedSupplier.getDescription());
-		Supplier merged = supplierDao.merge(supplier);
-
+		Supplier entity = dozerMapper.map(updatedSupplier, Supplier.class, "miniSupplier");
+		Supplier merged = supplierDao.merge(entity);
 		if (merged != null) {
 			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");
 		}
-
 		return null;
 	}
 
@@ -123,12 +113,10 @@ public class SupplierServiceImpl implements SupplierService {
 	public void delete(SupplierDTO supplier) throws BusinessException {
 
 		// don't delete if there are invoices belonging to this supplier
-		Supplier entity = dozerMapper.map(supplier, Supplier.class,
-				"miniSupplier");
+		Supplier entity = dozerMapper.map(supplier, Supplier.class, "miniSupplier");
 		List<Invoice> invoices = invoiceDao.getBySupplier(entity);
 		if (invoices.size() > 0) {
-			throw new BusinessException(
-					"Supplier has one or several invoices associated to it and cannot be deleted.");
+			throw new BusinessException( "Supplier has invoices associated and cannot be deleted.");
 		} else {
 			supplierDao.delete(entity);
 		}
