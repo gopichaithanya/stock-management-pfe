@@ -18,6 +18,8 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
@@ -78,7 +80,7 @@ public class LocationListViewImpl implements LocationListView {
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
-		//grid.addRowClickHandler(new GridRowClickHandler());
+		grid.addRowClickHandler(new GridRowClickHandler());
 		pagingToolBar = new PagingToolBar(4);
 				
 		toolbar = new GridToolbar();
@@ -109,6 +111,22 @@ public class LocationListViewImpl implements LocationListView {
 		}
 	}
 	
+	/**
+	 * Click handler on grid row
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class GridRowClickHandler implements RowClickHandler {
+
+		@Override
+		public void onRowClick(RowClickEvent event) {
+			int row = event.getRowIndex();
+			LocationDTO selected = store.get(row);
+			presenter.displayDetailsView(selected);
+
+		}
+	}
 	
 	@Override
 	public Widget asWidget() {

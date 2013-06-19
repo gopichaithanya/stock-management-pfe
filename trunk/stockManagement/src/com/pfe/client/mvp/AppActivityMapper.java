@@ -9,6 +9,7 @@ import com.pfe.client.mvp.activities.ProductTypeListActivity;
 import com.pfe.client.mvp.activities.SupplierListActivity;
 import com.pfe.client.mvp.activities.WelcomeActivity;
 import com.pfe.client.mvp.places.InvoiceListPlace;
+import com.pfe.client.mvp.places.LocationDetailPlace;
 import com.pfe.client.mvp.places.LocationListPlace;
 import com.pfe.client.mvp.places.ProductTypeDetailPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
@@ -64,6 +65,8 @@ public class AppActivityMapper implements ActivityMapper {
 		} else if(place instanceof SupplierDetailPlace){
 			return supplierActivity;
 			
+		} else if(place instanceof LocationDetailPlace){
+			return locationActivity;
 		} else
 			return null;
 	}

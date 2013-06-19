@@ -8,6 +8,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
+import com.pfe.client.mvp.places.LocationDetailPlace;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.mvp.views.LocationListView;
 import com.pfe.client.service.LocationServiceAsync;
@@ -173,6 +174,13 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 				
 			}
 		});
+		
+	}
+
+	@Override
+	public void displayDetailsView(LocationDTO location) {
+		String token = location.getId().toString();
+		goTo(new LocationDetailPlace(token));
 		
 	}
 

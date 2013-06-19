@@ -27,6 +27,19 @@ public interface LocationPresenter extends Presenter {
 	public void find(Long id);
 	
 	/**
+	 * Calls service to retrieve all available locations
+	 * 
+	 */
+	public void getAll();
+	
+	/**
+	 * Loads selected type data in details panel
+	 * 
+	 * @param location
+	 */
+	public void displayDetailsView(LocationDTO location);
+	
+	/**
 	 * Calls service to sell the given quantity from stock
 	 * 
 	 * @param fromStock
@@ -42,11 +55,5 @@ public interface LocationPresenter extends Presenter {
 	 * @param toLocation
 	 */
 	public void ship(StockDTO fromStock, int quantity, LocationDTO toLocation);
-	
-	/**
-	 * Calls service to retrieve all available locations
-	 * 
-	 */
-	public void getAll();
 	
 }
