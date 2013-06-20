@@ -148,14 +148,13 @@ public class LocationListViewImpl implements LocationListView {
 		@Override
 		public void onSelect(SelectEvent event) {
 
-			if (grid.getSelectionModel().getSelectedItem() == null) {
-				return;
-			}
-			editView = new EditLocationViewImpl();
-			editView.setPresenter(presenter);
-
 			LocationDTO location = grid.getSelectionModel().getSelectedItem();
-			presenter.find(location.getId());
+			if (location != null) {
+				editView = new EditLocationViewImpl();
+				editView.setPresenter(presenter);
+				//TODO load available location types
+				presenter.find(location.getId());
+			}
 		}
 	}
 	
