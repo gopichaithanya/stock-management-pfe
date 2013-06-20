@@ -8,8 +8,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.client.ui.properties.LocationProperties;
+import com.pfe.client.ui.properties.LocationTypeProperties;
 import com.pfe.client.ui.properties.StockProperties;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.LocationTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.sencha.gxt.cell.core.client.TextButtonCell;
 import com.sencha.gxt.data.shared.ListStore;
@@ -40,14 +42,16 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	
 	private static final StockProperties stockProps = GWT.create(StockProperties.class);
 	private static final LocationProperties locationProps = GWT.create(LocationProperties.class);
+	private static final LocationTypeProperties locationTypeProps = GWT.create(LocationTypeProperties.class);
 	
 	private LocationDTO location;
 	private LocationPresenter presenter;
 	private TextField nameField;
-	private TextField typeField;
 	private Grid<StockDTO> grid;
 	private ListStore<StockDTO> stockStore;
 	private StockDTO selectedStock;
+	private ListStore<LocationTypeDTO> locationTypeStore;
+	private ComboBox<LocationTypeDTO> locationTypeCombo;
 	
 	private Window sellWindow;
 	private NumberField<Integer> sellQtyField;
@@ -73,8 +77,9 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		
 		nameField = new TextField();
 		container.add(new FieldLabel(nameField, "Name"),new HtmlData(".name"));
-		typeField = new TextField();
-		container.add(new FieldLabel(typeField, "Type"),new HtmlData(".type"));
+		locationTypeStore = new ListStore<LocationTypeDTO>(locationTypeProps.key());
+		locationTypeCombo = new ComboBox<LocationTypeDTO>(locationTypeStore, locationTypeProps.nameLabel());
+		container.add(new FieldLabel(locationTypeCombo, "Type"),new HtmlData(".type"));
 		
 		//Stock grid
 		int ratio = 1;
@@ -173,9 +178,8 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (nameField.isValid()) {
-				
-			}
+			location.setName(nameField.getValue());
+			//location.setType(locationCombo.getValue());
 		}
 	}
 	
@@ -278,7 +282,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		this.location = location;
 		this.stockStore.addAll(location.getStocks());
 		nameField.setValue(location.getName());
-		typeField.setValue(location.getType().getDescription());
+		locationTypeCombo.setValue(location.getType());
 		setHeadingText(location.getName());
 
 	}
@@ -286,7 +290,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	@Override
 	public void clearData() {
 		nameField.clear();
-		typeField.clear();
+		locationTypeStore.clear();
 		stockStore.clear();
 		locationStore.clear();
 	}
