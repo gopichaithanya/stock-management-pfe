@@ -24,6 +24,8 @@ import com.pfe.client.service.InvoiceService;
 import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.LocationService;
 import com.pfe.client.service.LocationServiceAsync;
+import com.pfe.client.service.LocationTypeService;
+import com.pfe.client.service.LocationTypeServiceAsync;
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.ShipmentService;
@@ -44,6 +46,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static ShipmentServiceAsync shipmentService;
 	private static LocationServiceAsync locationService;
 	private static StockServiceAsync stockService;
+	private static LocationTypeServiceAsync locationTypeService;
 
 //	private static WelcomeView welcomeView;
 //	
@@ -119,6 +122,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			stockService = GWT.create(StockService.class);
 		}
 		return stockService;
+	}
+	
+	@Override
+	public LocationTypeServiceAsync getLocationTypeService() {
+		if (locationTypeService == null) {
+			locationTypeService = GWT.create(LocationTypeService.class);
+		}
+		return locationTypeService;
 	}
 	
 	@Override
