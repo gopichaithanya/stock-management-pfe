@@ -18,4 +18,10 @@ public interface LocationServiceAsync {
 
 	void create(LocationDTO location, AsyncCallback<LocationDTO> callback);
 
+	void delete(LocationDTO location, AsyncCallback<Void> callback);
+
+	void update(LocationDTO updatedLocation, AsyncCallback<LocationDTO> callback);
+
+	void delete(List<LocationDTO> locations, AsyncCallback<Void> callback);
+
 }

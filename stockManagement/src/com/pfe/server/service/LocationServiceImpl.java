@@ -16,6 +16,7 @@ import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.model.Location;
+import com.pfe.shared.model.Stock;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
@@ -67,11 +68,43 @@ public class LocationServiceImpl implements LocationService {
 	}
 	
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public LocationDTO create(LocationDTO location) throws BusinessException {
 		
 		Location entity = dozerMapper.map(location, Location.class);
 		Location merged = locationDao.merge(entity);
 		return dozerMapper.map(merged, LocationDTO.class, "miniLocation");
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(LocationDTO location) throws BusinessException {
+		Location entity = locationDao.get(location.getId());
+		List<Stock> stocks = entity.getStocks();
+		if(stocks.size() > 0){
+			throw new BusinessException("Please clear stocks before deleting location.");
+		}
+		locationDao.delete(entity);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public LocationDTO update(LocationDTO updatedLocation) throws BusinessException {
+	
+		//Update relates to name or location type
+		Location entity = dozerMapper.map(updatedLocation, Location.class);
+		Location merged = locationDao.merge(entity);
+		
+		return dozerMapper.map(merged, LocationDTO.class, "miniLocation");
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(List<LocationDTO> locations) throws BusinessException {
+		for(LocationDTO location : locations){
+			delete(location);
+		}
+		
 	}
 
 }

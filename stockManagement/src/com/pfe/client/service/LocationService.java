@@ -49,4 +49,29 @@ public interface LocationService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public LocationDTO create(LocationDTO location) throws BusinessException;
+	
+	/**
+	 * Removes location from database
+	 * 
+	 * @param location
+	 * @throws BusinessException
+	 */
+	public void delete(LocationDTO location) throws BusinessException;
+	
+	/**
+	 * Removes locations from database
+	 * 
+	 * @param locations
+	 * @throws BusinessException
+	 */
+	public void delete(List<LocationDTO> locations) throws BusinessException;
+	
+	/**
+	 * Updates location
+	 * 
+	 * @param updatedLocation
+	 * @return
+	 * @throws BusinessException
+	 */
+	public LocationDTO update(LocationDTO updatedLocation) throws BusinessException;
 }
