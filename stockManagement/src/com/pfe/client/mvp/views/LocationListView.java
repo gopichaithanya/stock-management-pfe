@@ -34,12 +34,25 @@ public interface LocationListView extends IsWidget {
 	public ListStore<LocationDTO> getData();
 	
 	/**
+	 * Adds new line in list
+	 * 
+	 * @param location
+	 */
+	public void addData(LocationDTO location);
+	
+	/**
 	 * Set loader for paging
 	 * 
 	 * @param loader
 	 */
 	public void setPagingLoader(
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<LocationDTO>> remoteLoader);
+	
+	/**
+	 * Refresh the grid view
+	 * 
+	 */
+	public void refreshGrid();
 	
 	/**
 	 * Get edit location window

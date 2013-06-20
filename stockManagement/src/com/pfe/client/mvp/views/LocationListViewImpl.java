@@ -191,4 +191,16 @@ public class LocationListViewImpl implements LocationListView {
 		return this.createView;
 	}
 
+	@Override
+	public void addData(LocationDTO location) {
+		store.add(location);
+		
+	}
+	
+	@Override
+	public void refreshGrid() {
+		pagingToolBar.refresh();
+
+	}
+
 }

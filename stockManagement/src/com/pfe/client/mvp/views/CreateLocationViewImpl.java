@@ -6,6 +6,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.ui.properties.LocationTypeProperties;
+import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.LocationTypeDTO;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
@@ -14,6 +15,8 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
@@ -26,8 +29,8 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 	private LocationPresenter presenter;
 	
 	private TextField nameField;
-	private ListStore<LocationTypeDTO> locations;
-	private ComboBox<LocationTypeDTO> locationCombo;
+	private ListStore<LocationTypeDTO> types;
+	private ComboBox<LocationTypeDTO> typeCombo;
 	
 	public CreateLocationViewImpl(){
 		
@@ -43,15 +46,15 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		FieldLabel nameLabel = new FieldLabel(nameField, "Name");
 		container.add(nameLabel, new HtmlData(".name"));
 		
-		locations = new ListStore<LocationTypeDTO>(properties.key());
-		locationCombo = new ComboBox<LocationTypeDTO>(locations, properties.nameLabel());
-		FieldLabel locationLabel = new FieldLabel(locationCombo, "Type");
+		types = new ListStore<LocationTypeDTO>(properties.key());
+		typeCombo = new ComboBox<LocationTypeDTO>(types, properties.nameLabel());
+		FieldLabel locationLabel = new FieldLabel(typeCombo, "Type");
 		container.add(locationLabel, new HtmlData(".type"));
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
-		//submitBtn.addSelectHandler(new SubmitBtnHandler());
-		//cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		submitBtn.addSelectHandler(new SubmitBtnHandler());
+		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
@@ -66,6 +69,45 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 	public void setPresenter(LocationPresenter presenter) {
 		this.presenter = presenter;
 
+	}
+	
+	/**
+	 * Close window
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class CancelBtnHandler implements SelectHandler {
+
+		private Window w;
+
+		public CancelBtnHandler(Window w) {
+			this.w = w;
+		}
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			w.hide();
+		}
+	}
+
+	/**
+	 * Save new location type handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class SubmitBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (nameField.isValid()) {
+				LocationDTO location = new LocationDTO();
+				location.setName(nameField.getValue());
+				location.setType(typeCombo.getValue());
+				presenter.create(location);
+			}
+		}
 	}
 	
 	/**
@@ -84,9 +126,17 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 
 	@Override
 	public void setLocationTypes(List<LocationTypeDTO> locations) {
-		this.locations.clear();
-		this.locations.addAll(locations);
+		this.types.clear();
+		this.types.addAll(locations);
 		
+		//Remove warehouse
+				for(LocationTypeDTO type : locations){
+					if(type.getDescription().equals("warehouse")){
+						types.remove(type);
+						break;
+					}
+				}
+				typeCombo.setValue(null);
 	}
 
 }

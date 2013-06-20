@@ -33,6 +33,13 @@ public interface LocationPresenter extends Presenter {
 	public void getAll();
 	
 	/**
+	 * Adds location
+	 * 
+	 * @param location
+	 */
+	public void create(LocationDTO location);
+	
+	/**
 	 * Calls service to retrieve all location types
 	 * 
 	 */
