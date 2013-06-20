@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.LocationPresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.client.ui.properties.LocationTypeProperties;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.LocationTypeDTO;
@@ -34,6 +35,12 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 	
 	public CreateLocationViewImpl(){
 		
+		setHeadingText("New location");
+		setMinHeight(200);
+		setModal(true);
+		setResizable(false);
+		setClosable(false);
+		
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
 		HtmlLayoutContainer container = new HtmlLayoutContainer(getTableMarkup());
@@ -54,7 +61,7 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
@@ -62,33 +69,12 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		for (FieldLabel lbl : labels) { lbl.setLabelAlign(LabelAlign.TOP);}
 
 		this.add(vp);
-		setHeadingText("New location");
 	}
 	
 	@Override
 	public void setPresenter(LocationPresenter presenter) {
 		this.presenter = presenter;
 
-	}
-	
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-
-		public CancelBtnHandler(Window w) {
-			this.w = w;
-		}
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
-		}
 	}
 
 	/**
@@ -111,7 +97,7 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 	}
 	
 	/**
-	 * HTML table
+	 * HTML table used to display the window components
 	 * 
 	 * @return
 	 */

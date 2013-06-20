@@ -9,6 +9,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.ui.GridToolbar;
+import com.pfe.client.ui.ViewConstants;
 import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.shared.dto.LocationDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -84,7 +85,7 @@ public class LocationListViewImpl implements LocationListView {
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
 		grid.addRowClickHandler(new GridRowClickHandler());
-		pagingToolBar = new PagingToolBar(4);
+		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 				
 		toolbar = new GridToolbar();
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
@@ -94,7 +95,7 @@ public class LocationListViewImpl implements LocationListView {
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
-		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
+		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 
 	}
 

@@ -17,6 +17,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.ui.GridToolbar;
+import com.pfe.client.ui.ViewConstants;
 import com.pfe.client.ui.properties.InvoiceProperties;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -93,8 +94,6 @@ public class InvoiceListViewImpl implements InvoiceListView {
 			@Override
 			protected void onDoubleClick(Event e) {
 				displayEditView();
-				//Element target = Element.as(e.getEventTarget());
-				//int rowIndex = view.findRowIndex(target);
 			}
 			
 			@Override
@@ -129,13 +128,13 @@ public class InvoiceListViewImpl implements InvoiceListView {
 				}
 			}
 		});
-		pagingToolBar = new PagingToolBar(4);
+		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 
 		toolbar = new GridToolbar();
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
-		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
+		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());

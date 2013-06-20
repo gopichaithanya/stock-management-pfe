@@ -9,6 +9,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.ui.GridToolbar;
+import com.pfe.client.ui.ViewConstants;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -88,13 +89,13 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
 		grid.addRowClickHandler(new GridRowClickHandler());
-		pagingToolBar = new PagingToolBar(2);
+		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 
 		toolbar = new GridToolbar();
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
-		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
+		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());

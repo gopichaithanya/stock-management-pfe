@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
@@ -29,20 +31,15 @@ public class CreateSupplierViewImpl extends Window implements
 	
 	public CreateSupplierViewImpl(){
 		
-		setBodyBorder(false);
-		setHeadingText("Add supplier");
-		setWidth(550);
-		setHeight(400);
-		setMinHeight(400);
+		setHeadingText("New supplier");
+		setMinHeight(400); // avoid GWT bug when reopening multiple times the same window
 		setModal(true);
-		setBlinkModal(true);
 		setResizable(false);
 		setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
-		HtmlLayoutContainer container = new HtmlLayoutContainer(
-				getTableMarkup());
+		HtmlLayoutContainer container = new HtmlLayoutContainer(getTableMarkup());
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
@@ -61,10 +58,11 @@ public class CreateSupplierViewImpl extends Window implements
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 
 		fpanel.addButton(cancelBtn);
 		fpanel.addButton(submitBtn);
+		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		// need to call after everything is constructed
 		List<FieldLabel> labels = FormPanelHelper.getFieldLabels(fpanel);
 		for (FieldLabel lbl : labels) {
@@ -74,26 +72,6 @@ public class CreateSupplierViewImpl extends Window implements
 		vp.add(fpanel);
 		this.add(vp);
 		
-	}
-	
-	
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-		public CancelBtnHandler(Window w){
-			this.w = w;
-		}
-		
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
-		}
 	}
 	
 	/**

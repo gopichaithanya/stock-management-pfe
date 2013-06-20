@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
@@ -20,8 +22,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 
-public class CreateProductTypeViewImpl extends Window implements
-		CreateProductTypeView {
+public class CreateProductTypeViewImpl extends Window implements CreateProductTypeView {
 
 	private TextField nameField;
 	private HtmlEditor descriptionEditor;
@@ -29,13 +30,9 @@ public class CreateProductTypeViewImpl extends Window implements
 
 	public CreateProductTypeViewImpl() {
 		
-		setBodyBorder(false);
-		setHeadingText("Add product type");
-		setWidth(550);
-		setHeight(400);
+		setHeadingText("New product type");
 		setMinHeight(400);
 		setModal(true);
-		setBlinkModal(true);
 		setResizable(false);
 		setClosable(false);
 
@@ -59,10 +56,11 @@ public class CreateProductTypeViewImpl extends Window implements
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 
 		fpanel.addButton(cancelBtn);
 		fpanel.addButton(submitBtn);
+		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		// need to call after everything is constructed
 		List<FieldLabel> labels = FormPanelHelper.getFieldLabels(fpanel);
 		for (FieldLabel lbl : labels) {
@@ -72,26 +70,6 @@ public class CreateProductTypeViewImpl extends Window implements
 		vp.add(fpanel);
 		this.add(vp);
 
-	}
-
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-
-		public CancelBtnHandler(Window w) {
-			this.w = w;
-		}
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
-		}
 	}
 
 	/**
