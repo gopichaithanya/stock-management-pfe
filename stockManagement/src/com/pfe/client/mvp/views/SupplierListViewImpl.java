@@ -160,10 +160,12 @@ public class SupplierListViewImpl implements SupplierListView {
 	 * 
 	 */
 	private void displayEditSupplierWindow(){
-		
+		SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
+		if(supplier == null){
+			return;
+		}
 		editView = new EditSupplierViewImpl();
 		editView.setPresenter(presenter);
-		SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
 		presenter.find(supplier.getId());
 	}
 	

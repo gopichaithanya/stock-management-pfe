@@ -191,8 +191,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	 * 
 	 */
 	private void displayEditView(){
-		if (grid.getSelectionModel().getSelectedItem() == null
-				|| grid.getSelectionModel().getSelectedItems().size() == 0) { // double check for selected item
+		if (grid.getSelectionModel().getSelectedItem() == null) { 
 			return;
 		}
 		editView = new EditInvoiceViewImpl();

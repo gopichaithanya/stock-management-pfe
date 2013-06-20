@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -89,6 +91,22 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
 		grid.addRowClickHandler(new GridRowClickHandler());
+		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<ProductTypeDTO>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<ProductTypeDTO> arg0) {
+				if (grid.getSelectionModel().getSelectedItems().size() > 1) { 
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else if (grid.getSelectionModel().getSelectedItems().size() == 1) { 
+					toolbar.getEditBtn().setEnabled(true);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else {
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(false);
+				}
+			}
+		});
 		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 
 		toolbar = new GridToolbar();
@@ -150,15 +168,17 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
+			ProductTypeDTO selected = grid.getSelectionModel().getSelectedItem();
+			if (selected == null) {// check if item selected
+				return;
+			}
 			if (editView == null) {
 				editView = new EditProductTypeViewImpl();
 				editView.setPresenter(presenter);
 			}
-			ProductTypeDTO productType = grid.getSelectionModel().getSelectedItem();
-			if (productType != null) {
-				editView.setData(productType);
-				editView.show();
-			}
+			editView.setData(selected);
+			editView.show();
+
 		}
 	}
 
@@ -172,7 +192,8 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (grid.getSelectionModel().getSelectedItems() == null) { 
+			if (grid.getSelectionModel().getSelectedItems() == null ||
+					grid.getSelectionModel().getSelectedItems().size() == 0) { 
 				return;
 			}
 

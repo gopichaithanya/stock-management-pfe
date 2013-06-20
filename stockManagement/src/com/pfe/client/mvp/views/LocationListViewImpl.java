@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -85,12 +87,30 @@ public class LocationListViewImpl implements LocationListView {
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
 		grid.addRowClickHandler(new GridRowClickHandler());
+		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<LocationDTO>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<LocationDTO> arg0) {
+				if (grid.getSelectionModel().getSelectedItems().size() > 1) { 
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else if (grid.getSelectionModel().getSelectedItems().size() == 1) { 
+					toolbar.getEditBtn().setEnabled(true);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else {
+					toolbar.getEditBtn().setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(false);
+				}
+			}
+		});
 		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 				
 		toolbar = new GridToolbar();
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+		toolbar.getEditBtn().setEnabled(false);
+		toolbar.getDeleteBtn().setEnabled(false);
 		
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
@@ -127,10 +147,13 @@ public class LocationListViewImpl implements LocationListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (editView == null) {
-				editView = new EditLocationViewImpl();
-				editView.setPresenter(presenter);
+
+			if (grid.getSelectionModel().getSelectedItem() == null) {
+				return;
 			}
+			editView = new EditLocationViewImpl();
+			editView.setPresenter(presenter);
+
 			LocationDTO location = grid.getSelectionModel().getSelectedItem();
 			presenter.find(location.getId());
 		}
