@@ -92,6 +92,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		grid.getView().setAutoFill(true);
 		grid.setBorders(true);
 		grid.setHeight(150);
+		grid.setWidth(450);
 		
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();

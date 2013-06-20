@@ -31,7 +31,7 @@ public class CreateProductTypeViewImpl extends Window implements CreateProductTy
 	public CreateProductTypeViewImpl() {
 		
 		setHeadingText("New product type");
-		setMinHeight(400);
+		setMinHeight(350);
 		setModal(true);
 		setResizable(false);
 		setClosable(false);

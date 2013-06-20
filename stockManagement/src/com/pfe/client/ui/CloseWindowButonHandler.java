@@ -5,7 +5,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 /**
- * This handler is added to close buttons to hide windows
+ * This handler is added to buttons that close windows
  * 
  * @author Alexandra
  *
