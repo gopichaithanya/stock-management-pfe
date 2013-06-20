@@ -178,6 +178,31 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		
 	}
 
+
+	@Override
+	public void delete(final List<LocationDTO> locations) {
+		locationService.delete(locations, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				view.deleteData(locations);
+				view.refreshGrid();
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if (caught instanceof BusinessException) {
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
+				
+			}
+		});
+		
+	}
+	
 	@Override
 	public void ship(final StockDTO fromStock, int quantity, LocationDTO toLocation) {
 		stockService.ship(fromStock, quantity, toLocation, new AsyncCallback<StockDTO>() {
@@ -226,5 +251,6 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		});
 		
 	}
+
 
 }
