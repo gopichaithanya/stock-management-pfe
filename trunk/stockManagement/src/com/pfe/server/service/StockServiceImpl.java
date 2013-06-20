@@ -79,6 +79,10 @@ public class StockServiceImpl implements StockService {
 				BigDecimal price = new BigDecimal(quantityFromShipment).multiply(shipment.getUnitPrice());
 				invoice.setRestToPay(invoice.getRestToPay().add(price));
 				invoiceDao.merge(invoice);
+				
+				if(shipment.getCurrentQuantity() == 0){
+					shipment.setPaid(true);
+				}
 			}
 			
 			shipmentDao.merge(shipment);
