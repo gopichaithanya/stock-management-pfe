@@ -42,6 +42,7 @@ public class LocationListViewImpl implements LocationListView {
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
 	private EditLocationView editView;
+	private CreateLocationView createView;
 	
 	public LocationListViewImpl(){
 		// check box selection model
@@ -84,7 +85,9 @@ public class LocationListViewImpl implements LocationListView {
 		pagingToolBar = new PagingToolBar(4);
 				
 		toolbar = new GridToolbar();
+		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
@@ -92,8 +95,26 @@ public class LocationListViewImpl implements LocationListView {
 
 	}
 
+
 	/**
-	 * Edit type handler
+	 * Add location handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class AddBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			createView = new CreateLocationViewImpl();
+			createView.setPresenter(presenter);
+			presenter.getLocationTypes();
+			createView.show();
+		}
+	}
+	
+	/**
+	 * Edit location handler
 	 * 
 	 * @author Alexandra
 	 * 
@@ -163,6 +184,11 @@ public class LocationListViewImpl implements LocationListView {
 	@Override
 	public EditLocationView getEditView() {
 		return editView;
+	}
+
+	@Override
+	public CreateLocationView getCreateView() {
+		return this.createView;
 	}
 
 }
