@@ -201,7 +201,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 					invoice.setRestToPay(debt);
 					
 				} else if(Invoice.ONSALE_PAY.equals(invoice.getPaymentType())){
-					//Nothing to do for now; shipment is already unpaid
+					//For invoices paid on sale, a shipment is considered paid
+					//only when its current quantity is 0 (all items are sold)
+					if(shipment.getCurrentQuantity() > 0){
+						shipment.setPaid(false);
+					} else
+						shipment.setPaid(true);
 				}
 			}
 			
