@@ -253,8 +253,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			shipments.addAll(shipmentStore.getAll());
 			for(ShipmentDTO shipment : shipments){
 				if(shipment.getInitialQuantity() == 0){
-					AlertMessageBox alertBox = new AlertMessageBox("Bat input", 
-							"Shipment's initial quantity must be greater than 0.");
+					AlertMessageBox alertBox = new AlertMessageBox("Bat input", "Shipment's initial quantity must be greater than 0.");
 					alertBox.show();
 					return;
 				}
@@ -285,11 +284,14 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			ShipmentDTO shipment = new ShipmentDTO();
 			shipment.setProductType(typeStore.get(0));
 			shipment.setUnitPrice(new Double(0));
-			shipment.setInitialQuantity(0);	
+			shipment.setInitialQuantity(0);
+			
+			//set paid for display purposes; this value is set on server according to the invoice payment type
+			shipment.setPaid(false); 
 			shipment.setInvoice(invoice);
 			
 			editingGrid.cancelEditing();
-		    shipmentStore.add(0, shipment);
+		    shipmentStore.add(0, shipment);		    
 		    editingGrid.startEditing(new GridCell(0, 0));	
 		}
 	}
@@ -347,7 +349,8 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 
 		].join("");
 	}-*/;
-
+	
+	
 	@Override
 	public void setData(InvoiceDTO invoice) {
 		this.invoice = invoice;
