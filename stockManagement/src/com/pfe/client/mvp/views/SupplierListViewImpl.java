@@ -116,9 +116,8 @@ public class SupplierListViewImpl implements SupplierListView {
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
-		//toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
-		//toolbar.getClearFilterBtn().addSelectHandler(
-		//new ClearFilterBtnHandler());
+		toolbar.getEditBtn().setEnabled(false);
+		toolbar.getDeleteBtn().setEnabled(false);
 
 	}
 	
@@ -179,7 +178,8 @@ public class SupplierListViewImpl implements SupplierListView {
 		@Override
 		public void onSelect(SelectEvent event) {
 			
-			if (grid.getSelectionModel().getSelectedItems() == null) { // double check for selected item
+			if (grid.getSelectionModel().getSelectedItems() == null
+					|| grid.getSelectionModel().getSelectedItems().size() == 0) { // double check for selected item
 				return;
 			}
 			confirmBox = new ConfirmMessageBox("Delete","Delete supplier(s)?");
