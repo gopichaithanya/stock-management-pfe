@@ -157,6 +157,26 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 			}
 		});
 	}
+	
+	@Override
+	public void create(LocationDTO location) {
+		locationService.create(location, new AsyncCallback<LocationDTO>() {
+			
+			@Override
+			public void onSuccess(LocationDTO result) {
+				view.addData(result);
+				view.refreshGrid();
+				view.getCreateView().hide();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
 
 	@Override
 	public void ship(final StockDTO fromStock, int quantity, LocationDTO toLocation) {
