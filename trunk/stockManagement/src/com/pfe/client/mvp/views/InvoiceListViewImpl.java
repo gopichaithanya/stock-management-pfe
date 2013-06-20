@@ -146,10 +146,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		checkBox.setBoxLabel("Show paid");
 		checkBox.addValueChangeHandler(new CheckBoxHandler());
 		toolbar.addTool(checkBox);
-		
-		// toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
-		// toolbar.getClearFilterBtn().addSelectHandler(
-		// new ClearFilterBtnHandler());
+
 	}
 
 
@@ -195,7 +192,8 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	 * 
 	 */
 	private void displayEditView(){
-		if (grid.getSelectionModel().getSelectedItem() == null) { // double check for selected item
+		if (grid.getSelectionModel().getSelectedItem() == null
+				|| grid.getSelectionModel().getSelectedItems().size() == 0) { // double check for selected item
 			return;
 		}
 		editView = new EditInvoiceViewImpl();
