@@ -31,7 +31,7 @@ public class EditProductTypeViewImpl extends Window implements EditProductTypeVi
 
 	public EditProductTypeViewImpl() {
 	
-		setMinHeight(400);
+		setMinHeight(350);
 		setModal(true);
 		setResizable(false);
 		setClosable(false);
