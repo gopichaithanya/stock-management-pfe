@@ -13,6 +13,7 @@ import com.pfe.client.service.LocationService;
 import com.pfe.server.dao.location.LocationDAO;
 import com.pfe.server.dao.locationtype.LocationTypeDAO;
 import com.pfe.server.dao.stock.StockDAO;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.model.Location;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -63,6 +64,14 @@ public class LocationServiceImpl implements LocationService {
 			dtos.add(dozerMapper.map(location, LocationDTO.class, "miniLocation"));
 		}
 		return dtos;
+	}
+	
+	@Override
+	public LocationDTO create(LocationDTO location) throws BusinessException {
+		
+		Location entity = dozerMapper.map(location, Location.class);
+		Location merged = locationDao.merge(entity);
+		return dozerMapper.map(merged, LocationDTO.class, "miniLocation");
 	}
 
 }

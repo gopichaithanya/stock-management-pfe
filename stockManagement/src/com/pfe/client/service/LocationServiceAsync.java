@@ -16,4 +16,6 @@ public interface LocationServiceAsync {
 
 	void getAll(AsyncCallback<List<LocationDTO>> callback);
 
+	void create(LocationDTO location, AsyncCallback<LocationDTO> callback);
+
 }
