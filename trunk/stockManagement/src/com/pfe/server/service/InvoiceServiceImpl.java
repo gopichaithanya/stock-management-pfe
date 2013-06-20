@@ -100,9 +100,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Invoice entity = dozerMapper.map(invoice, Invoice.class, "fullInvoice");
 		//Get current date time
 		Date today = Calendar.getInstance().getTime();
-		entity.setPaymentType(invoice.getPaymentType());
-		entity.setRestToPay(new BigDecimal(0));
 		entity.setCreated(today);
+		entity.setRestToPay(new BigDecimal(0));
 		
 		List<Shipment> shipments = entity.getShipments();
 		for(Shipment shipment : shipments){
