@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -39,4 +40,13 @@ public interface LocationService extends RemoteService {
 	 * @return
 	 */
 	public PagingLoadResult<LocationDTO> search(FilterPagingLoadConfig config);
+	
+	/**
+	 * Adds new location in database
+	 * 
+	 * @param location
+	 * @return
+	 * @throws BusinessException
+	 */
+	public LocationDTO create(LocationDTO location) throws BusinessException;
 }
