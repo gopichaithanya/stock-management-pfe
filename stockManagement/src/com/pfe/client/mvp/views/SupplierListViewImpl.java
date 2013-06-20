@@ -11,6 +11,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.GridToolbar;
+import com.pfe.client.ui.ViewConstants;
 import com.pfe.client.ui.properties.SupplierProperties;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -88,13 +89,13 @@ public class SupplierListViewImpl implements SupplierListView {
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
 		grid.addRowClickHandler(new GridRowClickHandler());
-		pagingToolBar = new PagingToolBar(4);
+		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 
 		toolbar = new GridToolbar();
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalCon.add(grid, new VerticalLayoutData(1, 1));
-		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, 35));
+		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 		
 		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<SupplierDTO>() {
 			

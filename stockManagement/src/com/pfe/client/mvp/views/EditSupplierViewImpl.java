@@ -10,6 +10,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.client.ui.properties.InvoiceProperties;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.SupplierDTO;
@@ -36,8 +37,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public class EditSupplierViewImpl extends Window implements EditSupplierView {
 
-	private static final InvoiceProperties props = GWT
-			.create(InvoiceProperties.class);
+	private static final InvoiceProperties props = GWT.create(InvoiceProperties.class);
 
 	private SupplierDTO supplier;
 	private TextField nameField;
@@ -50,7 +50,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 
 	public EditSupplierViewImpl() {
 
-		setBodyBorder(false);
 		setWidth(850);
 		setHeight(350);
 		setMinHeight(350);
@@ -93,12 +92,10 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		grid.getView().setAutoFill(true);
 		grid.setBorders(true);
 		grid.setHeight(150);
-		grid.setWidth(400);
 		
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
-		HtmlLayoutContainer container = new HtmlLayoutContainer(
-				getTableMarkup());
+		HtmlLayoutContainer container = new HtmlLayoutContainer(getTableMarkup());
 		fpanel.setWidget(container);
 		fpanel.setHeaderVisible(false);
 		fpanel.setBorders(false);
@@ -120,7 +117,7 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
@@ -148,26 +145,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 				supplier.setName(nameField.getValue());
 				presenter.update(supplier);
 			}
-		}
-	}
-
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-
-		public CancelBtnHandler(Window w) {
-			this.w = w;
-		}
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
 		}
 	}
 

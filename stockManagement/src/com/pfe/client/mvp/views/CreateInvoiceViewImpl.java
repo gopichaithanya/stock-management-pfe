@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.ShipmentProperties;
@@ -69,9 +70,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 	private SimpleComboBox<String> paymentCombo;
 	
 	public CreateInvoiceViewImpl(){
-		setBodyBorder(false);
-		setWidth(650);
-		setHeight(500);
+
 		setMinHeight(500);
 		setModal(true);
 		setResizable(false);
@@ -173,7 +172,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
@@ -265,27 +264,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 			
 			
 		}
-	}
-	
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-		public CancelBtnHandler(Window w) {
-			this.w = w;
-		}
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
-		}
-	}
-	
+	}	
 	
 	@Override
 	public void setPresenter(InvoicePresenter presenter) {

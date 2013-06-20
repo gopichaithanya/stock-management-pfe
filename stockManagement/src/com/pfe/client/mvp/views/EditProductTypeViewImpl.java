@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
@@ -21,8 +22,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 
-public class EditProductTypeViewImpl extends Window implements
-		EditProductTypeView {
+public class EditProductTypeViewImpl extends Window implements EditProductTypeView {
 
 	private ProductTypeDTO productType;
 	private TextField nameField;
@@ -30,10 +30,7 @@ public class EditProductTypeViewImpl extends Window implements
 	private ProductTypePresenter presenter;
 
 	public EditProductTypeViewImpl() {
-		setBodyBorder(false);
-		setHeadingText("Add product type");
-		setWidth(550);
-		setHeight(400);
+	
 		setMinHeight(400);
 		setModal(true);
 		setResizable(false);
@@ -59,7 +56,7 @@ public class EditProductTypeViewImpl extends Window implements
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(cancelBtn);
@@ -92,26 +89,6 @@ public class EditProductTypeViewImpl extends Window implements
 			}
 		}
 	}
-	
-	
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-		public CancelBtnHandler(Window w){
-			this.w = w;
-		}
-		
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
-		}
-	}
 
 	/**
 	 * HTML table
@@ -136,6 +113,7 @@ public class EditProductTypeViewImpl extends Window implements
 		this.productType = data;
 		nameField.setValue(productType.getName());
 		descriptionEditor.setValue(productType.getDescription());
+		setHeadingText(productType.getName());
 	}
 
 }

@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.ShipmentProperties;
@@ -86,12 +87,11 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	private TextButton deleteBtn; // used to delete shipments displayed in the grid
 
 	public EditInvoiceViewImpl() {
-		setBodyBorder(false);
-		setWidth(650);
-		setHeight(500);
+	
 		setMinHeight(500);
 		setModal(true);
-		//setResizable(false);
+		setResizable(false);
+		setClosable(false);
 
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
@@ -218,7 +218,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
 		submitBtn.addSelectHandler(new SubmitBtnHandler());
-		cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
@@ -269,25 +269,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 			} else if (presenter instanceof InvoicePresenter) {
 				((InvoicePresenter) presenter).update(invoice);
 			}
-		}
-	}
-
-	/**
-	 * Close window
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class CancelBtnHandler implements SelectHandler {
-
-		private Window w;
-		public CancelBtnHandler(Window w) {
-			this.w = w;
-		}
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			w.hide();
 		}
 	}
 	
@@ -362,7 +343,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 				'<table width=100% cellpadding=10 cellspacing=10>',
 				'<tr><td class=code width=30%></td><td class=date width=40%></td><td class=payment width=30%></td></tr>',
 				'<tr><td class=supplier width=50%></td><td class=debt width=15%></td><td class=fr width=20%></td></tr>',
-				'<tr><td class=shipments colspan=3></tr>', '</table>'
+				'<tr><td class=shipments colspan=3></td></tr>', '</table>'
 
 		].join("");
 	}-*/;

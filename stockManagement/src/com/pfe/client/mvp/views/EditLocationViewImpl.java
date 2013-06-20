@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.LocationPresenter;
+import com.pfe.client.ui.CloseWindowButonHandler;
 import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.client.ui.properties.StockProperties;
 import com.pfe.shared.dto.LocationDTO;
@@ -57,8 +58,11 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	private ComboBox<LocationDTO> locationCombo;
 	
 	public EditLocationViewImpl(){
+		
 		setModal(true);
 		setMinHeight(430);
+		setClosable(false);
+		setResizable(false);
 		
 		VerticalPanel vp = new VerticalPanel();
 		FramedPanel fpanel = new FramedPanel();
@@ -74,14 +78,10 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		
 		//Stock grid
 		int ratio = 1;
-		ColumnConfig<StockDTO, String> typeCol = new ColumnConfig<StockDTO, String>(
-				stockProps.type(), 3 * ratio, "Type");
-		ColumnConfig<StockDTO, Integer> qtyCol = new ColumnConfig<StockDTO, Integer>(
-				stockProps.quantity(), 3 * ratio, "Quantity");
-		ColumnConfig<StockDTO, String> sellCol = new ColumnConfig<StockDTO, String>(
-				stockProps.type(), 2 * ratio, "Sell");
-		ColumnConfig<StockDTO, String> shipCol = new ColumnConfig<StockDTO, String>(
-				stockProps.type(), 2 * ratio, "Ship");
+		ColumnConfig<StockDTO, String> typeCol = new ColumnConfig<StockDTO, String>(stockProps.type(), 3 * ratio, "Type");
+		ColumnConfig<StockDTO, Integer> qtyCol = new ColumnConfig<StockDTO, Integer>(stockProps.quantity(), 3 * ratio, "Quantity");
+		ColumnConfig<StockDTO, String> sellCol = new ColumnConfig<StockDTO, String>(stockProps.type(), 2 * ratio, "Sell");
+		ColumnConfig<StockDTO, String> shipCol = new ColumnConfig<StockDTO, String>(stockProps.type(), 2 * ratio, "Ship");
 		List<ColumnConfig<StockDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<StockDTO, ?>>();
 		columnConfigList.add(typeCol);
 		columnConfigList.add(qtyCol);
@@ -110,6 +110,8 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		
 		TextButton cancelBtn = new TextButton("Cancel");
 		TextButton submitBtn = new TextButton("Save");
+		submitBtn.addSelectHandler(new SubmitBtnHandler());
+		cancelBtn.addSelectHandler(new CloseWindowButonHandler(this));
 		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
 		fpanel.addButton(submitBtn);
 		fpanel.addButton(cancelBtn);
@@ -159,6 +161,23 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 				'<tr><td class=stocks colspan=2></tr>', '</table>'
 		].join("");
 	}-*/;
+	
+
+	/**
+	 * Save updates
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class SubmitBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (nameField.isValid()) {
+				
+			}
+		}
+	}
 	
 	/**
 	 * Sell button handler
