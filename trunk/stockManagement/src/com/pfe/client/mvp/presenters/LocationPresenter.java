@@ -1,5 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
+import java.util.List;
+
 import com.google.gwt.place.shared.Place;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.StockDTO;
@@ -38,6 +40,13 @@ public interface LocationPresenter extends Presenter {
 	 * @param location
 	 */
 	public void create(LocationDTO location);
+	
+	/**
+	 * Calls service to remove locations from database
+	 * 
+	 * @param locations
+	 */
+	public void delete(List<LocationDTO> locations);
 	
 	/**
 	 * Calls service to retrieve all location types

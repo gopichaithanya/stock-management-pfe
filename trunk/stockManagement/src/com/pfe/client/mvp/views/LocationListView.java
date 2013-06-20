@@ -41,6 +41,13 @@ public interface LocationListView extends IsWidget {
 	public void addData(LocationDTO location);
 	
 	/**
+	 * Removes records from list
+	 * 
+	 * @param locations
+	 */
+	public void deleteData(List<LocationDTO> locations);
+	
+	/**
 	 * Set loader for paging
 	 * 
 	 * @param loader

@@ -16,8 +16,12 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
+import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -38,7 +42,7 @@ public class LocationListViewImpl implements LocationListView {
 	private PagingToolBar pagingToolBar;
 	private ListStore<LocationDTO> store;
 
-	//private ConfirmMessageBox confirmBox;
+	private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
 	private EditLocationView editView;
@@ -51,10 +55,8 @@ public class LocationListViewImpl implements LocationListView {
 
 		// column configuration
 		int ratio = 1;
-		ColumnConfig<LocationDTO, String> nameCol = new ColumnConfig<LocationDTO, String>(
-				props.name(), ratio, "Name");
-		ColumnConfig<LocationDTO, String> typeCol = new ColumnConfig<LocationDTO, String>(
-				props.type(), 2 * ratio, "Type");
+		ColumnConfig<LocationDTO, String> nameCol = new ColumnConfig<LocationDTO, String>(props.name(), ratio, "Name");
+		ColumnConfig<LocationDTO, String> typeCol = new ColumnConfig<LocationDTO, String>(props.type(), 2 * ratio, "Type");
 		List<ColumnConfig<LocationDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<LocationDTO, ?>>();
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
@@ -87,6 +89,7 @@ public class LocationListViewImpl implements LocationListView {
 		toolbar = new GridToolbar();
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
@@ -129,6 +132,41 @@ public class LocationListViewImpl implements LocationListView {
 			}
 			LocationDTO location = grid.getSelectionModel().getSelectedItem();
 			presenter.find(location.getId());
+		}
+	}
+	
+	/**
+	 * Delete invoice handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class DeleteBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			if (grid.getSelectionModel().getSelectedItems() == null || 
+					grid.getSelectionModel().getSelectedItems().size() == 0) {
+				return;
+			}
+			confirmBox = new ConfirmMessageBox("Delete", "Delete location(s)?");
+			final HideHandler hideHandler = new HideHandler() {
+
+				@Override
+				public void onHide(HideEvent event) {
+					Dialog btn = (Dialog) event.getSource();
+					String msg = btn.getHideButton().getText();
+					if (msg.equals("Yes")) {
+						
+						List<LocationDTO> locations = grid.getSelectionModel().getSelectedItems();
+						presenter.delete(locations);
+					} else if (msg.equals("No")) {
+						confirmBox.hide();
+					}
+				}
+			};
+			confirmBox.addHideHandler(hideHandler);
+			confirmBox.show();
 		}
 	}
 	
@@ -201,6 +239,14 @@ public class LocationListViewImpl implements LocationListView {
 	public void refreshGrid() {
 		pagingToolBar.refresh();
 
+	}
+
+	@Override
+	public void deleteData(List<LocationDTO> locations) {
+		for(LocationDTO location : locations){
+			store.remove(location);
+		}
+		
 	}
 
 }
