@@ -47,5 +47,12 @@ public interface LocationListView extends IsWidget {
 	 * @return the edit window
 	 */
 	public EditLocationView getEditView();
+	
+	/**
+	 * Get create location window
+	 * 
+	 * @return
+	 */
+	public CreateLocationView getCreateView();
 
 }

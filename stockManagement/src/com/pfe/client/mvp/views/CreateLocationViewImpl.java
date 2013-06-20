@@ -10,10 +10,14 @@ import com.pfe.shared.dto.LocationTypeDTO;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.Window;
+import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class CreateLocationViewImpl extends Window implements CreateLocationView {
@@ -44,8 +48,18 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		FieldLabel locationLabel = new FieldLabel(locationCombo, "Type");
 		container.add(locationLabel, new HtmlData(".type"));
 		
+		TextButton cancelBtn = new TextButton("Cancel");
+		TextButton submitBtn = new TextButton("Save");
+		//submitBtn.addSelectHandler(new SubmitBtnHandler());
+		//cancelBtn.addSelectHandler(new CancelBtnHandler(this));
+		fpanel.setButtonAlign(BoxLayoutPack.CENTER);
+		fpanel.addButton(submitBtn);
+		fpanel.addButton(cancelBtn);
+		List<FieldLabel> labels = FormPanelHelper.getFieldLabels(fpanel);
+		for (FieldLabel lbl : labels) { lbl.setLabelAlign(LabelAlign.TOP);}
+
 		this.add(vp);
-		
+		setHeadingText("New location");
 	}
 	
 	@Override

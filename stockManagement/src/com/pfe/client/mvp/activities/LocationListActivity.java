@@ -12,9 +12,11 @@ import com.pfe.client.mvp.places.LocationDetailPlace;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.mvp.views.LocationListView;
 import com.pfe.client.service.LocationServiceAsync;
+import com.pfe.client.service.LocationTypeServiceAsync;
 import com.pfe.client.service.StockServiceAsync;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.LocationTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
@@ -28,6 +30,7 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 	private ClientFactory clientFactory;
 	private LocationServiceAsync locationService;
 	private StockServiceAsync stockService;
+	private LocationTypeServiceAsync locationTypeService;
 	
 	private LocationListView view;
 	
@@ -35,6 +38,7 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		this.clientFactory = clientFactory;
 		this.locationService = clientFactory.getLocationService();
 		this.stockService = clientFactory.getStockService();
+		this.locationTypeService = clientFactory.getLocationTypeService();
 	}
 	
 	@Override
@@ -181,6 +185,25 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 	public void displayDetailsView(LocationDTO location) {
 		String token = location.getId().toString();
 		goTo(new LocationDetailPlace(token));
+		
+	}
+
+	@Override
+	public void getLocationTypes() {
+		locationTypeService.getAll(new AsyncCallback<List<LocationTypeDTO>>() {
+			
+			@Override
+			public void onSuccess(List<LocationTypeDTO> result) {
+				view.getCreateView().setLocationTypes(result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 

@@ -33,6 +33,12 @@ public interface LocationPresenter extends Presenter {
 	public void getAll();
 	
 	/**
+	 * Calls service to retrieve all location types
+	 * 
+	 */
+	public void getLocationTypes();
+	
+	/**
 	 * Loads selected type data in details panel
 	 * 
 	 * @param location
@@ -55,5 +61,6 @@ public interface LocationPresenter extends Presenter {
 	 * @param toLocation
 	 */
 	public void ship(StockDTO fromStock, int quantity, LocationDTO toLocation);
+	
 	
 }
