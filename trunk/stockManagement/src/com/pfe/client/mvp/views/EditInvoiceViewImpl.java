@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.presenters.Presenter;
@@ -140,6 +142,13 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 				shipProps.created(), 2 * ratio, "Created");
 		DateCell dateCell = new DateCell(DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss"));
 		dateCol.setCell(dateCell);
+		paidCol.setCell(new AbstractCell<Boolean>() {
+			@Override
+			public void render(Context context, Boolean value, SafeHtmlBuilder sb) {
+				sb.appendHtmlConstant(value ? "Yes" : "No");
+
+			}
+		});
 		
 		// Product type combo
 		typeStore = new ListStore<ProductTypeDTO>(typeProps.key());
