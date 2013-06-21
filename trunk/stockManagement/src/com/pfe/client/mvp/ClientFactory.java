@@ -7,6 +7,7 @@ import com.pfe.client.mvp.views.LocationDetailView;
 import com.pfe.client.mvp.views.LocationListView;
 import com.pfe.client.mvp.views.ProductTypeDetailView;
 import com.pfe.client.mvp.views.ProductTypeListView;
+import com.pfe.client.mvp.views.ReportsView;
 import com.pfe.client.mvp.views.SupplierDetailView;
 import com.pfe.client.mvp.views.SupplierListView;
 import com.pfe.client.mvp.views.WelcomeView;
@@ -57,6 +58,8 @@ public interface ClientFactory {
 	public LocationListView getLocationListView();
 	
 	public LocationDetailView getLocationDetailView();
+	
+	public ReportsView getReportsView();
 	
 	// SERVICES
 
