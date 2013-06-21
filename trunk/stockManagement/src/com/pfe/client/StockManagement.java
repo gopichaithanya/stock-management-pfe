@@ -4,8 +4,6 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
@@ -35,9 +33,6 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.Verti
 import com.sencha.gxt.widget.core.client.container.Viewport;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.menu.Item;
-import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class StockManagement implements EntryPoint {
@@ -138,28 +133,15 @@ public class StockManagement implements EntryPoint {
 			}
 		});
 
-		Menu storageMenu = new Menu();
-		storageMenu.addSelectionHandler(new SelectionHandler<Item>() {
-
+		TextButton locationsBtn = new TextButton("Locations",ImageResources.INSTANCE.addStoreItcon());
+		locationsBtn.addSelectHandler(new SelectHandler() {
+			
 			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				MenuItem item = (MenuItem) event.getSelectedItem();
-				String text = item.getText();
-				if ("Location Types".equals(text)) {
-					//goTo(new LocationTypeListPlace());
-				} else if ("Locations".equals(text)) {
-					goTo(new LocationListPlace());
-				}
+			public void onSelect(SelectEvent event) {
+				goTo(new LocationListPlace());
 				
 			}
 		});
-		
-		TextButton storageBtn = new TextButton("Storage",ImageResources.INSTANCE.addStoreItcon());
-		storageBtn.setMenu(storageMenu);
-		MenuItem lTypeItem = new MenuItem("Location Types");
-		MenuItem locationItem = new MenuItem("Locations");
-		storageMenu.add(lTypeItem);
-		storageMenu.add(locationItem);
 
 		TextButton supplierBtn = new TextButton("Suppliers",ImageResources.INSTANCE.addSupplierIcon());
 		supplierBtn.addSelectHandler(new SelectHandler(){
@@ -180,7 +162,7 @@ public class StockManagement implements EntryPoint {
 		});
 		TextButton reportBtn = new TextButton("Reports",ImageResources.INSTANCE.addReportIcon());
 		toolBar.add(productBtn);
-		toolBar.add(storageBtn);
+		toolBar.add(locationsBtn);
 		toolBar.add(supplierBtn);
 		toolBar.add(invoiceBtn);
 		toolBar.add(reportBtn);
