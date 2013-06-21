@@ -1,9 +1,12 @@
 package com.pfe.client.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 
 /**
@@ -33,6 +36,13 @@ public interface StockService extends RemoteService {
 	 * @return stock with updated quantity or null if total quantity moved
 	 * @throws BusinessException
 	 */
-	public StockDTO ship(StockDTO stock, int quantity, LocationDTO destination)
-			throws BusinessException;
+	public StockDTO ship(StockDTO stock, int quantity, LocationDTO destination) throws BusinessException;
+	
+	/**
+	 * Retrieves stocks of give type from all available locations.
+	 * 
+	 * @param productType
+	 * @return
+	 */
+	public List<StockDTO> find(ProductTypeDTO productType);
 }

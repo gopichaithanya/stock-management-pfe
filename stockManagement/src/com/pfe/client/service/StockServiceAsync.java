@@ -1,7 +1,10 @@
 package com.pfe.client.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 
 public interface StockServiceAsync {
@@ -10,5 +13,7 @@ public interface StockServiceAsync {
 
 	void ship(StockDTO stock, int quantity, LocationDTO destination,
 			AsyncCallback<StockDTO> callback);
+
+	void find(ProductTypeDTO productType, AsyncCallback<List<StockDTO>> callback);
 
 }

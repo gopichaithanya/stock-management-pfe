@@ -1,5 +1,7 @@
 package com.pfe.server.dao.stock;
 
+import java.util.List;
+
 import com.pfe.server.dao.IBaseDao;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.ProductType;
@@ -15,4 +17,12 @@ public interface StockDAO extends IBaseDao<Long, Stock> {
 	 * @return
 	 */
 	public Stock get(Location location, ProductType type);
+	
+	/**
+	 * Retrieves stocks by type from all available locations
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public List<Stock> get(ProductType type);
 }
