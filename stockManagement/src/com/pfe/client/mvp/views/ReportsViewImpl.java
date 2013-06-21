@@ -11,6 +11,7 @@ import com.pfe.client.ui.properties.StockProperties;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
@@ -65,7 +66,7 @@ public class ReportsViewImpl implements ReportsView {
 		stockStore = new ListStore<StockDTO>(stockProps.key());
 		// Column configuration
 		int ratio = 1;
-		ColumnConfig<StockDTO, String> locationCol = new ColumnConfig<StockDTO, String>(stockProps.location(), ratio, "Location");
+		ColumnConfig<StockDTO, String> locationCol = new ColumnConfig<StockDTO, String>(stockProps.location(),ratio, "Location");
 		ColumnConfig<StockDTO, Integer> qtyCol = new ColumnConfig<StockDTO, Integer>(stockProps.quantity(), ratio, "Quantity");
 		List<ColumnConfig<StockDTO, ?>> columnConfigList = new ArrayList<ColumnConfig<StockDTO, ?>>();
 		columnConfigList.add(locationCol);
@@ -101,14 +102,29 @@ public class ReportsViewImpl implements ReportsView {
 
 	@Override
 	public void setStocks(List<StockDTO> stocks) {
-		
-		//if there are other types of grids, remove them here from the container
-		//if verticalCon.getWidgetIndex(someGrid) != -1 then verticalCon.remove(index0
-		verticalCon.add(stockGrid, new VerticalLayoutData(1, 1));
-		stockStore.clear();
-		stockStore.addAll(stocks);
-		
+		removeGrids();
+		if(stocks.size() == 0){
+			AlertMessageBox box = new AlertMessageBox("Alert", "No stocks found");
+			box.show();	
+		} else{
+			stockStore.clear();
+			stockStore.addAll(stocks);
+			verticalCon.add(stockGrid, new VerticalLayoutData(1, 1));
+		}
+		verticalCon.forceLayout();
 	}
 
+	/**
+	 * Removes current grid before displaying other reports
+	 * 
+	 */
+	private void removeGrids(){
+		//Remove stock grid
+		int index = verticalCon.getWidgetIndex(stockGrid);
+		if(index != -1){
+			verticalCon.remove(stockGrid);
+		}
+		//Remove other grids
+	}
 }
   
