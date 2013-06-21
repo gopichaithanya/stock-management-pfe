@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.Place;
 import com.pfe.client.mvp.activities.InvoiceListActivity;
 import com.pfe.client.mvp.activities.LocationListActivity;
 import com.pfe.client.mvp.activities.ProductTypeListActivity;
+import com.pfe.client.mvp.activities.ReportsActivity;
 import com.pfe.client.mvp.activities.SupplierListActivity;
 import com.pfe.client.mvp.activities.WelcomeActivity;
 import com.pfe.client.mvp.places.InvoiceListPlace;
@@ -13,6 +14,7 @@ import com.pfe.client.mvp.places.LocationDetailPlace;
 import com.pfe.client.mvp.places.LocationListPlace;
 import com.pfe.client.mvp.places.ProductTypeDetailPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.ReportsPlace;
 import com.pfe.client.mvp.places.SupplierDetailPlace;
 import com.pfe.client.mvp.places.SupplierListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
@@ -59,6 +61,9 @@ public class AppActivityMapper implements ActivityMapper {
 			locationActivity = new LocationListActivity(clientFactory);
 			return locationActivity;
 			
+		} else if(place instanceof ReportsPlace){
+			return new ReportsActivity(clientFactory);
+		
 		} else if(place instanceof ProductTypeDetailPlace){
 			return productTypeActivity;
 			
@@ -67,6 +72,7 @@ public class AppActivityMapper implements ActivityMapper {
 			
 		} else if(place instanceof LocationDetailPlace){
 			return locationActivity;
+			
 		} else
 			return null;
 	}
