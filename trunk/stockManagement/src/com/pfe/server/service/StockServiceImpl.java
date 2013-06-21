@@ -1,6 +1,7 @@
 package com.pfe.server.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
@@ -16,6 +17,7 @@ import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Location;
@@ -138,6 +140,19 @@ public class StockServiceImpl implements StockService {
 			return dozerMapper.map(merged, StockDTO.class);
 		}
 
+	}
+
+	@Override
+	public List<StockDTO> find(ProductTypeDTO productType) {
+		
+		ProductType type = dozerMapper.map(productType, ProductType.class);
+		List<Stock> stocks = stockDao.get(type);
+		List<StockDTO> dtos = new ArrayList<StockDTO>();
+		for(Stock stock : stocks){
+			dtos.add(dozerMapper.map(stock, StockDTO.class));
+		}
+		
+		return dtos;
 	}
 
 }

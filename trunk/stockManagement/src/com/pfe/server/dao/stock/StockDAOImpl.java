@@ -30,4 +30,10 @@ public class StockDAOImpl extends BaseDaoImpl<Long, Stock> implements StockDAO {
 		return l.size() > 0 ? l.get(0) : null; 
 	}
 
+	@Override
+	public List<Stock> get(ProductType type) {
+		Criterion criterion = Restrictions.eq("type", type);
+		return findByCriteria(criterion);
+	}
+
 }
