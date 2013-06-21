@@ -17,6 +17,7 @@ import com.pfe.client.mvp.DetailsActivityMapper;
 import com.pfe.client.mvp.places.InvoiceListPlace;
 import com.pfe.client.mvp.places.LocationListPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.ReportsPlace;
 import com.pfe.client.mvp.places.SupplierListPlace;
 import com.pfe.client.mvp.places.WelcomePlace;
 import com.pfe.client.ui.CustomContentPanel;
@@ -160,12 +161,21 @@ public class StockManagement implements EntryPoint {
 				
 			}
 		});
-		TextButton reportBtn = new TextButton("Reports",ImageResources.INSTANCE.addReportIcon());
+		TextButton reportsBtn = new TextButton("Reports",ImageResources.INSTANCE.addReportIcon());
+		reportsBtn.addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				goTo(new ReportsPlace());
+				
+			}
+		});
+		
 		toolBar.add(productBtn);
 		toolBar.add(locationsBtn);
 		toolBar.add(supplierBtn);
 		toolBar.add(invoiceBtn);
-		toolBar.add(reportBtn);
+		toolBar.add(reportsBtn);
 	}
 
 	public void goTo(Place place) {

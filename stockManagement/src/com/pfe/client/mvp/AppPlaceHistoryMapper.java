@@ -5,6 +5,7 @@ import com.google.gwt.place.shared.WithTokenizers;
 import com.pfe.client.mvp.places.InvoiceListPlace;
 import com.pfe.client.mvp.places.LocationListPlace;
 import com.pfe.client.mvp.places.ProductTypeListPlace;
+import com.pfe.client.mvp.places.ReportsPlace;
 import com.pfe.client.mvp.places.SupplierListPlace;
 
 /**
@@ -16,7 +17,7 @@ import com.pfe.client.mvp.places.SupplierListPlace;
  */
 @WithTokenizers({ ProductTypeListPlace.Tokenizer.class,
 		SupplierListPlace.Tokenizer.class, InvoiceListPlace.Tokenizer.class,
-		LocationListPlace.Tokenizer.class })
+		LocationListPlace.Tokenizer.class, ReportsPlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 
 }

@@ -14,6 +14,8 @@ import com.pfe.client.mvp.views.ProductTypeDetailView;
 import com.pfe.client.mvp.views.ProductTypeDetailViewImpl;
 import com.pfe.client.mvp.views.ProductTypeListView;
 import com.pfe.client.mvp.views.ProductTypeListViewImpl;
+import com.pfe.client.mvp.views.ReportsView;
+import com.pfe.client.mvp.views.ReportsViewImpl;
 import com.pfe.client.mvp.views.SupplierDetailView;
 import com.pfe.client.mvp.views.SupplierDetailViewImpl;
 import com.pfe.client.mvp.views.SupplierListView;
@@ -197,6 +199,12 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public LocationDetailView getLocationDetailView() {
 		return new LocationDetailViewImpl();
+	}
+
+
+	@Override
+	public ReportsView getReportsView() {
+		return new ReportsViewImpl();
 	}
 
 }
