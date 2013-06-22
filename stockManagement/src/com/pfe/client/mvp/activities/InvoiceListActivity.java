@@ -1,5 +1,6 @@
 package com.pfe.client.mvp.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -20,12 +21,15 @@ import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
+import com.sencha.gxt.data.shared.loader.FilterConfigBean;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.grid.filters.BooleanFilter;
 
 public class InvoiceListActivity extends AbstractActivity implements
 		InvoicePresenter {
@@ -70,6 +74,15 @@ public class InvoiceListActivity extends AbstractActivity implements
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig,
 					AsyncCallback<PagingLoadResult<InvoiceDTO>> callback) {
+				List<FilterConfig> filters = new ArrayList<FilterConfig>();
+				FilterConfigBean showAll = new FilterConfigBean();
+				showAll.setField("showAll");
+				showAll.setType("boolean");
+				//TODO: verifica checkBox
+				showAll.setValue("true");
+				//TODO: filter de cautare-> code OR supplier.name 
+				filters.add(showAll);
+				loadConfig.setFilters(filters);
 				invoiceService.searchUnpaid(loadConfig, callback);
 
 			}
