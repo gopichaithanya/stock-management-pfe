@@ -9,15 +9,11 @@ public class InvoiceCreatedSortField extends InvoiceSortField {
 
 	public InvoiceCreatedSortField() {
 		//order invoices from the most recent to the oldest
-		this(false);
+		this(true);
 	}
 	
 	public InvoiceCreatedSortField(boolean ascending) {
 		super(ENTITY_SORT_COLUMN, ascending);
 	}
 	
-	@Override
-	public OrderAlias getOrderAlias() {
-		return new OrderAlias(ENTITY_SORT_COLUMN, null);
-	}
 }
