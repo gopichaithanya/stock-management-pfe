@@ -1,6 +1,5 @@
 package com.pfe.server.dao.shipment.sort;
 
-import com.pfe.server.dao.OrderAlias;
 
 public class ShipmentCreatedSortField extends ShipmentSortField{
 
@@ -17,9 +16,4 @@ public class ShipmentCreatedSortField extends ShipmentSortField{
 		super(ENTITY_SORT_COLUMN, ascending);
 	}
 	
-	@Override
-	public OrderAlias getOrderAlias() {
-		return new OrderAlias(ENTITY_SORT_COLUMN, null);
-	}
-
 }
