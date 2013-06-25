@@ -18,29 +18,24 @@ public interface InvoiceDao extends IBaseDao<Long, Invoice> {
 	
 
 	/**
-	 * Retrieves invoices applying limit of results. 
+	 * Retrieves invoices applying limit of results and filter by code.
 	 * 
 	 * @param start
 	 * @param limit
 	 * @param showAll if false, retrieves only unpaid invoices
-	 * @param searchKey filter value for supplier name or invoice code
+	 * @param code filter value
 	 * @return
 	 */
-	public List<Invoice> search(int start, int limit, Boolean showAll, String searchKey); 
+	public List<Invoice> search(int start, int limit, Boolean showAll, int code); 
+	
 	
 	/**
-	 * Retrieves invoices where restToPay greater than 0 and applying limit of results.
+	 * Counts records applying criteria for filter code and show all/ show
+	 * unpaid only option
 	 * 
-	 * @param start
-	 * @param limit
+	 * @param countAll
+	 * @param code
 	 * @return
 	 */
-	public List<Invoice> searchUnpaid(int start, int limit); 
-	
-	/**
-	 * Counts invoices with restToPay greater than 0
-	 * 
-	 * @return
-	 */
-	public long countUnpaid();
+	public long countByCriteria(Boolean countAll, int code);
 }

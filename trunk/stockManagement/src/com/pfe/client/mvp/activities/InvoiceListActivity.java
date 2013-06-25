@@ -81,9 +81,13 @@ public class InvoiceListActivity extends AbstractActivity implements
 				} else{
 					showAll.setValue("false");
 				}
+				FilterConfigBean codeFilter = new FilterConfigBean();
+				codeFilter.setField("codeFilter");
+				codeFilter.setType("integer");
+				codeFilter.setValue(view.getFilterValue());
 				
-				//TODO: filter de cautare-> code OR supplier.name 
 				filters.add(showAll);
+				filters.add(codeFilter);
 				loadConfig.setFilters(filters);
 				invoiceService.search(loadConfig, callback);
 

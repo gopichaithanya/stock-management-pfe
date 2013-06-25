@@ -65,19 +65,29 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		//Retrieve all invoices by default
 		Boolean showAll = true;
-		int size = (int) invoiceDao.count();
-		int start = config.getOffset();
-		int limit = config.getLimit();
+		
+		//Filter by code unused by default
+		int invoiceCode = -1;
 		
 		//Show all or unpaid invoices filter
-		FilterConfig filter = config.getFilters().get(0);
-		if(filter.getValue().equals("false")){
+		FilterConfig debtFilter = config.getFilters().get(0);
+		if(debtFilter.getValue().equals("false")){
 			//show only unpaid invoices
 			showAll = false;
-			size = (int) invoiceDao.countUnpaid();
 		}
 		
-		List<Invoice> sublist = invoiceDao.search(start, limit, showAll, "");
+		//Get filter value 
+		FilterConfig codeFilter = config.getFilters().get(1);
+		String filterValue = codeFilter.getValue();
+		if(filterValue != null){
+			invoiceCode = Integer.parseInt(filterValue); //Parse exception handled on client side
+		}
+		
+		int start = config.getOffset();
+		int limit = config.getLimit();
+		int size = (int) invoiceDao.countByCriteria(showAll, invoiceCode);
+		
+		List<Invoice> sublist = invoiceDao.search(start, limit, showAll, invoiceCode);
 		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
 
 		if (sublist.size() > 0) {
