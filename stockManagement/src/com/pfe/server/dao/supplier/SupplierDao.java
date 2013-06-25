@@ -6,34 +6,44 @@ import com.pfe.server.dao.IBaseDao;
 import com.pfe.shared.model.Supplier;
 
 public interface SupplierDao extends IBaseDao<Long, Supplier> {
-	
+
 	/**
-	 * Retrieves supplier by name
+	 * Retrieves supplier by name. The match needs to be exact, but case is
+	 * ignored.
 	 * 
 	 * @param name
 	 * @return
 	 */
 	public Supplier search(String name);
-	
+
 	/**
-	 * Retrieves supplier with given name where id different from excludedId
+	 * Retrieves supplier with the exact given name but id different from
+	 * excludedId
 	 * 
 	 * @param excludedId
 	 * @param name
-	 * @return  supplier with given name and id different from excludedId
+	 * @return
 	 */
 	public Supplier getDuplicateName(Long excludedId, String name);
-	
-	
+
 	/**
-	 * Retrieves records from start to limit index where name like parameter.
-	 * Name is ignored if null or blank
+	 * Retrieves records applying limit of results where name like parameter.
+	 * Name is ignored if null or blank. Records are retrieved in alphabetical
+	 * order by name. Case is ignored for name filter.
 	 * 
 	 * @param start
 	 * @param limit
 	 * @param name
 	 * @return
 	 */
-	public List<Supplier> search(int start, int limit, String name); 
+	public List<Supplier> search(int start, int limit, String name);
+
+	/**
+	 * Counts records where name like given parameter. Case is ignored.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public long countByCriteria(String name);
 
 }

@@ -11,38 +11,44 @@ import com.pfe.shared.dto.SupplierDTO;
  * Controls the views displaying supplier related information
  * 
  * @author Alexandra
- *
+ * 
  */
 public interface SupplierPresenter extends Presenter {
-	
+
 	/**
 	 * Goes to a new place
 	 * 
 	 * @param place
 	 */
 	public void goTo(Place place);
-	
+
 	/**
 	 * Calls RPC service to add new supplier
 	 * 
 	 * @param supplier
 	 */
 	public void create(SupplierDTO supplier);
-	
+
 	/**
 	 * Retrieves supplier by id
 	 * 
 	 * @param id
 	 */
 	public void find(Long id);
-	
+
 	/**
 	 * Retrieves all suppliers from database
 	 * 
 	 */
 	public void getAll();
 
-	
+	/**
+	 * Sets paging parameters and loads list pages for all suppliers. Takes into
+	 * the filter on supplier name.
+	 * 
+	 */
+	public void search();
+
 	/**
 	 * Updates supplier
 	 * 
@@ -58,41 +64,26 @@ public interface SupplierPresenter extends Presenter {
 	public void delete(List<SupplierDTO> suppliers);
 
 	/**
-	 * Filters list by name. Creates new paging load configuration corresponding
-	 * to the filtered data
-	 * 
-	 * @param name
-	 */
-	public void filter(String name);
-
-	/**
-	 * Clears filters. Loads pages without filters
-	 * 
-	 */
-	public void clearFilter();
-
-	/**
 	 * Loads selected type data in details panel
 	 * 
 	 * @param supplier
 	 */
 	public void displayDetailsView(SupplierDTO supplier);
 
-	
 	/**
 	 * Updates invoice via corresponding supplier
 	 * 
 	 * @param updatedInvoice
 	 */
 	public void updateInvoice(InvoiceDTO updatedInvoice);
-	
+
 	/**
-	 * Deletes shipments 
+	 * Deletes shipments
 	 * 
 	 * @param shipments
 	 */
 	public void deleteShipments(List<ShipmentDTO> shipments);
-	
+
 	/**
 	 * Retrieves all product types from server
 	 * 

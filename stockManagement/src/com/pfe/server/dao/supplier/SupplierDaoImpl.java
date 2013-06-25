@@ -28,6 +28,7 @@ public class SupplierDaoImpl extends BaseDaoImpl<Long, Supplier> implements Supp
 	public List<Supplier> search(int start, int limit, String name) {
 		
 		List<SortField> sorts = new ArrayList<SortField>();
+		
 		//Retrieve suppliers in alphabetical order by name
 		sorts.add(new SupplierNameSortField(/*ascending*/true));
 		List<OrderAlias> orderAliases = getOrderAliases(sorts);
@@ -35,7 +36,7 @@ public class SupplierDaoImpl extends BaseDaoImpl<Long, Supplier> implements Supp
 		
 		Criterion criterion = null;
 		if (StringUtils.isNotBlank(name)){
-			criterion = Restrictions.eq("name", name).ignoreCase();
+			criterion = Restrictions.ilike("name", "%" + name + "%");
 		}
 		
 		List<Supplier> results = findByCriteria(start, limit, orderAliases, orders, criterion);
@@ -60,5 +61,14 @@ public class SupplierDaoImpl extends BaseDaoImpl<Long, Supplier> implements Supp
 	@Override
 	protected Class<? extends SortField> getSortType() {
 		return SupplierSortField.class;
+	}
+
+	@Override
+	public long countByCriteria(String name) {
+		Criterion nameCriterion = null;
+		if (StringUtils.isNotBlank(name)){
+			nameCriterion = Restrictions.ilike("name", "%" + name + "%");
+		}
+		return countByCriteria(nameCriterion);
 	}
 }

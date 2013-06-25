@@ -117,6 +117,23 @@ public class SupplierListViewImpl implements SupplierListView {
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
+		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				presenter.search();
+				
+			}
+		});
+		toolbar.getClearFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				toolbar.getFilterText().clear();
+				presenter.search();
+				
+			}
+		});
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
 
@@ -308,6 +325,11 @@ public class SupplierListViewImpl implements SupplierListView {
 	@Override
 	public EditSupplierView getEditSupplierView() {
 		return editView;
+	}
+
+	@Override
+	public String getFilterValue() {
+		return toolbar.getFilterText().getCurrentValue();
 	}
 
 }

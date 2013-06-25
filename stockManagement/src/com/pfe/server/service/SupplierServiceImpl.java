@@ -16,6 +16,7 @@ import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.SupplierDTO;
 import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Supplier;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
@@ -47,10 +48,17 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public PagingLoadResult<SupplierDTO> search(FilterPagingLoadConfig config) {
 
-		int size = (int) supplierDao.count();
+		//Get name filter value 
+		FilterConfig nameFilter = config.getFilters().get(0);
+		String filterValue = nameFilter.getValue();	
+		if(filterValue != null){
+			filterValue.trim();
+		}
+		
+		int size = (int) supplierDao.countByCriteria(filterValue);
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<Supplier> sublist = supplierDao.search(start, limit, null);
+		List<Supplier> sublist = supplierDao.search(start, limit, filterValue);
 		List<SupplierDTO> dtos = new ArrayList<SupplierDTO>();
 
 		if (sublist.size() > 0) {
