@@ -34,19 +34,29 @@ public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
 	}
 
 	@Override
-	public List<Invoice> search(int start, int limit/* boolean paid, String searchKey*/) {
+	public List<Invoice> search(int start, int limit, Boolean showAll, String searchKey) {
+		
 		List<SortField> sorts = new ArrayList<SortField>();
+		//Retrieve invoices from the most recent to the oldest
 		sorts.add(new InvoiceCreatedSortField(/*ascending*/false));
 		List<OrderAlias> orderAliases = getOrderAliases(sorts);
 		List<Order> orders = getOrders(sorts);
-		List<Invoice> results = findByCriteria(start, limit, orderAliases, orders);
-		return results;
+
+		Criterion allInvoicesCriterion = null;
+		Criterion filterCriterion = null;
+		
+		if(!showAll){
+			//Retrieve only unpaid invoices
+			allInvoicesCriterion = Restrictions.gt("restToPay", new BigDecimal(0));	
+		}
+		
+		return findByCriteria(start, limit, orderAliases, orders, allInvoicesCriterion, filterCriterion);
 	}
 
 	@Override
 	public List<Invoice> searchUnpaid(int start, int limit) {
 		List<SortField> sorts = new ArrayList<SortField>();
-		sorts.add(new InvoiceCreatedSortField(/*ascending*/false));
+		sorts.add(new InvoiceCreatedSortField(/*ascending*/true));
 		List<OrderAlias> orderAliases = getOrderAliases(sorts);
 		List<Order> orders = getOrders(sorts);
 		Criterion criterion = Restrictions.gt("restToPay", new BigDecimal(0));

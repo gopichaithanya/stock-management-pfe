@@ -143,7 +143,15 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getDeleteBtn().setEnabled(false);
 		checkBox = new CheckBox();
 		checkBox.setBoxLabel("Show paid");
-		checkBox.addValueChangeHandler(new CheckBoxHandler());
+		checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				presenter.search();
+				
+			}
+			
+		});
 		toolbar.addTool(checkBox);
 
 	}
@@ -243,20 +251,6 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		}
 	}
 	
-	private class CheckBoxHandler implements ValueChangeHandler<Boolean>{
-
-		@Override
-		public void onValueChange(ValueChangeEvent<Boolean> event) {
-			Boolean checked = event.getValue();
-			if(checked){
-				presenter.search();
-			} else{
-				presenter.searchUnpaid();
-			}
-			
-		}
-		
-	}
 	
 	@Override
 	public Widget asWidget() {
@@ -342,6 +336,11 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	@Override
 	public CreateInvoiceView getCreateView() {
 		return this.createView;
+	}
+
+	@Override
+	public Boolean getCheckBoxValue() {
+		return checkBox.getValue();
 	}
 
 }

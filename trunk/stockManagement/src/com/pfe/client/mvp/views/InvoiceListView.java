@@ -98,4 +98,10 @@ public interface InvoiceListView extends IsWidget {
 
 	public void unmaskGrid();
 
+	/**
+	 * Gets check box value concerning the retrieval of all or only unpaid invoices
+	 * 
+	 * @return
+	 */
+	public Boolean getCheckBoxValue();
 }

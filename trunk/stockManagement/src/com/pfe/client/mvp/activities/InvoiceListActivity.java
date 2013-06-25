@@ -29,7 +29,6 @@ import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
-import com.sencha.gxt.widget.core.client.grid.filters.BooleanFilter;
 
 public class InvoiceListActivity extends AbstractActivity implements
 		InvoicePresenter {
@@ -61,61 +60,38 @@ public class InvoiceListActivity extends AbstractActivity implements
 		view = clientFactory.getInvoiceListView();
 		view.maskGrid();
 		bind();
-		searchUnpaid();
+		search();
 		view.unmaskGrid();
 		panel.setWidget(view.asWidget());
 	}
 	
 	
 	@Override
-	public void searchUnpaid() {
+	public void search() {
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>() {
 
 			@Override
-			public void load(FilterPagingLoadConfig loadConfig,
-					AsyncCallback<PagingLoadResult<InvoiceDTO>> callback) {
+			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<InvoiceDTO>> callback) {
 				List<FilterConfig> filters = new ArrayList<FilterConfig>();
 				FilterConfigBean showAll = new FilterConfigBean();
 				showAll.setField("showAll");
 				showAll.setType("boolean");
-				//TODO: verifica checkBox
-				showAll.setValue("true");
+				if(view.getCheckBoxValue()){
+					showAll.setValue("true");
+				} else{
+					showAll.setValue("false");
+				}
+				
 				//TODO: filter de cautare-> code OR supplier.name 
 				filters.add(showAll);
 				loadConfig.setFilters(filters);
-				invoiceService.searchUnpaid(loadConfig, callback);
+				invoiceService.search(loadConfig, callback);
 
 			}
 
 		};
 		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>(
 				proxy) {
-			@Override
-			protected FilterPagingLoadConfig newLoadConfig() {
-				return new FilterPagingLoadConfigBean();
-			}
-		};
-		remoteLoader.setRemoteSort(true);
-		remoteLoader
-				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, InvoiceDTO, PagingLoadResult<InvoiceDTO>>(view.getData()));
-
-		view.setPagingLoader(remoteLoader);
-	}
-
-	@Override
-	public void search() {
-		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>() {
-
-			@Override
-			public void load(FilterPagingLoadConfig loadConfig,
-					AsyncCallback<PagingLoadResult<InvoiceDTO>> callback) {
-				invoiceService.search(loadConfig, callback);
-
-			}
-
-		};
-		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<InvoiceDTO>>(proxy) {
-			
 			@Override
 			protected FilterPagingLoadConfig newLoadConfig() {
 				return new FilterPagingLoadConfigBean();
