@@ -29,7 +29,7 @@ public interface ProductTypeDao extends IBaseDao<Long, ProductType> {
 	/**
 	 * Retrieves records from start to limit index where name like given
 	 * parameter. Name case is ignored and records are retrieved in alphabetical
-	 * order by name.s
+	 * order by name.
 	 * 
 	 * @param start
 	 * @param limit

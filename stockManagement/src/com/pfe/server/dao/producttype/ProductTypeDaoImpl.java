@@ -1,15 +1,19 @@
 package com.pfe.server.dao.producttype;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pfe.server.dao.BaseDaoImpl;
+import com.pfe.server.dao.OrderAlias;
+import com.pfe.server.dao.SortField;
 import com.pfe.shared.model.ProductType;
 
 @Repository
@@ -39,12 +43,20 @@ public class ProductTypeDaoImpl extends BaseDaoImpl<Long, ProductType>
 
 	@Override
 	public List<ProductType> search(int start, int limit, String name) {
+		
+		List<SortField> sorts = new ArrayList<SortField>();
+		
+		//Retrieve types in alphabetical order by name
+		sorts.add(new ProductTypeNameSortField(/*ascending*/true));
+		List<OrderAlias> orderAliases = getOrderAliases(sorts);
+		List<Order> orders = getOrders(sorts);
+		
 		Criterion criterion = null;
 		if (StringUtils.isNotBlank(name)){
 			criterion = Restrictions.ilike("name", "%" + name + "%");
 		}
 		
-		List<ProductType> results = findByCriteria(start, limit, criterion);
+		List<ProductType> results = findByCriteria(start, limit, orderAliases, orders, criterion);
 		return results;
 	}
 
@@ -56,6 +68,11 @@ public class ProductTypeDaoImpl extends BaseDaoImpl<Long, ProductType>
 			criterion = Restrictions.ilike("name", "%" + name + "%");
 		}
 		return countByCriteria(criterion);
+	}
+	
+	@Override
+	protected Class<? extends SortField> getSortType() {
+		return ProductTypeSortField.class;
 	}
 
 }
