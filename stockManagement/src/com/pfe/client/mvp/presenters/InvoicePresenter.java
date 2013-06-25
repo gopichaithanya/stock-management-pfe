@@ -70,13 +70,12 @@ public interface InvoicePresenter extends Presenter {
 	 */
 	public void deleteShipments(List<ShipmentDTO> shipments);
 
-	/**
-	 * Sets paging parameters and loads list pages for unpaid invoices
-	 */
-	public void searchUnpaid();
 	
 	/**
-	 * Sets paging parameters and loads list pages for all invoices
+	 * Sets paging parameters and loads list pages for all invoices. Takes into
+	 * account the check box value to retrieve all or only unpaid invoices and
+	 * the filter value
+	 * 
 	 */
 	public void search();
 }

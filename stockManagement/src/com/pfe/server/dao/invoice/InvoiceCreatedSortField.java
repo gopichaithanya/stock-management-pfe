@@ -1,6 +1,5 @@
 package com.pfe.server.dao.invoice;
 
-import com.pfe.server.dao.OrderAlias;
 
 public class InvoiceCreatedSortField extends InvoiceSortField {
 

@@ -29,6 +29,7 @@ import com.pfe.shared.model.ProductType;
 import com.pfe.shared.model.Shipment;
 import com.pfe.shared.model.Stock;
 import com.pfe.shared.model.Supplier;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
@@ -62,26 +63,21 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
 		
+		//Retrieve all invoices by default
+		Boolean showAll = true;
 		int size = (int) invoiceDao.count();
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<Invoice> sublist = invoiceDao.search(start, limit);
-		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
-
-		if (sublist.size() > 0) {
-			for (Invoice invoice : sublist) {
-				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, "miniInvoice"));
-			}
+		
+		//Show all or unpaid invoices filter
+		FilterConfig filter = config.getFilters().get(0);
+		if(filter.getValue().equals("false")){
+			//show only unpaid invoices
+			showAll = false;
+			size = (int) invoiceDao.countUnpaid();
 		}
-		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
-	}
-	
-	@Override
-	public PagingLoadResult<InvoiceDTO> searchUnpaid(FilterPagingLoadConfig config) {
-		int size = (int) invoiceDao.countUnpaid();
-		int start = config.getOffset();
-		int limit = config.getLimit();
-		List<Invoice> sublist = invoiceDao.searchUnpaid(start, limit);
+		
+		List<Invoice> sublist = invoiceDao.search(start, limit, showAll, "");
 		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
 
 		if (sublist.size() > 0) {
