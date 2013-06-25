@@ -15,6 +15,7 @@ import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.model.ProductType;
+import com.pfe.shared.model.Shipment;
 import com.sencha.gxt.data.shared.loader.FilterConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -83,10 +84,14 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	public void delete(ProductTypeDTO productType) throws BusinessException {
 		
 		ProductType entity = dozerMapper.map(productType, ProductType.class);
-		//List<Shipment> shipments = shipmentDao.search(0, 1, entity);
-		//if(shipments.size() > 0){
-		//	throw new BusinessException("Cannot delete type, shipments contain products of this type");
-		//}
+		
+		//Retrieve first shipment of given type, irrespective if its current quantity
+		List<Shipment> shipments = shipmentDao.search(0, 1, entity, true);
+		if(shipments.size() > 0){
+			//If there are shipments of the given type in the database, even if items are sold,
+			//i.e. current quantity is 0, the type cannot be deleted
+			throw new BusinessException("Cannot delete type, shipments with products of this type exist.");
+		}
 		typeDao.delete(entity);
 	}
 
@@ -113,6 +118,15 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		}
 		return new PagingLoadResultBean<ProductTypeDTO>(dtos, size, config.getOffset());
 
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(List<ProductTypeDTO> productTypes) throws BusinessException {
+		for(ProductTypeDTO type : productTypes){
+			delete(type);
+		}
+		
 	}
 
 }

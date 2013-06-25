@@ -222,11 +222,8 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 					String msg = btn.getHideButton().getText();
 					if (msg.equals("Yes")) {
 
-						ProductTypeDTO productType = grid.getSelectionModel().getSelectedItem();
-						if (productType != null) {
-							maskGrid();
-							presenter.delete(productType);
-						}
+						List<ProductTypeDTO> selected = grid.getSelectionModel().getSelectedItems();
+						presenter.delete(selected);
 
 					} else if (msg.equals("No")) {
 						confirmBox.hide();
@@ -275,8 +272,11 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	@Override
-	public void deleteData(ProductTypeDTO productType) {
-		store.remove(productType);
+	public void deleteData(List<ProductTypeDTO> productTypes) {
+		for(ProductTypeDTO type : productTypes){
+			store.remove(type);
+		}
+		
 	}
 
 	@Override

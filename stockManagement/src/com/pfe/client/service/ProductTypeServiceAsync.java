@@ -21,4 +21,6 @@ public interface ProductTypeServiceAsync {
 
 	void find(Long id, AsyncCallback<ProductTypeDTO> callback);
 
+	void delete(List<ProductTypeDTO> productTypes, AsyncCallback<Void> callback);
+
 }

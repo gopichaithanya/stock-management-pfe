@@ -1,5 +1,7 @@
 package com.pfe.client.mvp.presenters;
 
+import java.util.List;
+
 import com.google.gwt.place.shared.Place;
 import com.pfe.shared.dto.ProductTypeDTO;
 
@@ -44,13 +46,13 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param updatedType
 	 */
 	public void update(ProductTypeDTO updatedType);
-
+	
 	/**
-	 * Deletes type
+	 * Deletes types from database
 	 * 
-	 * @param productType
+	 * @param productTypes
 	 */
-	public void delete(ProductTypeDTO productType);
+	public void delete(List<ProductTypeDTO> productTypes);
 
 	/**
 	 * Loads selected type data in details panel

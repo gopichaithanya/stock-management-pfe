@@ -16,14 +16,15 @@ public interface ShipmentDao extends IBaseDao<Long, Shipment> {
 	public void deleteList(List<Shipment> shipments);
 	
 	/**
-	 * Return a list of shipments with given type, current quantity greater than
-	 * 0 and applying limit of results. Shipments must be ordered by creation date
-	 * in ascending order.
+	 * Returns a list of shipments with given type and applying limit of results. 
+	 * Shipments are ordered by creation date in ascending order. If the sold parameter
+	 * is false then shipments with current quantity = 0 are not retrieved.
 	 * 
 	 * @param start
 	 * @param limit
 	 * @param type
-	 * @return list of found shipments
+	 * @param sold
+	 * @return
 	 */
-	public List<Shipment> search(int start, int limit, ProductType type);
+	public List<Shipment> search(int start, int limit, ProductType type, Boolean sold);
 }

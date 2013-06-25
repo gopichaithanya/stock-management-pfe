@@ -24,7 +24,7 @@ public interface ProductTypeService extends RemoteService {
 	 * @return
 	 */
 	public List<ProductTypeDTO> getAll();
-	
+
 	/**
 	 * Gets type by id
 	 * 
@@ -37,7 +37,7 @@ public interface ProductTypeService extends RemoteService {
 	 * Adds new product type in database
 	 * 
 	 * @param productType
-	 * @return 
+	 * @return
 	 * @throws BusinessException
 	 */
 	public ProductTypeDTO create(ProductTypeDTO productType) throws BusinessException;
@@ -50,7 +50,7 @@ public interface ProductTypeService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public ProductTypeDTO update(ProductTypeDTO updatedType) throws BusinessException;
-	
+
 	/**
 	 * Removes type from database
 	 * 
@@ -58,11 +58,18 @@ public interface ProductTypeService extends RemoteService {
 	 * @throws BusinessException
 	 */
 	public void delete(ProductTypeDTO productType) throws BusinessException;
-	
-	
+
+	/**
+	 * Removes type from database
+	 * 
+	 * @param productTypes
+	 * @throws BusinessException
+	 */
+	public void delete(List<ProductTypeDTO> productTypes) throws BusinessException;
+
 	/**
 	 * Retrieves product types with paging and in alphabetical order by name.
-	 * Takes into account the filter value. 
+	 * Takes into account the filter value.
 	 * 
 	 * @param config
 	 * @return
