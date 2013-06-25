@@ -1,5 +1,6 @@
 package com.pfe.client.mvp.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -21,6 +22,8 @@ import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.dto.ShipmentDTO;
 import com.pfe.shared.dto.SupplierDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
+import com.sencha.gxt.data.shared.loader.FilterConfigBean;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
@@ -58,21 +61,28 @@ public class SupplierListActivity extends AbstractActivity implements
 		view = clientFactory.getSupplierListView();
 		view.maskGrid();
 		bind();
-		loadPages();
+		search();
 		view.unmaskGrid();
 		panel.setWidget(view.asWidget());
 
 	}
 
-	/**
-	 * Sets paging parameters and loads list pages
-	 */
-	private void loadPages() {
+	@Override
+	public void search() {
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<SupplierDTO>>() {
 
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig,
 					AsyncCallback<PagingLoadResult<SupplierDTO>> callback) {
+				
+				List<FilterConfig> filters = new ArrayList<FilterConfig>();
+				FilterConfigBean nameFilter = new FilterConfigBean();
+				nameFilter.setField("nameFilter");
+				nameFilter.setType("String");
+				nameFilter.setValue(view.getFilterValue());
+				filters.add(nameFilter);
+				loadConfig.setFilters(filters);
+				
 				supplierService.search(loadConfig, callback);
 
 			}
@@ -203,18 +213,6 @@ public class SupplierListActivity extends AbstractActivity implements
 				}
 			}
 		});
-
-	}
-
-	@Override
-	public void filter(String name) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void clearFilter() {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -86,6 +86,13 @@ public interface SupplierListView extends IsWidget {
 	 * @return
 	 */
 	public EditSupplierView getEditSupplierView();
+	
+	/**
+	 * Gets name filter value
+	 * 
+	 * @return
+	 */
+	public String getFilterValue();
 
 	/**
 	 * Refresh the grid view
