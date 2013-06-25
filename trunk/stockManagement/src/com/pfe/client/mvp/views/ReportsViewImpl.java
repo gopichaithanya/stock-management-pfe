@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ReportsPresenter;
+import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.ProductTypeProperties;
 import com.pfe.client.ui.properties.StockProperties;
 import com.pfe.shared.dto.ProductTypeDTO;
@@ -43,7 +44,7 @@ public class ReportsViewImpl implements ReportsView {
 		productStore = new ListStore<ProductTypeDTO>(typeProps.key());
 		productCombo = new ComboBox<ProductTypeDTO>(productStore, typeProps.nameLabel());
 		productCombo.setEmptyText("Choose a product");
-		findStocksBtn = new TextButton("Find stocks");
+		findStocksBtn = new TextButton("Find stocks", ImageResources.INSTANCE.addSearchIcon());
 		findStocksBtn.addSelectHandler(new SelectHandler() {
 			
 			@Override
