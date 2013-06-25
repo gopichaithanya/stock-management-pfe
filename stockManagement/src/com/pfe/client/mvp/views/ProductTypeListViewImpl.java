@@ -118,8 +118,24 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
 		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
-		toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
-		toolbar.getClearFilterBtn().addSelectHandler(new ClearFilterBtnHandler());
+		toolbar.getFilterText().setEmptyText("Type name...");
+		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				presenter.search();
+				
+			}
+		});
+		toolbar.getClearFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				toolbar.getFilterText().clear();
+				presenter.search();
+				
+			}
+		});
 	}
 
 	/**
@@ -222,43 +238,6 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		}
 	}
-
-	/**
-	 * Filter handler
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class FilterBtnHandler implements SelectHandler {	
-		
-		@Override
-		public void onSelect(SelectEvent event) {
-			
-			String value = toolbar.getFilterText().getValue();
-			if(value != null && !value.isEmpty() && !value.trim().isEmpty()){
-				maskGrid();
-				String trimmed = value.trim();
-				presenter.filter(trimmed);
-			}
-			
-		}
-	}
-	
-	/**
-	 * Clear Filter handler
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class ClearFilterBtnHandler implements SelectHandler {	
-		
-		@Override
-		public void onSelect(SelectEvent event) {
-			toolbar.getFilterText().clear();
-			maskGrid();
-			presenter.clearFilter();		
-		}
-	}
 	
 	@Override
 	public Widget asWidget() {
@@ -333,6 +312,11 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	public void unmaskGrid() {
 		grid.unmask();
 
+	}
+
+	@Override
+	public String getFilterValue() {
+		return toolbar.getFilterText().getCurrentValue();
 	}
 
 }

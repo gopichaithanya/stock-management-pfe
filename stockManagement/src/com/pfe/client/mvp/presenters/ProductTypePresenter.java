@@ -24,7 +24,13 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param id
 	 */
 	public void find(Long id);
-	
+
+	/**
+	 * Sets paging parameters and loads product types pages. Takes into account
+	 * the filter on product name
+	 */
+	public void search();
+
 	/**
 	 * Calls RPC service to create a new product type
 	 * 
@@ -45,20 +51,6 @@ public interface ProductTypePresenter extends Presenter {
 	 * @param productType
 	 */
 	public void delete(ProductTypeDTO productType);
-
-	/**
-	 * Filters list by name. Creates new paging load configuration corresponding
-	 * to the filtered data
-	 * 
-	 * @param name
-	 */
-	public void filter(String name);
-
-	/**
-	 * Clears filters. Loads pages without filters
-	 * 
-	 */
-	public void clearFilter();
 
 	/**
 	 * Loads selected type data in details panel
