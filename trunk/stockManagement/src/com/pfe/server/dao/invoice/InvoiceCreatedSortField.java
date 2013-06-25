@@ -1,6 +1,11 @@
 package com.pfe.server.dao.invoice;
 
-
+/**
+ * Class used to retrieve invoices ordered by date
+ * 
+ * @author Alexandra
+ *
+ */
 public class InvoiceCreatedSortField extends InvoiceSortField {
 
 	private static final long serialVersionUID = 1382705453835889154L;
