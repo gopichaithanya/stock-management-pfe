@@ -73,27 +73,22 @@ public class StockManagement implements EntryPoint {
 
 		// Start ActivityManager for the central widget with our ActivityMapper
 		ActivityMapper mainActivityMapper = new AppActivityMapper(clientFactory);
-		ActivityManager mainActivityManager = new ActivityManager(
-				mainActivityMapper, eventBus);
+		ActivityManager mainActivityManager = new ActivityManager(mainActivityMapper, eventBus);
 
 		// Center panel
 		mainActivityManager.setDisplay(center);
 
 		// Start ActivityManager for the details panel
-		DetailsActivityMapper detailsActivityMapper = new DetailsActivityMapper(
-				clientFactory);
-		ActivityManager detailsActivityManager = new ActivityManager(
-				detailsActivityMapper, eventBus);
+		DetailsActivityMapper detailsActivityMapper = new DetailsActivityMapper(clientFactory);
+		ActivityManager detailsActivityManager = new ActivityManager(detailsActivityMapper, eventBus);
 		detailsActivityManager.setDisplay(east);
 
-		// Start with welcome place
+		// Start with the welcome page
 		WelcomePlace welcomePlace = new WelcomePlace();
 
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
-		AppPlaceHistoryMapper historyMapper = GWT
-				.create(AppPlaceHistoryMapper.class);
-		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(
-				historyMapper);
+		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
+		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 		// register controller with place history handler
 		historyHandler.register(placeController, eventBus, welcomePlace);
 		// handle whatever place arrives when application starts
@@ -105,8 +100,7 @@ public class StockManagement implements EntryPoint {
 
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.add(toolBar, new VerticalLayoutData(1, 45));
-		con.add(borderLayoutContainer, new VerticalLayoutData(1, 1,
-				new Margins(10)));
+		con.add(borderLayoutContainer, new VerticalLayoutData(1, 1,new Margins(10)));
 
 		viewport.add(con);
 		RootPanel.get().add(viewport.asWidget());
