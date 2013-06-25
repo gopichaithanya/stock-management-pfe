@@ -17,8 +17,6 @@ public interface ProductTypeServiceAsync {
 
 	void search(FilterPagingLoadConfig config, AsyncCallback<PagingLoadResult<ProductTypeDTO>> callback);
 
-	void filter(FilterPagingLoadConfig config, String name, AsyncCallback<PagingLoadResult<ProductTypeDTO>> callback);
-
 	void getAll(AsyncCallback<List<ProductTypeDTO>> callback);
 
 	void find(Long id, AsyncCallback<ProductTypeDTO> callback);

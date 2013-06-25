@@ -61,19 +61,12 @@ public interface ProductTypeService extends RemoteService {
 	
 	
 	/**
-	 * Retrieves paged product types from database 
+	 * Retrieves product types with paging and in alphabetical order by name.
+	 * Takes into account the filter value. 
 	 * 
 	 * @param config
 	 * @return
 	 */
 	public PagingLoadResult<ProductTypeDTO> search(FilterPagingLoadConfig config);
-	
-	/**
-	 * Retrieves types with paging and filter value
-	 * 
-	 * @param config
-	 * @param name
-	 * @return
-	 */
-	public PagingLoadResult<ProductTypeDTO> filter(FilterPagingLoadConfig config, String name);
+
 }

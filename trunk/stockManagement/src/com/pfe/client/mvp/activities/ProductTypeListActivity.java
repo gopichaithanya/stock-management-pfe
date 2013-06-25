@@ -1,5 +1,8 @@
 package com.pfe.client.mvp.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
@@ -13,6 +16,8 @@ import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
+import com.sencha.gxt.data.shared.loader.FilterConfigBean;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
@@ -20,8 +25,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
-public class ProductTypeListActivity extends AbstractActivity implements
-		ProductTypePresenter {
+public class ProductTypeListActivity extends AbstractActivity implements ProductTypePresenter {
 
 	private ClientFactory clientFactory;
 	private ProductTypeServiceAsync rpcService;
@@ -37,22 +41,27 @@ public class ProductTypeListActivity extends AbstractActivity implements
 		view = clientFactory.getProductTypeListView();
 		view.maskGrid();
 		bind();
-		loadPages();
+		search();
 		view.unmaskGrid();
 		panel.setWidget(view.asWidget());
 
 	}
 
-	/**
-	 * Sets paging parameters and loads list pages
-	 */
-	private void loadPages() {
+	@Override
+	public void search() {
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>() {
 
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ProductTypeDTO>> callback) {
+				
+				List<FilterConfig> filters = new ArrayList<FilterConfig>();
+				FilterConfigBean nameFilter = new FilterConfigBean();
+				nameFilter.setField("nameFilter");
+				nameFilter.setType("String");
+				nameFilter.setValue(view.getFilterValue());
+				filters.add(nameFilter);
+				loadConfig.setFilters(filters);
 				rpcService.search(loadConfig, callback);
-
 			}
 
 		};
@@ -154,42 +163,6 @@ public class ProductTypeListActivity extends AbstractActivity implements
 			}
 		});
 
-	}
-
-	@Override
-	public void filter(final String name) {
-
-		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>() {
-
-			@Override
-			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ProductTypeDTO>> callback) {
-				rpcService.filter(loadConfig, name, callback);
-
-			}
-
-		};
-		final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> remoteLoader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>>(
-				proxy) {
-			@Override
-			protected FilterPagingLoadConfig newLoadConfig() {
-				return new FilterPagingLoadConfigBean();
-			}
-		};
-		remoteLoader.setRemoteSort(true);
-		remoteLoader
-				.addLoadHandler(new LoadResultListStoreBinding<FilterPagingLoadConfig, ProductTypeDTO, PagingLoadResult<ProductTypeDTO>>(
-						view.getData()));
-
-		view.setPagingLoader(remoteLoader);
-		view.refreshGrid();
-		view.unmaskGrid();
-	}
-
-	@Override
-	public void clearFilter() {
-		loadPages();
-		view.refreshGrid();
-		view.unmaskGrid();
 	}
 
 	@Override

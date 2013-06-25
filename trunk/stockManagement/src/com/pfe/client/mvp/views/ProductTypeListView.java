@@ -86,6 +86,13 @@ public interface ProductTypeListView extends IsWidget {
 	 */
 	public void setPagingLoader(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<ProductTypeDTO>> loader);
 	
+	/**
+	 * Gets filter value 
+	 * 
+	 * @return
+	 */
+	public String getFilterValue();
+	
 
 	/**
 	 * Refresh the grid view

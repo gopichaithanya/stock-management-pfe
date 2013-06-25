@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.client.service.ProductTypeService;
 import com.pfe.server.dao.producttype.ProductTypeDao;
+import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.ProductTypeDTO;
 import com.pfe.shared.model.ProductType;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
@@ -23,13 +25,15 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Autowired
-	private ProductTypeDao dao;
+	private ProductTypeDao typeDao;
+	@Autowired
+	private ShipmentDao shipmentDao;
 	@Autowired
 	private DozerBeanMapper dozerMapper;
 
 	@Override
 	public List<ProductTypeDTO> getAll() {
-		List<ProductType> types = dao.findAll();
+		List<ProductType> types = typeDao.findAll();
 		List<ProductTypeDTO> dtos = new ArrayList<ProductTypeDTO>();
 
 		if (types.size() > 0) {
@@ -42,7 +46,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	
 	@Override
 	public ProductTypeDTO find(Long id) {
-		ProductType entity = dao.get(id);
+		ProductType entity = typeDao.get(id);
 		return dozerMapper.map(entity, ProductTypeDTO.class);
 	}
 	
@@ -50,12 +54,12 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ProductTypeDTO create(ProductTypeDTO productType) throws BusinessException {
 
-		ProductType pt = dao.search(productType.getName());
+		ProductType pt = typeDao.search(productType.getName());
 		if (pt != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
 		ProductType entity = dozerMapper.map(productType, ProductType.class);
-		ProductType merged = dao.merge(entity);
+		ProductType merged = typeDao.merge(entity);
 		return dozerMapper.map(merged, ProductTypeDTO.class);
 
 	}
@@ -64,12 +68,12 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ProductTypeDTO update(ProductTypeDTO updatedType) throws BusinessException {
 
-		ProductType duplicate = dao.getDuplicateName(updatedType.getId(), updatedType.getName());
+		ProductType duplicate = typeDao.getDuplicateName(updatedType.getId(), updatedType.getName());
 		if (duplicate != null) {
 			throw new BusinessException("The name you chose is already in use.");
 		}
 		ProductType entity = dozerMapper.map(updatedType, ProductType.class);
-		ProductType merged = dao.merge(entity);
+		ProductType merged = typeDao.merge(entity);
 
 		return dozerMapper.map(merged, ProductTypeDTO.class);
 	}
@@ -77,20 +81,29 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(ProductTypeDTO productType) throws BusinessException {
-		// TODO check if at least one shipment with this type in DB and throw
-		// exception
+		
 		ProductType entity = dozerMapper.map(productType, ProductType.class);
-		dao.delete(entity);
-
+		//List<Shipment> shipments = shipmentDao.search(0, 1, entity);
+		//if(shipments.size() > 0){
+		//	throw new BusinessException("Cannot delete type, shipments contain products of this type");
+		//}
+		typeDao.delete(entity);
 	}
 
 	@Override
 	public PagingLoadResult<ProductTypeDTO> search(FilterPagingLoadConfig config) {
+		
+		//Get filter value 
+		FilterConfig codeFilter = config.getFilters().get(0);
+		String filterValue = codeFilter.getValue();
+		if(filterValue != null){
+			filterValue.trim();
+		}
 
-		int size = (int) dao.count();
+		int size = (int) typeDao.countByCriteria(filterValue);
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<ProductType> sublist = dao.search(start, limit, null);
+		List<ProductType> sublist = typeDao.search(start, limit, filterValue);
 		List<ProductTypeDTO> dtos = new ArrayList<ProductTypeDTO>();
 		
 		if(sublist.size() > 0){
@@ -100,25 +113,6 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		}
 		return new PagingLoadResultBean<ProductTypeDTO>(dtos, size, config.getOffset());
 
-	}
-
-	@Override
-	public PagingLoadResult<ProductTypeDTO> filter(FilterPagingLoadConfig config, String filterValue) {
-
-		int start = config.getOffset();
-		int limit = config.getLimit();
-		List<ProductType> sublist = dao.searchLike(start, limit,filterValue);
-		int size = (int) dao.countLike(filterValue);
-		
-		List<ProductTypeDTO> dtos = new ArrayList<ProductTypeDTO>();
-		
-		if(sublist.size() > 0){
-			for(ProductType type : sublist){
-				dtos.add(dozerMapper.map(type, ProductTypeDTO.class));
-			}
-		}
-		
-		return new PagingLoadResultBean<ProductTypeDTO>(dtos, size, config.getOffset());
 	}
 
 }
