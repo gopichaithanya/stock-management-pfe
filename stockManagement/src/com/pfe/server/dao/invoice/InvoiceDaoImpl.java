@@ -34,7 +34,7 @@ public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
 	}
 
 	@Override
-	public List<Invoice> search(int start, int limit, Boolean showAll, String searchKey) {
+	public List<Invoice> search(int start, int limit, Boolean showAll, int code) {
 		
 		List<SortField> sorts = new ArrayList<SortField>();
 		//Retrieve invoices from the most recent to the oldest
@@ -50,29 +50,34 @@ public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
 			allInvoicesCriterion = Restrictions.gt("restToPay", new BigDecimal(0));	
 		}
 		
-		return findByCriteria(start, limit, orderAliases, orders, allInvoicesCriterion, filterCriterion);
-	}
-
-	@Override
-	public List<Invoice> searchUnpaid(int start, int limit) {
-		List<SortField> sorts = new ArrayList<SortField>();
-		sorts.add(new InvoiceCreatedSortField(/*ascending*/true));
-		List<OrderAlias> orderAliases = getOrderAliases(sorts);
-		List<Order> orders = getOrders(sorts);
-		Criterion criterion = Restrictions.gt("restToPay", new BigDecimal(0));
-		return findByCriteria(start, limit, orderAliases, orders, criterion);
+		if(code != -1){
+			filterCriterion = Restrictions.eq("code", code);
+		}
 		
-	}
-
-	@Override
-	public long countUnpaid() {
-		Criterion criterion = Restrictions.gt("restToPay", new BigDecimal(0));
-		return countByCriteria(criterion);
+		return findByCriteria(start, limit, orderAliases, orders, allInvoicesCriterion, filterCriterion);
 	}
 	
 	@Override
 	protected Class<? extends SortField> getSortType() {
 		return InvoiceSortField.class;
+	}
+
+	@Override
+	public long countByCriteria(Boolean countAll, int code) {
+		Criterion showAll = null;
+		Criterion filter = null;
+				
+		if(!countAll){
+			//Retrieve only unpaid invoices
+			showAll = Restrictions.gt("restToPay", new BigDecimal(0));
+		}
+		
+		if(code != -1){
+			//Apply code filter
+			filter = Restrictions.eq("code", code);
+		}
+		
+		return countByCriteria(showAll, filter);
 	}
 	
 }

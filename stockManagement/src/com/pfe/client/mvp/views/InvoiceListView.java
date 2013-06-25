@@ -104,4 +104,11 @@ public interface InvoiceListView extends IsWidget {
 	 * @return
 	 */
 	public Boolean getCheckBoxValue();
+	
+	/**
+	 * Gets filter value to filter list by code
+	 * 
+	 * @return
+	 */
+	public String getFilterValue();
 }

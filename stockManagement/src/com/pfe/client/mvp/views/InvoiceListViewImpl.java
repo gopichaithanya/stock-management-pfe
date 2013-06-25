@@ -26,6 +26,7 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
@@ -141,6 +142,17 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
+		toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
+		toolbar.getClearFilterBtn().addSelectHandler(new SelectHandler(){
+
+			@Override
+			public void onSelect(SelectEvent event) {
+				toolbar.getFilterText().clear();
+				presenter.search();
+				
+			}
+			
+		});
 		checkBox = new CheckBox();
 		checkBox.setBoxLabel("Show paid");
 		checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -153,7 +165,6 @@ public class InvoiceListViewImpl implements InvoiceListView {
 			
 		});
 		toolbar.addTool(checkBox);
-
 	}
 
 
@@ -251,6 +262,26 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		}
 	}
 	
+	/**
+	 * Filter list by code handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class FilterBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+			String filterValue = toolbar.getFilterText().getCurrentValue();
+			try{
+				Integer.parseInt(filterValue.trim());
+				presenter.search();
+			} catch(NumberFormatException ex){
+				AlertMessageBox box = new AlertMessageBox("Bad input", "Please provide a valid number for filter search");
+				box.show();
+			}
+		}
+	}
 	
 	@Override
 	public Widget asWidget() {
@@ -323,7 +354,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	}
 
 	@Override
-	public void unmaskGrid() {
+	public void unmaskGrid() { 
 		grid.unmask();
 
 	}
@@ -341,6 +372,15 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	@Override
 	public Boolean getCheckBoxValue() {
 		return checkBox.getValue();
+	}
+
+	@Override
+	public String getFilterValue() {
+		String codeString = toolbar.getFilterText().getValue();
+		if(codeString == null || codeString.trim() == "" ){
+			return null;
+		}
+		return codeString.trim();
 	}
 
 }
