@@ -58,11 +58,11 @@ public interface ProductTypeListView extends IsWidget {
 	public void updateData(ProductTypeDTO productType);
 	
 	/**
-	 * Deletes type from the displayed list
+	 * Deletes types from the displayed list
 	 * 
 	 * @param productType
 	 */
-	public void deleteData(ProductTypeDTO productType);
+	public void deleteData(List<ProductTypeDTO> productTypes);
 	
 	/**
 	 * Get the window for product type creation

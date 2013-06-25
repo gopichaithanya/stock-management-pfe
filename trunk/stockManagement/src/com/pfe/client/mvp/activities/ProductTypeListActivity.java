@@ -146,20 +146,24 @@ public class ProductTypeListActivity extends AbstractActivity implements Product
 	}
 
 	@Override
-	public void delete(final ProductTypeDTO productType) {
-		rpcService.delete(productType, new AsyncCallback<Void>() {
+	public void delete(final List<ProductTypeDTO> productTypes) {
+		rpcService.delete(productTypes, new AsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
-				view.deleteData(productType);
+				view.deleteData(productTypes);
 				view.refreshGrid();
 				view.unmaskGrid();
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
+				if (caught instanceof BusinessException) {
+					BusinessException exp = (BusinessException) caught;
+					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
+					alertBox.show();
+				}
+				view.unmaskGrid();
 			}
 		});
 

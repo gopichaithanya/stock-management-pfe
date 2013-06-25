@@ -35,9 +35,13 @@ public class ShipmentDaoImpl extends BaseDaoImpl<Long, Shipment> implements Ship
 	}
 
 	@Override
-	public List<Shipment> search(int start, int limit, ProductType type) {
+	public List<Shipment> search(int start, int limit, ProductType type, Boolean sold) {
 		Criterion criterion1 = Restrictions.eq("productType", type);
-		Criterion criterion2 = Restrictions.gt("currentQuantity", 0);
+		Criterion criterion2 = null;
+		if(!sold){
+			//Do not retrieve shipments with current quantity = 0
+			criterion2 = Restrictions.gt("currentQuantity", 0);
+		}
 		List<SortField> sorts = new ArrayList<SortField>();
 		sorts.add(new ShipmentCreatedSortField());
 		List<OrderAlias> orderAliases = getOrderAliases(sorts);
