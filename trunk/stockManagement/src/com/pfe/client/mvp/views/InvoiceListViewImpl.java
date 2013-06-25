@@ -142,6 +142,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
+		toolbar.getFilterText().setEmptyText("Type code...");
 		toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
 		toolbar.getClearFilterBtn().addSelectHandler(new SelectHandler(){
 
