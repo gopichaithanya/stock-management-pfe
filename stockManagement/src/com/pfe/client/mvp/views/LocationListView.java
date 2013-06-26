@@ -75,4 +75,10 @@ public interface LocationListView extends IsWidget {
 	 */
 	public CreateLocationView getCreateView();
 
+	/**
+	 * Get stock window
+	 * 
+	 * @return
+	 */
+	public StockActionsView getStockView();
 }

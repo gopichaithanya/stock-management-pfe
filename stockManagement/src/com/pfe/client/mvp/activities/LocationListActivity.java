@@ -98,8 +98,8 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 			
 			@Override
 			public void onSuccess(LocationDTO result) {
-				view.getEditView().setData(result);
-				view.getEditView().show();
+				view.getStockView().setData(result);
+				view.getStockView().show();
 				
 			}
 			
@@ -119,10 +119,10 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 			@Override
 			public void onSuccess(StockDTO result) {
 				if(result == null){
-					view.getEditView().deleteData(fromStock);
+					view.getStockView().deleteData(fromStock);
 					
 				} else{
-					view.getEditView().updateData(result);
+					view.getStockView().updateData(result);
 				}
 				
 			}
@@ -146,7 +146,7 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 			
 			@Override
 			public void onSuccess(List<LocationDTO> result) {
-				view.getEditView().setLocations(result);
+				view.getStockView().setLocations(result);
 				
 			}
 			
@@ -210,9 +210,9 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 			@Override
 			public void onSuccess(StockDTO result) {
 				if(result == null){
-					view.getEditView().deleteData(fromStock);
+					view.getStockView().deleteData(fromStock);
 				} else{
-					view.getEditView().updateData(result);
+					view.getStockView().updateData(result);
 				}
 				
 			}
