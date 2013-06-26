@@ -217,11 +217,6 @@ public class EditSupplierViewImpl extends Window implements EditSupplierView {
 		nameField.clear();
 		descriptionEditor.clear();
 	}
-	
-	@Override 
-	public void show(){
-		super.show();
-	}
 
 	@Override
 	public EditInvoiceView getEditInvoiceView() {
