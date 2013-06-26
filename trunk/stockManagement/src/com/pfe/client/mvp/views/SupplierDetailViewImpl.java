@@ -63,7 +63,7 @@ public class SupplierDetailViewImpl implements SupplierDetailView {
 	public void setData(SupplierDTO data) {
 		this.supplier = data;
 		nameLabel.setText(supplier.getName());
-		descriptionLabel.setText(supplier.getDescription());
+		descriptionLabel.setText(supplier.getDescription().replaceAll("\\<[^>]*>",""));
 		ArrayList<InvoiceDTO> invoices = supplier.getInvoices();
 		int size = invoices.size();
 		String text = "Total invoices : " + size + ". ";

@@ -43,7 +43,7 @@ public class ProductTypeDetailViewImpl implements ProductTypeDetailView {
 	public Widget asWidget() {
 		String [] values = data.split(" \t\n\r\f");
 		nameLabel.setText(values[0]);
-		descriptionLabel.setText(values[1]);
+		descriptionLabel.setText(values[1].replaceAll("\\<[^>]*>",""));
 		return detailsCon;
 	}
 
