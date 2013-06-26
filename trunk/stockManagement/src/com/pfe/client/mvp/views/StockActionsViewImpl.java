@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
 import com.pfe.client.mvp.presenters.LocationPresenter;
-import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.ViewConstants;
 import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.client.ui.properties.StockProperties;
@@ -30,6 +29,7 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class StockActionsViewImpl extends Window implements StockActionsView {
 	
@@ -89,7 +89,7 @@ public class StockActionsViewImpl extends Window implements StockActionsView {
 		verticalContainer = new VerticalLayoutContainer();
 		verticalContainer.setId("VERTICAL CONTAINER");
 		PagingToolBar pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
-		GridToolbar toolbar = new GridToolbar();
+		ToolBar toolbar = new ToolBar();
 		verticalContainer.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalContainer.add(grid, new VerticalLayoutData(1, 1));
 		verticalContainer.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
