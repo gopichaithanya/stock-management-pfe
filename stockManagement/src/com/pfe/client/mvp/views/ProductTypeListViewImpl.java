@@ -10,6 +10,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -86,6 +87,12 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		//Grid
 		grid = new Grid<ProductTypeDTO>(store, cm) {
+			
+			@Override
+			protected void onDoubleClick(Event e) {
+				displayEditView();
+			}
+			
 			@Override
 			protected void onAfterFirstAttach() {
 				super.onAfterFirstAttach();
@@ -196,17 +203,26 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			ProductTypeDTO selected = grid.getSelectionModel().getSelectedItem();
-			if (selected == null) {// check if item selected
-				return;
-			}
+			displayEditView();
+
+		}
+	}
+	
+	/**
+	 * Displays the edit window
+	 * 
+	 */
+	private void displayEditView(){
+		
+		ProductTypeDTO selected = grid.getSelectionModel().getSelectedItem();
+		if (selected != null) {// check if item selected
+		
 			if (editView == null) {
 				editView = new EditProductTypeViewImpl();
 				editView.setPresenter(presenter);
 			}
 			editView.setData(selected);
 			editView.show();
-
 		}
 	}
 
