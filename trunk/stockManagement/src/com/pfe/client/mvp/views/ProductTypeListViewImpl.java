@@ -3,11 +3,13 @@ package com.pfe.client.mvp.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.ProductTypePresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -69,6 +71,16 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		columnConfigList.add(sm.getColumn());
 		columnConfigList.add(nameCol);
 		columnConfigList.add(descCol);
+
+		descCol.setCell(new AbstractCell<String>() {
+
+			@Override
+			public void render(Context context, String value, SafeHtmlBuilder sb) {
+				sb.appendEscaped(value.replaceAll("\\<[^>]*>",""));
+			}
+
+		});
+		
 		ColumnModel<ProductTypeDTO> cm = new ColumnModel<ProductTypeDTO>(columnConfigList);
 		store = new ListStore<ProductTypeDTO>(props.key());
 
