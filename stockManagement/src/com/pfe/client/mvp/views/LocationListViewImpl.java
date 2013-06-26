@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.ui.GridToolbar;
 import com.pfe.client.ui.ViewConstants;
+import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.shared.dto.LocationDTO;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -21,6 +22,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
@@ -48,6 +50,7 @@ public class LocationListViewImpl implements LocationListView {
 	private ConfirmMessageBox confirmBox;
 	private VerticalLayoutContainer verticalCon;
 	private GridToolbar toolbar;
+	private TextButton actionsBtn;
 	private EditLocationView editView;
 	private CreateLocationView createView;
 	
@@ -111,6 +114,8 @@ public class LocationListViewImpl implements LocationListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
+		actionsBtn = new TextButton("Actions", ImageResources.INSTANCE.addActionIcon());
+		toolbar.addTool(actionsBtn);
 		
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
