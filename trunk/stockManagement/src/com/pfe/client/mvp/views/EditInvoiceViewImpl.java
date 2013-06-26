@@ -382,11 +382,6 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 	}
 
 	@Override
-	public void show() {
-		super.show();
-	}
-
-	@Override
 	public void setSuppliers(List<SupplierDTO> suppliers) {
 		supplierStore.clear();
 		supplierStore.addAll(suppliers);
