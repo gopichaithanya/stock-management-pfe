@@ -2,6 +2,7 @@ package com.pfe.shared.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -44,6 +45,7 @@ public class Supplier {
 		this.name = name;
 	}
 
+	@Column(length = 10000)
 	public String getDescription() {
 		return description;
 	}
