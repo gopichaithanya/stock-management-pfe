@@ -53,6 +53,7 @@ public class LocationListViewImpl implements LocationListView {
 	private TextButton actionsBtn;
 	private EditLocationView editView;
 	private CreateLocationView createView;
+	private StockActionsView stocksView;
 	
 	public LocationListViewImpl(){
 		// check box selection model
@@ -115,6 +116,7 @@ public class LocationListViewImpl implements LocationListView {
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
 		actionsBtn = new TextButton("Actions", ImageResources.INSTANCE.addActionIcon());
+		actionsBtn.addSelectHandler(new ActionBtnHandler());
 		toolbar.addTool(actionsBtn);
 		
 		verticalCon = new VerticalLayoutContainer();
@@ -157,14 +159,34 @@ public class LocationListViewImpl implements LocationListView {
 			if (location != null) {
 				editView = new EditLocationViewImpl();
 				editView.setPresenter(presenter);
-				//TODO load available location types
+				editView.setData(location);
+				editView.show();
+			}
+		}
+	}
+	
+	/**
+	 * Action button handler
+	 * 
+	 * @author Alexandra
+	 * 
+	 */
+	private class ActionBtnHandler implements SelectHandler {
+
+		@Override
+		public void onSelect(SelectEvent event) {
+
+			LocationDTO location = grid.getSelectionModel().getSelectedItem();
+			if (location != null) {
+				stocksView = new StockActionsViewImpl();
+				stocksView.setPresenter(presenter);
 				presenter.find(location.getId());
 			}
 		}
 	}
 	
 	/**
-	 * Delete invoice handler
+	 * Delete location handler
 	 * 
 	 * @author Alexandra
 	 * 
@@ -255,6 +277,11 @@ public class LocationListViewImpl implements LocationListView {
 	@Override
 	public CreateLocationView getCreateView() {
 		return this.createView;
+	}
+	
+	@Override
+	public StockActionsView getStockView() {
+		return this.stocksView;
 	}
 
 	@Override
