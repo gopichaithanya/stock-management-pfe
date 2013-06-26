@@ -96,7 +96,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		// Supplier combo
 		supplierStore = new ListStore<SupplierDTO>(supplierProps.key());
 		supplierCombo = new ComboBox<SupplierDTO>(supplierStore, supplierProps.nameLabel());
-		supplierCombo.setWidth(180);
+		supplierCombo.setWidth(230);
 		supplierCombo.setTypeAhead(true);
 		supplierCombo.setForceSelection(true);
 		supplierCombo.setTriggerAction(TriggerAction.ALL);
@@ -122,7 +122,7 @@ public class CreateInvoiceViewImpl extends Window implements CreateInvoiceView {
 		typeCombo = new ComboBoxCell<ProductTypeDTO>(typeStore, typeProps.nameLabel());
 		typeCombo.setTriggerAction(TriggerAction.ALL);
 		typeCombo.setForceSelection(true);
-		typeCombo.setWidth(120);
+		typeCombo.setWidth(110);
 		 
 		// Check box selection model
 		IdentityValueProvider<ShipmentDTO> identity = new IdentityValueProvider<ShipmentDTO>();

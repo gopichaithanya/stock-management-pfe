@@ -155,7 +155,7 @@ public class EditInvoiceViewImpl extends Window implements EditInvoiceView {
 		typeCombo = new ComboBoxCell<ProductTypeDTO>(typeStore, typeProps.nameLabel());
 		typeCombo.setTriggerAction(TriggerAction.ALL);
 		typeCombo.setForceSelection(true);
-		typeCombo.setWidth(120);
+		typeCombo.setWidth(110);
 		 
 		// Check box selection model
 		IdentityValueProvider<ShipmentDTO> identity = new IdentityValueProvider<ShipmentDTO>();
