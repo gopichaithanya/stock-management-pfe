@@ -10,6 +10,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.SupplierPresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -84,6 +85,12 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		// Grid
 		grid = new Grid<SupplierDTO>(store, cm) {
+			
+			@Override
+			protected void onDoubleClick(Event e) {
+				displayEditView();
+			}
+			
 			@Override
 			protected void onAfterFirstAttach() {
 				super.onAfterFirstAttach();
@@ -181,7 +188,7 @@ public class SupplierListViewImpl implements SupplierListView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			displayEditSupplierWindow();
+			displayEditView();
 		}
 	}
 	
@@ -189,7 +196,7 @@ public class SupplierListViewImpl implements SupplierListView {
 	 * Loads and displays edit window
 	 * 
 	 */
-	private void displayEditSupplierWindow(){
+	private void displayEditView(){
 		SupplierDTO supplier = grid.getSelectionModel().getSelectedItem();
 		if(supplier == null){
 			return;
