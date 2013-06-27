@@ -8,6 +8,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.client.ui.GridToolbar;
@@ -74,6 +75,12 @@ public class LocationListViewImpl implements LocationListView {
 
 		// Grid
 		grid = new Grid<LocationDTO>(store, cm) {
+			
+			@Override
+			protected void onDoubleClick(Event e) {
+				displayEditView();
+			}
+			
 			@Override
 			protected void onAfterFirstAttach() {
 				super.onAfterFirstAttach();
@@ -111,7 +118,14 @@ public class LocationListViewImpl implements LocationListView {
 				
 		toolbar = new GridToolbar();
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
-		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				displayEditView();
+				
+			}
+		});
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
@@ -145,23 +159,16 @@ public class LocationListViewImpl implements LocationListView {
 	}
 	
 	/**
-	 * Edit location handler
-	 * 
-	 * @author Alexandra
-	 * 
+	 * Displays edit location window
 	 */
-	private class EditBtnHandler implements SelectHandler {
-
-		@Override
-		public void onSelect(SelectEvent event) {
-
-			LocationDTO location = grid.getSelectionModel().getSelectedItem();
-			if (location != null) {
-				editView = new EditLocationViewImpl();
-				editView.setPresenter(presenter);
-				editView.setData(location);
-				editView.show();
-			}
+	private void displayEditView(){
+		
+		LocationDTO location = grid.getSelectionModel().getSelectedItem();
+		if (location != null) {
+			editView = new EditLocationViewImpl();
+			editView.setPresenter(presenter);
+			editView.setData(location);
+			editView.show();
 		}
 	}
 	
