@@ -34,6 +34,12 @@ public interface LocationPresenter extends Presenter {
 	 * 
 	 */
 	public void getAll();
+	
+	/**
+	 * Sets paging parameters, processes filter value and loads locations  
+	 * 
+	 */
+	public void search();
 
 	/**
 	 * Adds location

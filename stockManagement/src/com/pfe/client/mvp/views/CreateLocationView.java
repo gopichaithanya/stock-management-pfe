@@ -21,7 +21,8 @@ public interface CreateLocationView {
 	public void setPresenter(LocationPresenter presenter);
 	
 	/**
-	 * Loads available types for combo box
+	 * Loads available location types to display in the combo box. The warehouse
+	 * type is removed, warehouse creation is not allowed
 	 * 
 	 * @param locations
 	 */

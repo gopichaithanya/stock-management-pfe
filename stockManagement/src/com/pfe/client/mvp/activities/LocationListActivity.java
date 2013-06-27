@@ -52,16 +52,14 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		view = clientFactory.getLocationListView();
 		//view.maskGrid();
 		bind();
-		loadPages();
+		search();
 		//view.unmaskGrid();
 		panel.setWidget(view.asWidget());
 
 	}
 	
-	/**
-	 * Sets paging parameters and loads list pages
-	 */
-	private void loadPages() {
+	@Override
+	public void search() {
 		RpcProxy<FilterPagingLoadConfig, PagingLoadResult<LocationDTO>> proxy = new RpcProxy<FilterPagingLoadConfig, PagingLoadResult<LocationDTO>>() {
 
 			@Override
