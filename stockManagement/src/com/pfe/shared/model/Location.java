@@ -1,6 +1,6 @@
 package com.pfe.shared.model;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 
 /**
  * The location stores products for sale. Attributes : a unique name, the type
@@ -29,7 +32,7 @@ public class Location{
 	private Long id;
 	private String name;
 	private LocationType type;
-	private List<Stock> stocks;
+	private SortedSet<Stock> stocks;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -60,11 +63,12 @@ public class Location{
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "location")
-	public List<Stock> getStocks() {
+	@Sort(type = SortType.COMPARATOR, comparator = Stock.StockComparator.class)
+	public SortedSet<Stock> getStocks() {
 		return stocks;
 	}
 
-	public void setStocks(List<Stock> stocks) {
+	public void setStocks(SortedSet<Stock> stocks) {
 		this.stocks = stocks;
 	}
 

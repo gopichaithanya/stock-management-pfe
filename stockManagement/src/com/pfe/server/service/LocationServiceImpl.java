@@ -2,6 +2,7 @@ package com.pfe.server.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,7 @@ public class LocationServiceImpl implements LocationService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(LocationDTO location) throws BusinessException {
 		Location entity = locationDao.get(location.getId());
-		List<Stock> stocks = entity.getStocks();
+		SortedSet<Stock> stocks = entity.getStocks();
 		if(stocks.size() > 0){
 			throw new BusinessException("Please clear stocks before deleting location.");
 		}
