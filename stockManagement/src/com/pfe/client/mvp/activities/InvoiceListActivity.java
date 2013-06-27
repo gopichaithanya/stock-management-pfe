@@ -15,6 +15,7 @@ import com.pfe.client.service.InvoiceServiceAsync;
 import com.pfe.client.service.ProductTypeServiceAsync;
 import com.pfe.client.service.ShipmentServiceAsync;
 import com.pfe.client.service.SupplierServiceAsync;
+import com.pfe.client.ui.ViewConstants;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.InvoiceDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
@@ -168,13 +169,19 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
+				
+				AlertMessageBox alertBox = new AlertMessageBox("Error", "");
 				if(caught instanceof BusinessException){
 					//Go back to initial data
 					find(updatedInvoice.getId());
 					BusinessException exp = (BusinessException) caught;
-					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
-					alertBox.show();
+					alertBox.setMessage(exp.getMessage());
+					
+				} else{
+					alertBox.setMessage(ViewConstants.techErrorMessage);
+					alertBox.setStyleName("redFont");
 				}
+				alertBox.show();
 			}
 		});
 		
