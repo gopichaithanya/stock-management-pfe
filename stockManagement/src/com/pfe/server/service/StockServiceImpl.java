@@ -155,4 +155,20 @@ public class StockServiceImpl implements StockService {
 		return dtos;
 	}
 
+	@Override
+	public List<StockDTO> search(String productTypeName, LocationDTO location) {
+		
+		Location locationEntity = dozerMapper.map(location, Location.class, "miniLocation");
+		List<Stock> stocks = stockDao.search(productTypeName);
+		List<StockDTO> dtos = new ArrayList<StockDTO>();
+		for(Stock stock : stocks){
+			//Convert only those stocks in the given location
+			if(stock.getLocation().getId().equals(locationEntity.getId())){
+			dtos.add(dozerMapper.map(stock, StockDTO.class));
+			}
+		}
+		
+		return dtos;
+	}
+
 }
