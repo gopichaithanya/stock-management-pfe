@@ -17,7 +17,7 @@ public interface StockDAO extends IBaseDao<Long, Stock> {
 	 * @return
 	 */
 	public Stock get(Location location, ProductType type);
-	
+
 	/**
 	 * Retrieves stocks by type from all available locations
 	 * 
@@ -25,4 +25,13 @@ public interface StockDAO extends IBaseDao<Long, Stock> {
 	 * @return
 	 */
 	public List<Stock> get(ProductType type);
+
+	/**
+	 * Retrieves stocks where product type name like parameter.
+	 * 
+	 * @param typeName
+	 * @param location
+	 * @return
+	 */
+	public List<Stock> search(String typeName);
 }
