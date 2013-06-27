@@ -43,8 +43,7 @@ public interface SupplierPresenter extends Presenter {
 	public void getAll();
 
 	/**
-	 * Sets paging parameters and loads list pages for all suppliers. Takes into
-	 * the filter on supplier name.
+	 * Sets paging parameters, processes filter value and loads suppliers. 
 	 * 
 	 */
 	public void search();

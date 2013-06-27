@@ -72,9 +72,8 @@ public interface InvoicePresenter extends Presenter {
 
 	
 	/**
-	 * Sets paging parameters and loads list pages for all invoices. Takes into
-	 * account the check box value to retrieve all or only unpaid invoices and
-	 * the filter value
+	 * Sets paging parameters and loads list pages for all invoices. Processes filter value
+	 * and check box value for retrieving all or only unpaid invoices.
 	 * 
 	 */
 	public void search();
