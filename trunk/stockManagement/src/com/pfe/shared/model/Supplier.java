@@ -55,7 +55,7 @@ public class Supplier {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
-	@OrderBy ("created")
+	@OrderBy ("created DESC")
 	public List<Invoice> getInvoices() {
 		return invoices;
 	}
