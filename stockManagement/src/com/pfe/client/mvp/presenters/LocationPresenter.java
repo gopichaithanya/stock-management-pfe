@@ -47,6 +47,13 @@ public interface LocationPresenter extends Presenter {
 	 * @param location
 	 */
 	public void create(LocationDTO location);
+	
+	/**
+	 * Updates location
+	 * 
+	 * @param location
+	 */
+	public void update(LocationDTO location);
 
 	/**
 	 * Calls service to remove locations from database

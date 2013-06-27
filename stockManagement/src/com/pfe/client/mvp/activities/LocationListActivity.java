@@ -175,6 +175,25 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		});
 		
 	}
+	
+	@Override
+	public void update(LocationDTO location) {
+		locationService.update(location, new AsyncCallback<LocationDTO>() {
+			
+			@Override
+			public void onSuccess(LocationDTO result) {
+				view.getEditView().hide();
+				view.updateData(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
 
 
 	@Override
@@ -273,6 +292,5 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		});
 		
 	}
-
 
 }

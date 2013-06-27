@@ -312,4 +312,10 @@ public class LocationListViewImpl implements LocationListView {
 		
 	}
 
+	@Override
+	public void updateData(LocationDTO location) {
+		store.update(location);
+		
+	}
+
 }
