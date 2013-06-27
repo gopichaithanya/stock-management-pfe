@@ -16,4 +16,6 @@ public interface StockServiceAsync {
 
 	void find(ProductTypeDTO productType, AsyncCallback<List<StockDTO>> callback);
 
+	void search(String productTypeName, LocationDTO location, AsyncCallback<List<StockDTO>> callback);
+
 }

@@ -45,4 +45,13 @@ public interface StockService extends RemoteService {
 	 * @return
 	 */
 	public List<StockDTO> find(ProductTypeDTO productType);
+	
+	/**
+	 * Retrieves location stocks with type name like given parameter.
+	 * 
+	 * @param productTypeName
+	 * @param location
+	 * @return
+	 */
+	public List<StockDTO> search(String productTypeName, LocationDTO location);
 }
