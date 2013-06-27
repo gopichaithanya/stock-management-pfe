@@ -252,5 +252,24 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 		
 	}
 
+	@Override
+	public void searchStocks(String productTypeName, LocationDTO location) {
+		stockService.search(productTypeName, location, new AsyncCallback<List<StockDTO>>() {
+			
+			@Override
+			public void onSuccess(List<StockDTO> result) {
+				view.getStockView().setStocks(result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+
 
 }

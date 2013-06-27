@@ -24,7 +24,7 @@ public interface StockActionsView {
 	public void setPresenter(LocationPresenter presenter);
 	
 	/**
-	 * Sets the view data
+	 * Sets the displayed location and the list of stocks.
 	 * 
 	 * @param location
 	 */
@@ -56,6 +56,13 @@ public interface StockActionsView {
 	 * @param locations
 	 */
 	public void setLocations(List<LocationDTO> locations);
+	
+	/**
+	 * Sets location stocks after a filter action
+	 * 
+	 * @param stocks
+	 */
+	public void setStocks(List<StockDTO> stocks);
 	
 	/**
 	 * Shows window

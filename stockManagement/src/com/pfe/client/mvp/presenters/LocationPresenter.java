@@ -78,5 +78,13 @@ public interface LocationPresenter extends Presenter {
 	 * @param toLocation
 	 */
 	public void ship(StockDTO fromStock, int quantity, LocationDTO toLocation);
+	
+	/**
+	 * Calls service to retrieve location stocks with type name like given parameter.
+	 * 
+	 * @param productTypeName
+	 * @param location
+	 */
+	public void searchStocks(String productTypeName, LocationDTO location);
 
 }
