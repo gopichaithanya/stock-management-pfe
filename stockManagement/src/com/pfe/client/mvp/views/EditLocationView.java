@@ -1,7 +1,10 @@
 package com.pfe.client.mvp.views;
 
+import java.util.List;
+
 import com.pfe.client.mvp.presenters.LocationPresenter;
 import com.pfe.shared.dto.LocationDTO;
+import com.pfe.shared.dto.LocationTypeDTO;
 
 /**
  * Used to display or update the name and type of the selected locations.
@@ -24,6 +27,14 @@ public interface EditLocationView {
 	 * @param location
 	 */
 	public void setData(LocationDTO location);
+	
+	/**
+	 * Loads available types for combo box. The warehouse type is removed from
+	 * the list because warehouse creation is not allowed.
+	 * 
+	 * @param locations
+	 */
+	public void setLocationTypes(List<LocationTypeDTO> locations);
 
 	/**
 	 * Clears the UI components

@@ -50,10 +50,11 @@ public interface LocationPresenter extends Presenter {
 	public void delete(List<LocationDTO> locations);
 
 	/**
-	 * Calls service to retrieve all location types
+	 * Calls service to retrieve all location types and adds data to the caller
+	 * window (create or edit location window)
 	 * 
 	 */
-	public void getLocationTypes();
+	public void getLocationTypes(String window);
 
 	/**
 	 * Loads selected type data in details panel

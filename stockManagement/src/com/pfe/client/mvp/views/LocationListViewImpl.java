@@ -153,7 +153,7 @@ public class LocationListViewImpl implements LocationListView {
 		public void onSelect(SelectEvent event) {
 			createView = new CreateLocationViewImpl();
 			createView.setPresenter(presenter);
-			presenter.getLocationTypes();
+			presenter.getLocationTypes("create");
 			createView.show();
 		}
 	}
@@ -168,6 +168,7 @@ public class LocationListViewImpl implements LocationListView {
 			editView = new EditLocationViewImpl();
 			editView.setPresenter(presenter);
 			editView.setData(location);
+			presenter.getLocationTypes("edit");
 			editView.show();
 		}
 	}

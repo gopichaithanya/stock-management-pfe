@@ -21,6 +21,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
@@ -49,9 +50,12 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 		fpanel.setBorders(false);
 		
 		nameField = new TextField();
+		nameField.addValidator(new EmptyValidator<String>());
 		container.add(new FieldLabel(nameField, "Name"),new HtmlData(".name"));
 		locationTypeStore = new ListStore<LocationTypeDTO>(locationTypeProps.key());
 		locationTypeCombo = new ComboBox<LocationTypeDTO>(locationTypeStore, locationTypeProps.nameLabel());
+		locationTypeCombo.setForceSelection(true);
+		locationTypeCombo.setAllowBlank(false);
 		container.add(new FieldLabel(locationTypeCombo, "Type"),new HtmlData(".type"));
 		
 		
@@ -120,6 +124,29 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	public void clearData() {
 		nameField.clear();
 		locationTypeStore.clear();
+	}
+
+	@Override
+	public void setLocationTypes(List<LocationTypeDTO> locations) {
+		
+		if(location.getType().getDescription().equals("warehouse")){
+			//Not allowed to change the warehouse type
+			locationTypeCombo.setEditable(false);
+			locationTypeCombo.setValue(location.getType());
+		} else{
+			
+			locationTypeStore.clear();
+			locationTypeStore.addAll(locations);
+			
+			//Remove warehouse
+			for(LocationTypeDTO type : locations){
+				if(type.getDescription().equals("warehouse")){
+					locationTypeStore.remove(type);
+					break;
+				}
+			}
+		}
+		
 	}
 
 }
