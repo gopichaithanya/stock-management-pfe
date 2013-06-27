@@ -97,9 +97,12 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			location.setName(nameField.getValue());
-			//location.setType(locationCombo.getValue());
-			//TODO call presenter update
+			
+			if(nameField.isValid() && locationTypeCombo.isValid()){
+				location.setName(nameField.getValue());
+				location.setType(locationTypeCombo.getValue());
+				presenter.update(location);
+			}
 		}
 	}
 	
