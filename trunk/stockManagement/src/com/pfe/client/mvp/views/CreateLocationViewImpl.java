@@ -21,6 +21,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+import com.sencha.gxt.widget.core.client.form.validator.EmptyValidator;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
@@ -50,11 +51,14 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		vp.add(fpanel);
 		
 		nameField = new TextField();
+		nameField.addValidator(new EmptyValidator<String>());
 		FieldLabel nameLabel = new FieldLabel(nameField, "Name");
 		container.add(nameLabel, new HtmlData(".name"));
 		
 		types = new ListStore<LocationTypeDTO>(properties.key());
 		typeCombo = new ComboBox<LocationTypeDTO>(types, properties.nameLabel());
+		typeCombo.setForceSelection(true);
+		typeCombo.setAllowBlank(false);
 		FieldLabel locationLabel = new FieldLabel(typeCombo, "Type");
 		container.add(locationLabel, new HtmlData(".type"));
 		
@@ -87,7 +91,7 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 
 		@Override
 		public void onSelect(SelectEvent event) {
-			if (nameField.isValid()) {
+			if (nameField.isValid() && typeCombo.isValid()) {
 				LocationDTO location = new LocationDTO();
 				location.setName(nameField.getValue());
 				location.setType(typeCombo.getValue());
@@ -116,13 +120,12 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		this.types.addAll(locations);
 		
 		//Remove warehouse
-				for(LocationTypeDTO type : locations){
-					if(type.getDescription().equals("warehouse")){
-						types.remove(type);
-						break;
-					}
-				}
-				typeCombo.setValue(null);
+		for(LocationTypeDTO type : locations){
+			if(type.getDescription().equals("warehouse")){
+				types.remove(type);
+				break;
+			}
+		}
 	}
 
 }
