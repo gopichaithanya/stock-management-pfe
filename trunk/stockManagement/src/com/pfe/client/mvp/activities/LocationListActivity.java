@@ -234,12 +234,17 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 	}
 
 	@Override
-	public void getLocationTypes() {
+	public void getLocationTypes(final String window) {
 		locationTypeService.getAll(new AsyncCallback<List<LocationTypeDTO>>() {
 			
 			@Override
 			public void onSuccess(List<LocationTypeDTO> result) {
-				view.getCreateView().setLocationTypes(result);
+				if("create".equals(window)){
+					view.getCreateView().setLocationTypes(result);
+				} else if("edit".equals(window)){
+					view.getEditView().setLocationTypes(result);
+				}
+				
 				
 			}
 			

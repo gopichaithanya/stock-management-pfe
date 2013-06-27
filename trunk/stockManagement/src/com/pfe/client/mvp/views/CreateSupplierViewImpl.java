@@ -32,7 +32,7 @@ public class CreateSupplierViewImpl extends Window implements
 	public CreateSupplierViewImpl(){
 		
 		setHeadingText("New supplier");
-		setMinHeight(400); // avoid GWT bug when reopening multiple times the same window
+		setMinHeight(350); // avoid GWT bug when reopening multiple times the same window
 		setModal(true);
 		setResizable(false);
 		setClosable(false);
@@ -47,7 +47,6 @@ public class CreateSupplierViewImpl extends Window implements
 		nameField = new TextField();
 		nameField.addValidator(new MinLengthValidator(2));
 		nameField.addValidator(new EmptyValidator<String>());
-		nameField.setWidth(300);
 		container.add(new FieldLabel(nameField, "Name"), new HtmlData(".name"));
 
 		descriptionEditor = new HtmlEditor();
