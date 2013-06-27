@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
 import com.pfe.client.mvp.presenters.LocationPresenter;
-import com.pfe.client.ui.ViewConstants;
+import com.pfe.client.ui.images.ImageResources;
 import com.pfe.client.ui.properties.LocationProperties;
 import com.pfe.client.ui.properties.StockProperties;
 import com.pfe.shared.dto.LocationDTO;
@@ -24,11 +24,11 @@ import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor;
+import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class StockActionsViewImpl extends Window implements StockActionsView {
@@ -42,6 +42,9 @@ public class StockActionsViewImpl extends Window implements StockActionsView {
 	private ListStore<StockDTO> stockStore;
 	private StockDTO selectedStock;
 	private VerticalLayoutContainer verticalContainer;
+	private TextButton filterBtn;
+	private TextButton clearFilterBtn;
+	private TextField filterTextField;
 	
 	private Window sellWindow;
 	private NumberField<Integer> sellQtyField;
@@ -86,13 +89,36 @@ public class StockActionsViewImpl extends Window implements StockActionsView {
 		grid.getView().setAutoFill(true);
 		grid.setBorders(true);
 		
-		verticalContainer = new VerticalLayoutContainer();
-		verticalContainer.setId("VERTICAL CONTAINER");
-		PagingToolBar pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 		ToolBar toolbar = new ToolBar();
+		filterTextField = new TextField();
+		filterTextField.setEmptyText("Search stocks...");
+		filterBtn= new TextButton("Find", ImageResources.INSTANCE.addSearchIcon());
+		filterBtn.addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				String filterValue = filterTextField.getCurrentValue();
+				if(filterValue != null && !filterValue.trim().equals("")){
+					presenter.searchStocks(filterTextField.getCurrentValue(), location);
+				}
+			}
+		});
+		clearFilterBtn = new TextButton("Get all");
+		clearFilterBtn.addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				filterTextField.clear();
+				stockStore.clear();
+				stockStore.addAll(location.getStocks());
+				
+			}
+		});
+		toolbar.add(filterBtn); toolbar.add(filterTextField); toolbar.add(clearFilterBtn);
+		
+		verticalContainer = new VerticalLayoutContainer();
 		verticalContainer.add(toolbar, new VerticalLayoutData(1, -1));
 		verticalContainer.add(grid, new VerticalLayoutData(1, 1));
-		verticalContainer.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 		
 		Viewport viewport = new Viewport();
 		viewport.add(verticalContainer);
@@ -262,6 +288,13 @@ public class StockActionsViewImpl extends Window implements StockActionsView {
 		}
 		
 		locationCombo.setValue(null);
+	}
+
+	@Override
+	public void setStocks(List<StockDTO> stocks) {
+		stockStore.clear();
+		stockStore.addAll(stocks);
+		
 	}
 	
 }
