@@ -28,8 +28,7 @@ public interface ProductTypePresenter extends Presenter {
 	public void find(Long id);
 
 	/**
-	 * Sets paging parameters and loads product types pages. Takes into account
-	 * the filter on product name
+	 * Sets paging parameters, processes filter value and loads product types. 
 	 */
 	public void search();
 
