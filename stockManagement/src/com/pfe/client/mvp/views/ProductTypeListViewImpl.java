@@ -135,7 +135,14 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
-		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				displayEditView();
+				
+			}
+		});
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getFilterText().setEmptyText("Type name...");
 		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
@@ -192,24 +199,9 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 			createView.show();
 		}
 	}
-
-	/**
-	 * Edit type handler
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class EditBtnHandler implements SelectHandler {
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			displayEditView();
-
-		}
-	}
 	
 	/**
-	 * Displays the edit window
+	 * Displays the edit type window for the type selected in the grid
 	 * 
 	 */
 	private void displayEditView(){

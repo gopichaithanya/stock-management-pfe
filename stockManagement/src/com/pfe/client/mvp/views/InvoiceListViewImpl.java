@@ -138,7 +138,14 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		verticalCon.add(pagingToolBar, new VerticalLayoutData(1, ViewConstants.pagingBarHeight));
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
-		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				displayEditView();
+				
+			}
+		});
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
@@ -192,22 +199,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	}
 	
 	/**
-	 * Edit invoice handler
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class EditBtnHandler implements SelectHandler {
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			displayEditView();
-			
-		}
-	}
-	
-	/**
-	 * Loads and displays edit invoice window
+	 * Displays edit invoice window for the selected invoice after refreshing data
 	 * 
 	 */
 	private void displayEditView(){

@@ -134,7 +134,14 @@ public class SupplierListViewImpl implements SupplierListView {
 		});
 
 		toolbar.getAddBtn().addSelectHandler(new AddBtnHandler());
-		toolbar.getEditBtn().addSelectHandler(new EditBtnHandler());
+		toolbar.getEditBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				displayEditView();
+				
+			}
+		});
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getFilterText().setEmptyText("Type name...");
 		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
@@ -178,22 +185,9 @@ public class SupplierListViewImpl implements SupplierListView {
 		}
 	}
 	
-	/**
-	 * Edit supplier handler
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class EditBtnHandler implements SelectHandler {
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			displayEditView();
-		}
-	}
 	
 	/**
-	 * Loads and displays edit window
+	 * Displays edit supplier window after refreshing its data
 	 * 
 	 */
 	private void displayEditView(){
