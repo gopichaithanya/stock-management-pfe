@@ -3,6 +3,7 @@ package com.pfe.client.mvp.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
@@ -30,6 +31,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class LocationListActivity extends AbstractActivity implements LocationPresenter {
+	
 	private ClientFactory clientFactory;
 	private LocationServiceAsync locationService;
 	private StockServiceAsync stockService;
@@ -110,7 +112,7 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 			public void onSuccess(LocationDTO result) {
 				view.getStockView().setData(result);
 				view.getStockView().show();
-				
+				Log.info("log example!");
 			}
 			
 			@Override
