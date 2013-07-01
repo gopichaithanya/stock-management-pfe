@@ -143,7 +143,7 @@ public class SupplierListViewImpl implements SupplierListView {
 			}
 		});
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
-		toolbar.getFilterText().setEmptyText("Type name...");
+		toolbar.getFilterText().setEmptyText("Search name...");
 		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
 			
 			@Override
