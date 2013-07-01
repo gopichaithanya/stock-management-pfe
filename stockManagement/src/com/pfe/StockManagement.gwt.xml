@@ -12,6 +12,10 @@
 	<inherits name='com.sencha.gxt.ui.GXT' />
 	<inherits name='com.google.gwt.activity.Activity' />
 	<inherits name='com.google.gwt.place.Place' />
+	
+	 <!-- GWT Log level -->
+  	<inherits name="com.allen_sauer.gwt.log.gwt-log-INFO" />
+
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class='com.pfe.client.StockManagement' />
