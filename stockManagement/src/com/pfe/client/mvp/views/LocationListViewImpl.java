@@ -129,6 +129,26 @@ public class LocationListViewImpl implements LocationListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
+		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				presenter.search();
+				
+			}
+		});
+		
+		toolbar.getClearFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				toolbar.getFilterText().clear();
+				presenter.search();
+				
+			}
+		});
+		toolbar.getFilterText().setEmptyText("Search name...");
+		
 		actionsBtn = new TextButton("Actions", ImageResources.INSTANCE.addActionIcon());
 		actionsBtn.addSelectHandler(new ActionBtnHandler());
 		toolbar.addTool(actionsBtn);
@@ -316,6 +336,11 @@ public class LocationListViewImpl implements LocationListView {
 	public void updateData(LocationDTO location) {
 		store.update(location);
 		
+	}
+
+	@Override
+	public String getFilterValue() {
+		return toolbar.getFilterText().getCurrentValue();
 	}
 
 }
