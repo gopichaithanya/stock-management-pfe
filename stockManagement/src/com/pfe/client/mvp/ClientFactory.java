@@ -2,6 +2,7 @@ package com.pfe.client.mvp;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.pfe.client.mvp.views.InvoiceDetailView;
 import com.pfe.client.mvp.views.InvoiceListView;
 import com.pfe.client.mvp.views.LocationDetailView;
 import com.pfe.client.mvp.views.LocationListView;
@@ -55,11 +56,14 @@ public interface ClientFactory {
 	
 	public InvoiceListView getInvoiceListView();
 	
+	public InvoiceDetailView getInvoiceDetailView();
+	
 	public LocationListView getLocationListView();
 	
 	public LocationDetailView getLocationDetailView();
 	
 	public ReportsView getReportsView();
+	
 	
 	// SERVICES
 
