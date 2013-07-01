@@ -70,7 +70,7 @@ public interface LocationPresenter extends Presenter {
 	public void getLocationTypes(String window);
 
 	/**
-	 * Loads selected type data in details panel
+	 * Displays selected location data in the details panel
 	 * 
 	 * @param location
 	 */
