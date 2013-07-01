@@ -20,7 +20,7 @@ public interface InvoiceService extends RemoteService {
 	
 	
 	/**
-	 * Retrieves invoice by id
+	 * Retrieves invoice by id. All attributes are retrieved.
 	 * 
 	 * @param id
 	 * @return invoice
@@ -28,8 +28,10 @@ public interface InvoiceService extends RemoteService {
 	public InvoiceDTO find(Long id);
 	
 	/**
-	 * Retrieves all invoices with paging. The config parameter contains information
-	 * on the type if invoices to retrieve (all or only unpaid ones) and on the filter value.
+	 * Retrieves all invoices with paging. The config parameter contains
+	 * information on the type if invoices to retrieve (all or only unpaid ones)
+	 * and on the filter value. Invoices are retrieved without the list of
+	 * shipments.
 	 * 
 	 * @param config
 	 * @return
