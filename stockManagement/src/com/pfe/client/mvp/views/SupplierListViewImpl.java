@@ -107,7 +107,14 @@ public class SupplierListViewImpl implements SupplierListView {
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
-		grid.addRowClickHandler(new GridRowClickHandler());
+		grid.addRowClickHandler(new RowClickHandler() {
+			
+			@Override
+			public void onRowClick(RowClickEvent event) {
+				presenter.displayDetailsView(store.get(event.getRowIndex()));
+			}
+		});
+		
 		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 
 		toolbar = new GridToolbar();
@@ -235,23 +242,6 @@ public class SupplierListViewImpl implements SupplierListView {
 			};
 			confirmBox.addHideHandler(hideHandler);
 			confirmBox.show();
-
-		}
-	}
-	
-	/**
-	 * Click handler on grid row
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class GridRowClickHandler implements RowClickHandler {
-
-		@Override
-		public void onRowClick(RowClickEvent event) {
-			int row = event.getRowIndex();
-			SupplierDTO selected = store.get(row);
-			presenter.displayDetailsView(selected);
 
 		}
 	}
