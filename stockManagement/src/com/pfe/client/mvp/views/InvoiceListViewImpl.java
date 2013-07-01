@@ -32,6 +32,8 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
@@ -129,6 +131,16 @@ public class InvoiceListViewImpl implements InvoiceListView {
 				}
 			}
 		});
+		
+		grid.addRowClickHandler(new RowClickHandler() {
+			
+			@Override
+			public void onRowClick(RowClickEvent event) {
+				presenter.displayDetailsView(store.get(event.getRowIndex()));
+				
+			}
+		});
+		
 		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 
 		toolbar = new GridToolbar();

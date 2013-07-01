@@ -9,6 +9,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.pfe.client.mvp.ClientFactory;
+import com.pfe.client.mvp.places.InvoiceDetailPlace;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
 import com.pfe.client.mvp.views.InvoiceListView;
 import com.pfe.client.service.InvoiceServiceAsync;
@@ -272,6 +273,12 @@ public class InvoiceListActivity extends AbstractActivity implements
 				
 			}
 		});	
+	}
+
+	@Override
+	public void displayDetailsView(InvoiceDTO invoice) {
+		goTo(new InvoiceDetailPlace(invoice.getId().toString()));
+		
 	}
 
 }

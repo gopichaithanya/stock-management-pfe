@@ -77,5 +77,12 @@ public interface InvoicePresenter extends Presenter {
 	 * 
 	 */
 	public void search();
+	
+	/**
+	 * Displays selected invoice data in the details panel
+	 * 
+	 * @param invoice
+	 */
+	public void displayDetailsView(InvoiceDTO invoice);
 }
 
