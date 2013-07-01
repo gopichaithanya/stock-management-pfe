@@ -97,7 +97,14 @@ public class LocationListViewImpl implements LocationListView {
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
-		grid.addRowClickHandler(new GridRowClickHandler());
+		grid.addRowClickHandler(new RowClickHandler() {
+			
+			@Override
+			public void onRowClick(RowClickEvent event) {
+				presenter.displayDetailsView(store.get(event.getRowIndex()));
+			}
+		});
+		
 		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<LocationDTO>() {
 			
 			@Override
@@ -245,23 +252,6 @@ public class LocationListViewImpl implements LocationListView {
 			};
 			confirmBox.addHideHandler(hideHandler);
 			confirmBox.show();
-		}
-	}
-	
-	/**
-	 * Click handler on grid row
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class GridRowClickHandler implements RowClickHandler {
-
-		@Override
-		public void onRowClick(RowClickEvent event) {
-			int row = event.getRowIndex();
-			LocationDTO selected = store.get(row);
-			presenter.displayDetailsView(selected);
-
 		}
 	}
 	

@@ -109,7 +109,13 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 		grid.setBorders(false);
 		grid.setColumnReordering(true);
 		grid.getView().setAutoFill(true);
-		grid.addRowClickHandler(new GridRowClickHandler());
+		grid.addRowClickHandler(new RowClickHandler() {
+			
+			@Override
+			public void onRowClick(RowClickEvent event) {
+				presenter.displayDetailsView(store.get(event.getRowIndex()));
+			}
+		});
 		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<ProductTypeDTO>() {
 			
 			@Override
@@ -165,24 +171,7 @@ public class ProductTypeListViewImpl implements ProductTypeListView {
 	}
 
 	/**
-	 * Click handler on grid row
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class GridRowClickHandler implements RowClickHandler {
-
-		@Override
-		public void onRowClick(RowClickEvent event) {
-			int row = event.getRowIndex();
-			ProductTypeDTO selected = store.get(row);
-			presenter.displayDetailsView(selected);
-
-		}
-	}
-
-	/**
-	 * Add new type handler
+	 * Add new product type handler
 	 * 
 	 * @author Alexandra
 	 * 
