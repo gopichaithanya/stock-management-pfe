@@ -1,5 +1,6 @@
 package com.pfe.client.mvp.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -19,6 +20,8 @@ import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.LocationTypeDTO;
 import com.pfe.shared.dto.StockDTO;
 import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
+import com.sencha.gxt.data.shared.loader.FilterConfigBean;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
@@ -64,6 +67,15 @@ public class LocationListActivity extends AbstractActivity implements LocationPr
 
 			@Override
 			public void load(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<LocationDTO>> callback) {
+				
+				List<FilterConfig> filters = new ArrayList<FilterConfig>();
+				FilterConfigBean nameFilter = new FilterConfigBean();
+				nameFilter.setField("nameFilter");
+				nameFilter.setType("String");
+				nameFilter.setValue(view.getFilterValue());
+				filters.add(nameFilter);
+				loadConfig.setFilters(filters);
+				
 				locationService.search(loadConfig, callback);
 
 			}

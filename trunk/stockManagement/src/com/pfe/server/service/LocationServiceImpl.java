@@ -18,6 +18,7 @@ import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.Stock;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
@@ -37,10 +38,18 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public PagingLoadResult<LocationDTO> search(FilterPagingLoadConfig config) {
 		
-		int size = (int) locationDao.count();
+		//Get name filter value 
+		FilterConfig nameFilter = config.getFilters().get(0);
+		String filterValue = nameFilter.getValue();	
+		if(filterValue != null){
+			filterValue.trim();
+		}
+		
+		int size = (int) locationDao.countByCriteria(filterValue);
+		
 		int start = config.getOffset();
 		int limit = config.getLimit();
-		List<Location> sublist = locationDao.search(start, limit);
+		List<Location> sublist = locationDao.search(start, limit, filterValue);
 		List<LocationDTO> dtos = new ArrayList<LocationDTO>();
 
 		if (sublist.size() > 0) {

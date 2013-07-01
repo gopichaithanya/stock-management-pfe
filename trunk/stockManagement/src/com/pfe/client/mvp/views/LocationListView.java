@@ -63,6 +63,13 @@ public interface LocationListView extends IsWidget {
 			PagingLoader<FilterPagingLoadConfig, PagingLoadResult<LocationDTO>> remoteLoader);
 	
 	/**
+	 * Returns the string value for list filtering
+	 * 
+	 * @return
+	 */
+	public String getFilterValue();
+	
+	/**
 	 * Refresh the grid view
 	 * 
 	 */
