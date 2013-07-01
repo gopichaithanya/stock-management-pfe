@@ -4,6 +4,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.pfe.client.mvp.views.InvoiceDetailView;
+import com.pfe.client.mvp.views.InvoiceDetailViewImpl;
 import com.pfe.client.mvp.views.InvoiceListView;
 import com.pfe.client.mvp.views.InvoiceListViewImpl;
 import com.pfe.client.mvp.views.LocationDetailView;
@@ -205,6 +207,12 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public ReportsView getReportsView() {
 		return new ReportsViewImpl();
+	}
+
+
+	@Override
+	public InvoiceDetailView getInvoiceDetailView() {
+		return new InvoiceDetailViewImpl();
 	}
 
 }
