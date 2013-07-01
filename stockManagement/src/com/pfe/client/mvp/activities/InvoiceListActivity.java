@@ -8,6 +8,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.pfe.client.StockManagement;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.InvoiceDetailPlace;
 import com.pfe.client.mvp.presenters.InvoicePresenter;
@@ -30,7 +31,6 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfigBean;
 import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
-import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class InvoiceListActivity extends AbstractActivity implements
 		InvoicePresenter {
@@ -131,7 +131,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 				
 			}
 		});
@@ -150,7 +150,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 				
 			}
 		});
@@ -171,18 +171,15 @@ public class InvoiceListActivity extends AbstractActivity implements
 			@Override
 			public void onFailure(Throwable caught) {
 				
-				AlertMessageBox alertBox = new AlertMessageBox("Error", "");
 				if(caught instanceof BusinessException){
 					//Go back to initial data
 					find(updatedInvoice.getId());
 					BusinessException exp = (BusinessException) caught;
-					alertBox.setMessage(exp.getMessage());
+					StockManagement.displayErrorPopUp(exp.getMessage());
 					
 				} else{
-					alertBox.setMessage(ViewConstants.techErrorMessage);
-					alertBox.setStyleName("redFont");
+					StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 				}
-				alertBox.show();
 			}
 		});
 		
@@ -204,8 +201,9 @@ public class InvoiceListActivity extends AbstractActivity implements
 				if(caught instanceof BusinessException){
 					view.unmaskGrid();
 					BusinessException exp = (BusinessException) caught;
-					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
-					alertBox.show();
+					StockManagement.displayErrorPopUp(exp.getMessage());
+				} else{
+					StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 				}	
 			}
 		});	
@@ -226,7 +224,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 				
 			}
 		});	
@@ -247,7 +245,7 @@ public class InvoiceListActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub	
+				StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 			}
 		});	
 	}
@@ -267,10 +265,11 @@ public class InvoiceListActivity extends AbstractActivity implements
 				if(caught instanceof BusinessException){
 					view.unmaskGrid();
 					BusinessException exp = (BusinessException) caught;
-					AlertMessageBox alertBox = new AlertMessageBox("Error", exp.getMessage());
-					alertBox.show();
-				}
-				
+					StockManagement.displayErrorPopUp(exp.getMessage());
+				} 
+				else{
+					StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
+				}	
 			}
 		});	
 	}

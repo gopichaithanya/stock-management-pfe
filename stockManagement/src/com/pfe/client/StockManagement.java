@@ -25,6 +25,7 @@ import com.pfe.client.ui.images.ImageResources;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
@@ -108,7 +109,7 @@ public class StockManagement implements EntryPoint {
 	}
 
 	/**
-	 * Builds the menu
+	 * Builds the menu common to all views
 	 * 
 	 */
 	public void buildToolbar() {
@@ -172,7 +173,22 @@ public class StockManagement implements EntryPoint {
 		toolBar.add(reportsBtn);
 	}
 
+	/**
+	 * Goes to another place/URL
+	 * 
+	 * @param place
+	 */
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
+	}
+	
+	/**
+	 * Displays alert message box on exception.
+	 * 
+	 * @param message
+	 */
+	public static void displayErrorPopUp(String message){
+		AlertMessageBox box = new AlertMessageBox("Error", message);
+		box.show();
 	}
 }

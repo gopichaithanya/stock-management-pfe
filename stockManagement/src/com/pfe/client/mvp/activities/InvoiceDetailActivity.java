@@ -4,10 +4,12 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.pfe.client.StockManagement;
 import com.pfe.client.mvp.ClientFactory;
 import com.pfe.client.mvp.places.InvoiceDetailPlace;
 import com.pfe.client.mvp.views.InvoiceDetailView;
 import com.pfe.client.service.InvoiceServiceAsync;
+import com.pfe.client.ui.ViewConstants;
 import com.pfe.shared.dto.InvoiceDTO;
 
 public class InvoiceDetailActivity extends AbstractActivity {
@@ -39,7 +41,7 @@ public class InvoiceDetailActivity extends AbstractActivity {
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				StockManagement.displayErrorPopUp(ViewConstants.techErrorMessage);
 				
 			}
 		});
