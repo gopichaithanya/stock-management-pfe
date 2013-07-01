@@ -2,6 +2,7 @@ package com.pfe.server.dao.location;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -32,6 +33,29 @@ public class LocationDAOImpl extends BaseDaoImpl<Long, Location> implements
 	public List<Location> search(int start, int limit) {
 		return findByCriteria(start, limit, (Criterion[])null);
 		 
+	}
+
+	@Override
+	public long countByCriteria(String name) {
+		
+		Criterion nameCriterion = null;
+		if (StringUtils.isNotBlank(name)){
+			nameCriterion = Restrictions.ilike("name", "%" + name + "%");
+		}
+		return countByCriteria(nameCriterion);
+	}
+
+	@Override
+	public List<Location> search(int start, int limit, String name) {
+		
+		Criterion criterion = null;
+		if (StringUtils.isNotBlank(name)){
+			criterion = Restrictions.ilike("name", "%" + name + "%");
+		}
+		
+		List<Location> results = findByCriteria(start, limit, criterion);
+		return results;
+		
 	}
 
 }
