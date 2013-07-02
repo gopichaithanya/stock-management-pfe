@@ -22,7 +22,7 @@ public class LocationTypeDAOImpl extends BaseDaoImpl<Long, LocationType>
 
 	@Override
 	public LocationType getWarehouseType() {
-		Criterion criterion = Restrictions.eq("description", "warehouse").ignoreCase();
+		Criterion criterion = Restrictions.eq("description", LocationType.warehouseDescription).ignoreCase();
 		List<LocationType> l = findByCriteria(criterion);
 		return l.size() > 0 ? l.get(0) : null; 
 	}

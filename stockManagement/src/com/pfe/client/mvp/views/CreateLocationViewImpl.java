@@ -121,7 +121,7 @@ public class CreateLocationViewImpl extends Window implements CreateLocationView
 		
 		//Remove warehouse
 		for(LocationTypeDTO type : locations){
-			if(type.getDescription().equals("warehouse")){
+			if(type.getDescription().equals(LocationTypeDTO.warehouseDescription)){
 				types.remove(type);
 				break;
 			}
