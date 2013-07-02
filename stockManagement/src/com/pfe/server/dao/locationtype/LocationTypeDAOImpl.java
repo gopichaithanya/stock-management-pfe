@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pfe.server.dao.BaseDaoImpl;
-import com.pfe.shared.model.LocationType;
+import com.pfe.server.model.LocationType;
 
 @Repository
 public class LocationTypeDAOImpl extends BaseDaoImpl<Long, LocationType>

@@ -8,7 +8,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pfe.shared.model.LocationType;
+import com.pfe.server.model.LocationType;
 
 public class LocationTypeTest {
 

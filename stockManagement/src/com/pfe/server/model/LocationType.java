@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

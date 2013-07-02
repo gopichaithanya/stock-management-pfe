@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.pfe.client.service.LocationTypeService;
 import com.pfe.server.dao.locationtype.LocationTypeDAO;
+import com.pfe.server.model.LocationType;
 import com.pfe.shared.dto.LocationTypeDTO;
-import com.pfe.shared.model.LocationType;
 
 @Service("locationTypeService")
 public class LocationTypeServiceImpl implements LocationTypeService {
