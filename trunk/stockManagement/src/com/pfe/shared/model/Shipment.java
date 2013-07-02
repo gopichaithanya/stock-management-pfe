@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.pfe.server.model.ProductType;
+
 /**
  * A shipment is a bundle of products of the same type belonging to the same
  * invoice. The current quantity of the shipment is changed when products are

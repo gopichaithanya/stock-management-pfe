@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

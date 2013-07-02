@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.pfe.server.model.ProductType;
+
 /**
  * A stock contains information on products stored in a certain location : the
  * type of products, the quantity and the location.

@@ -3,7 +3,7 @@ package com.pfe.server.dao.producttype;
 import java.util.List;
 
 import com.pfe.server.dao.IBaseDao;
-import com.pfe.shared.model.ProductType;
+import com.pfe.server.model.ProductType;
 
 public interface ProductTypeDao extends IBaseDao<Long, ProductType> {
 

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.pfe.server.dao.BaseDaoImpl;
 import com.pfe.server.dao.OrderAlias;
 import com.pfe.server.dao.SortField;
-import com.pfe.shared.model.ProductType;
+import com.pfe.server.model.ProductType;
 
 @Repository
 // declares dao bean
