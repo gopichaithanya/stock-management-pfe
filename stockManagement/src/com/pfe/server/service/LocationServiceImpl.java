@@ -35,6 +35,9 @@ public class LocationServiceImpl implements LocationService {
 	private StockDAO stockDao;
 	@Autowired
 	private DozerBeanMapper dozerMapper;
+	
+	public static final String FULL_LOCATION_MAPPING = "fullLocation";
+	public static final String MINI_LOCATION_MAPPING = "miniLocation";
 
 	@Override
 	public PagingLoadResult<LocationDTO> search(FilterPagingLoadConfig config) {
@@ -55,7 +58,7 @@ public class LocationServiceImpl implements LocationService {
 
 		if (sublist.size() > 0) {
 			for (Location invoice : sublist) {
-				dtos.add(dozerMapper.map(invoice, LocationDTO.class, "miniLocation"));
+				dtos.add(dozerMapper.map(invoice, LocationDTO.class, MINI_LOCATION_MAPPING));
 			}
 		}
 		return new PagingLoadResultBean<LocationDTO>(dtos, size, config.getOffset());
@@ -65,7 +68,7 @@ public class LocationServiceImpl implements LocationService {
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public LocationDTO find(Long id) {
 		Location entity = locationDao.get(id);
-		return dozerMapper.map(entity, LocationDTO.class, "fullLocation");	 
+		return dozerMapper.map(entity, LocationDTO.class, FULL_LOCATION_MAPPING);	 
 	}
 
 	@Override
@@ -73,7 +76,7 @@ public class LocationServiceImpl implements LocationService {
 		List<Location> locations = locationDao.findAll();
 		List<LocationDTO> dtos = new ArrayList<LocationDTO>();
 		for(Location location : locations){
-			dtos.add(dozerMapper.map(location, LocationDTO.class, "miniLocation"));
+			dtos.add(dozerMapper.map(location, LocationDTO.class, MINI_LOCATION_MAPPING));
 		}
 		return dtos;
 	}
@@ -84,7 +87,7 @@ public class LocationServiceImpl implements LocationService {
 		
 		Location entity = dozerMapper.map(location, Location.class);
 		Location merged = locationDao.merge(entity);
-		return dozerMapper.map(merged, LocationDTO.class, "miniLocation");
+		return dozerMapper.map(merged, LocationDTO.class, MINI_LOCATION_MAPPING);
 	}
 
 	@Override
@@ -110,7 +113,7 @@ public class LocationServiceImpl implements LocationService {
 		Location entity = dozerMapper.map(updatedLocation, Location.class);
 		Location merged = locationDao.merge(entity);
 		
-		return dozerMapper.map(merged, LocationDTO.class, "miniLocation");
+		return dozerMapper.map(merged, LocationDTO.class, MINI_LOCATION_MAPPING);
 	}
 
 	@Override
