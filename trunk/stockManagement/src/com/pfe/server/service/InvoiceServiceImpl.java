@@ -52,12 +52,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Autowired
 	private DozerBeanMapper dozerMapper;
 	
+	public static final String FULL_INVOICE_MAPPING = "fullInvoice";
+	public static final String MINI_INVOICE_MAPPING = "miniInvoice";
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
 	public InvoiceDTO find(Long id) {
 		Invoice invoice = invoiceDao.get(id);
-		return dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
+		return dozerMapper.map(invoice, InvoiceDTO.class, FULL_INVOICE_MAPPING);
 	}
 	
 	@Override
@@ -92,7 +94,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		if (sublist.size() > 0) {
 			for (Invoice invoice : sublist) {
-				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, "miniInvoice"));
+				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, MINI_INVOICE_MAPPING));
 			}
 		}
 		return new PagingLoadResultBean<InvoiceDTO>(dtos, size, config.getOffset());
@@ -103,7 +105,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public InvoiceDTO create(InvoiceDTO invoice) throws BusinessException {
 
-		Invoice entity = dozerMapper.map(invoice, Invoice.class, "fullInvoice");
+		Invoice entity = dozerMapper.map(invoice, Invoice.class, FULL_INVOICE_MAPPING);
 		//Get current date time
 		Date today = Calendar.getInstance().getTime();
 		entity.setCreated(today);
@@ -129,7 +131,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		
 		Invoice merged = invoiceDao.merge(entity);
-		return dozerMapper.map(merged, InvoiceDTO.class, "miniInvoice");
+		return dozerMapper.map(merged, InvoiceDTO.class, MINI_INVOICE_MAPPING);
 	}
 	
 	@Override
@@ -224,7 +226,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		invoice.setShipments(shipments);
 		invoiceDao.merge(invoice);	
-		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, "fullInvoice");
+		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, FULL_INVOICE_MAPPING);
 		return dto;
 	}
 	

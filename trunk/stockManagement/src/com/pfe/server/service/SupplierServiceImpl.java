@@ -30,6 +30,9 @@ public class SupplierServiceImpl implements SupplierService {
 	private InvoiceDao invoiceDao;
 	@Autowired
 	private DozerBeanMapper dozerMapper;
+	
+	public static final String FULL_SUPPLIER_MAPPING = "fullSupplier";
+	public static final String MINI_SUPPLIER_MAPPING = "miniSupplier";
 
 	@Override
 	//@Transactional(propagation = Propagation.NESTED, rollbackFor = Exception.class)
@@ -39,7 +42,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 		if (suppliers.size() > 0) {
 			for (Supplier supplier : suppliers) {
-				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,"miniSupplier"));
+				dtos.add(dozerMapper.map(supplier, SupplierDTO.class, MINI_SUPPLIER_MAPPING));
 			}
 		}
 		return dtos;
@@ -63,7 +66,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 		if (sublist.size() > 0) {
 			for (Supplier supplier : sublist) {
-				dtos.add(dozerMapper.map(supplier, SupplierDTO.class,"miniSupplier"));
+				dtos.add(dozerMapper.map(supplier, SupplierDTO.class, MINI_SUPPLIER_MAPPING));
 			}
 		}
 		return new PagingLoadResultBean<SupplierDTO>(dtos, size, config.getOffset());
@@ -74,7 +77,7 @@ public class SupplierServiceImpl implements SupplierService {
 	public SupplierDTO find(Long id) {
 		Supplier supplier = supplierDao.get(id);
 		if (supplier != null) {
-			SupplierDTO dto = dozerMapper.map(supplier, SupplierDTO.class,"fullSupplier");
+			SupplierDTO dto = dozerMapper.map(supplier, SupplierDTO.class, FULL_SUPPLIER_MAPPING);
 			return dto;
 		}
 		return null;
@@ -90,10 +93,10 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		
 		// here the supplier has no invoices
-		Supplier entity = dozerMapper.map(supplier, Supplier.class, "miniSupplier");
+		Supplier entity = dozerMapper.map(supplier, Supplier.class, MINI_SUPPLIER_MAPPING);
 		Supplier merged = supplierDao.merge(entity);
 		if (merged != null) {
-			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");
+			return dozerMapper.map(merged, SupplierDTO.class, MINI_SUPPLIER_MAPPING);
 		}
 		return null;
 	}
@@ -108,10 +111,10 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 
 		// we don't update invoices from the supplier view
-		Supplier entity = dozerMapper.map(updatedSupplier, Supplier.class, "miniSupplier");
+		Supplier entity = dozerMapper.map(updatedSupplier, Supplier.class, MINI_SUPPLIER_MAPPING);
 		Supplier merged = supplierDao.merge(entity);
 		if (merged != null) {
-			return dozerMapper.map(merged, SupplierDTO.class, "miniSupplier");
+			return dozerMapper.map(merged, SupplierDTO.class, MINI_SUPPLIER_MAPPING);
 		}
 		return null;
 	}
@@ -121,7 +124,7 @@ public class SupplierServiceImpl implements SupplierService {
 	public void delete(SupplierDTO supplier) throws BusinessException {
 
 		// don't delete if there are invoices belonging to this supplier
-		Supplier entity = dozerMapper.map(supplier, Supplier.class, "miniSupplier");
+		Supplier entity = dozerMapper.map(supplier, Supplier.class, MINI_SUPPLIER_MAPPING);
 		List<Invoice> invoices = invoiceDao.getBySupplier(entity);
 		if (invoices.size() > 0) {
 			throw new BusinessException( "Supplier has invoices associated and cannot be deleted.");

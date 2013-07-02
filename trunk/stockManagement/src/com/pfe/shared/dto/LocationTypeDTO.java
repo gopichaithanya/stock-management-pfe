@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public class LocationTypeDTO implements Serializable {
 
-	public static final String warehouseDescription = "warehouse";
-	public static final String storeDescription = "store";
+	public static final String WAREHOUSE_DESCRIPTION = "warehouse";
+	public static final String STORE_DESCRIPTION = "store";
 	
 	private static final long serialVersionUID = -3888513144445378457L;
 	private Long id;

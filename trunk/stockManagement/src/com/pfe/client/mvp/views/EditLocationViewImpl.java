@@ -132,7 +132,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 	@Override
 	public void setLocationTypes(List<LocationTypeDTO> locations) {
 		
-		if(location.getType().getDescription().equals(LocationTypeDTO.warehouseDescription)){
+		if(location.getType().getDescription().equals(LocationTypeDTO.WAREHOUSE_DESCRIPTION)){
 			//Not allowed to change the warehouse type
 			locationTypeCombo.setEditable(false);
 			locationTypeCombo.setValue(location.getType());
@@ -143,7 +143,7 @@ public class EditLocationViewImpl extends Window implements EditLocationView {
 			
 			//Remove warehouse
 			for(LocationTypeDTO type : locations){
-				if(type.getDescription().equals(LocationTypeDTO.warehouseDescription)){
+				if(type.getDescription().equals(LocationTypeDTO.WAREHOUSE_DESCRIPTION)){
 					locationTypeStore.remove(type);
 					break;
 				}
