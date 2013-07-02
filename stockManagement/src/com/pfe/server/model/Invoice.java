@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.pfe.server.model.Shipment;
-import com.pfe.server.model.Supplier;
 
 /**
  * An invoice is created when merchandise is received. Attributes: a unique

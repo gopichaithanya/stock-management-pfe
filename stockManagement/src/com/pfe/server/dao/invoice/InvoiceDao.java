@@ -3,8 +3,8 @@ package com.pfe.server.dao.invoice;
 import java.util.List;
 
 import com.pfe.server.dao.IBaseDao;
+import com.pfe.server.model.Invoice;
 import com.pfe.server.model.Supplier;
-import com.pfe.shared.model.Invoice;
 
 public interface InvoiceDao extends IBaseDao<Long, Invoice> {
 
