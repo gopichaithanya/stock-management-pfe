@@ -2,11 +2,15 @@ package com.pfe.shared.dto;
 
 import java.io.Serializable;
 
+/**
+ * DTO corresponding to ProductType entity. The dozerMapping file specifies the
+ * mapping between the two classes.
+ * 
+ * @author Alexandra
+ *
+ */
 public class ProductTypeDTO implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7903133210912274141L;
 	private Long id;
 	private String name;

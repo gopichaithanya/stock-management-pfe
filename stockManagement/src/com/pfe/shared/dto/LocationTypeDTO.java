@@ -2,6 +2,13 @@ package com.pfe.shared.dto;
 
 import java.io.Serializable;
 
+/**
+ * DTO corresponding to LocationType entity. The dozerMapping file specifies the
+ * mapping between the two classes.
+ * 
+ * @author Alexandra
+ * 
+ */
 public class LocationTypeDTO implements Serializable {
 
 	public static final String warehouseDescription = "warehouse";

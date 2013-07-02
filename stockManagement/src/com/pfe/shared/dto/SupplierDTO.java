@@ -3,11 +3,15 @@ package com.pfe.shared.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * DTO corresponding to Supplier entity. The dozerMapping file specifies two
+ * mappings for this object to include or exclude the list of invoices.
+ * 
+ * @author Alexandra
+ *
+ */
 public class SupplierDTO implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
