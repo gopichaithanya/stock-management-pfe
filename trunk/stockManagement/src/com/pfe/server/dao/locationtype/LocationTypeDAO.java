@@ -1,7 +1,7 @@
 package com.pfe.server.dao.locationtype;
 
 import com.pfe.server.dao.IBaseDao;
-import com.pfe.shared.model.LocationType;
+import com.pfe.server.model.LocationType;
 
 public interface LocationTypeDAO extends IBaseDao<Long, LocationType> {
 

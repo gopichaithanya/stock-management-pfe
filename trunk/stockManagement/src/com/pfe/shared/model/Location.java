@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import com.pfe.server.model.LocationType;
 import com.pfe.server.model.Stock;
 
 /**
