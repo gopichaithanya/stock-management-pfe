@@ -55,7 +55,7 @@ public class SupplierServiceImpl implements SupplierService {
 		FilterConfig nameFilter = config.getFilters().get(0);
 		String filterValue = nameFilter.getValue();	
 		if(filterValue != null){
-			filterValue.trim();
+			filterValue = filterValue.trim();
 		}
 		
 		int size = (int) supplierDao.countByCriteria(filterValue);

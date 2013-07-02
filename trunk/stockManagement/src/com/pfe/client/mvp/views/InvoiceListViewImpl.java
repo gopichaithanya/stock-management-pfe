@@ -382,7 +382,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 	@Override
 	public String getFilterValue() {
 		String codeString = toolbar.getFilterText().getValue();
-		if(codeString == null || codeString.trim() == "" ){
+		if(codeString == null || codeString.trim().equals("") ){
 			return null;
 		}
 		return codeString.trim();

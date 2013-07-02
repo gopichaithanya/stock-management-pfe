@@ -102,7 +102,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		FilterConfig codeFilter = config.getFilters().get(0);
 		String filterValue = codeFilter.getValue();
 		if(filterValue != null){
-			filterValue.trim();
+			filterValue = filterValue.trim();
 		}
 
 		int size = (int) typeDao.countByCriteria(filterValue);
