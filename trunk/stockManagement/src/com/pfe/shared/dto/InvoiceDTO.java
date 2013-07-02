@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * DTO corresponding to Invoice entity. The dozerMapping file specifies two
+ * mappings for this object to include or exclude the list of shipments.
+ * 
+ * @author Alexandra
+ * 
+ */
 public class InvoiceDTO implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2007176714543323710L;
 	public static final String IMMEDIATE_PAY = "immediate";
 	public static final String ONSALE_PAY = "onSale";

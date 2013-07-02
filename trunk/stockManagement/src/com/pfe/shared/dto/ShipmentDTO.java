@@ -3,11 +3,15 @@ package com.pfe.shared.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * DTO corresponding to Shipment entity. The dozerMapping file specifies the
+ * mapping between the two classes.
+ * 
+ * @author Alexandra
+ *
+ */
 public class ShipmentDTO implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private ProductTypeDTO productType;
