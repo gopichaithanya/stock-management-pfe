@@ -50,7 +50,7 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	</mapping>
 
 	<mapping>
-		<class-a>com.pfe.shared.model.Shipment</class-a>
+		<class-a>com.pfe.server.model.Shipment</class-a>
 		<class-b>com.pfe.shared.dto.ShipmentDTO</class-b>
 	</mapping>
 	

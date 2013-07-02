@@ -16,7 +16,7 @@ import com.pfe.server.dao.SortField;
 import com.pfe.server.dao.shipment.sort.ShipmentCreatedSortField;
 import com.pfe.server.dao.shipment.sort.ShipmentSortField;
 import com.pfe.server.model.ProductType;
-import com.pfe.shared.model.Shipment;
+import com.pfe.server.model.Shipment;
 
 @Repository
 public class ShipmentDaoImpl extends BaseDaoImpl<Long, Shipment> implements ShipmentDao {
