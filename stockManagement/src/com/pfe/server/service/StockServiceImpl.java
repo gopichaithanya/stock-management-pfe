@@ -16,6 +16,7 @@ import com.pfe.server.dao.location.LocationDAO;
 import com.pfe.server.dao.shipment.ShipmentDao;
 import com.pfe.server.dao.stock.StockDAO;
 import com.pfe.server.model.ProductType;
+import com.pfe.server.model.Stock;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
 import com.pfe.shared.dto.ProductTypeDTO;
@@ -23,7 +24,6 @@ import com.pfe.shared.dto.StockDTO;
 import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.Shipment;
-import com.pfe.shared.model.Stock;
 
 @Service("stockService") 
 public class StockServiceImpl implements StockService {

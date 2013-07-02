@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.server.model.ProductType;
+import com.pfe.server.model.Stock;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.LocationType;
 import com.pfe.shared.model.Shipment;
-import com.pfe.shared.model.Stock;
 
 @SuppressWarnings("unchecked")
 public class LocationTest {
