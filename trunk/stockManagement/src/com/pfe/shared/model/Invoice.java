@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.pfe.server.model.Supplier;
+
 /**
  * An invoice is created when merchandise is received. Attributes: a unique
  * code, the supplier of the products, the type of payment (immediate or on
