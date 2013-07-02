@@ -8,7 +8,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pfe.shared.model.Supplier;
+import com.pfe.server.model.Supplier;
 
 
 public class SupplierTest {

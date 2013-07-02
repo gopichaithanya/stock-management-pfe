@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import com.pfe.shared.model.Invoice;
 
 /**
  * A supplier has a unique name, a description and a list of invoices. 

@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfe.server.model.ProductType;
 import com.pfe.server.model.Stock;
+import com.pfe.server.model.Supplier;
 import com.pfe.shared.model.Invoice;
 import com.pfe.shared.model.Location;
 import com.pfe.shared.model.Shipment;
-import com.pfe.shared.model.Supplier;
 
 @SuppressWarnings("unchecked")
 public class InvoiceTest {
