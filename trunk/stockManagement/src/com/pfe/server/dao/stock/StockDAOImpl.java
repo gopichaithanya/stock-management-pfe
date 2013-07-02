@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.pfe.server.dao.BaseDaoImpl;
 import com.pfe.server.model.ProductType;
+import com.pfe.server.model.Stock;
 import com.pfe.shared.model.Location;
-import com.pfe.shared.model.Stock;
 
 @Repository
 public class StockDAOImpl extends BaseDaoImpl<Long, Stock> implements StockDAO {

@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import java.util.Comparator;
 
@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.pfe.server.model.ProductType;
+import com.pfe.shared.model.Location;
 
 /**
  * A stock contains information on products stored in a certain location : the
@@ -72,22 +72,35 @@ public class Stock {
 	 * @author Alexandra
 	 * 
 	 */
-	public static class StockComparator implements Comparator<Stock>{
+	public static class StockComparator implements Comparator<Stock> {
 
-		public int compare(Stock s1, Stock s2){
-			String t1 = s1.getType().getName();
-			String t2 = s2.getType().getName();
+		public int compare(Stock s1, Stock s2) {
 
-			if (t1 == null && t2 == null){
+			if (s1 != null && s2 != null) {
+
+				ProductType t1 = s1.getType();
+				ProductType t2 = s2.getType();
+
+				if (t1 != null && t2 != null) {
+
+					String n1 = t1.getName();
+					String n2 = t2.getName();
+
+					if (n1 == null && n2 == null) {
+						return 0;
+					} else if (n1 == null) {
+						return -1;
+					} else if (n2 == null) {
+						return 1;
+					} else {
+						return n1.toLowerCase().compareTo(n2.toLowerCase());
+					}
+
+				} else
+					return 0;
+
+			} else
 				return 0;
-			} else if (t1 == null){
-				return -1;
-			} else if (t2 == null){
-				return 1;
-			} else{
-				return t1.toLowerCase().compareTo(t2.toLowerCase());
-			}
-
 		}
 	}
 

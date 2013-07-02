@@ -80,7 +80,7 @@ http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	</mapping>
 	
 	<mapping>
-		<class-a>com.pfe.shared.model.Stock</class-a>
+		<class-a>com.pfe.server.model.Stock</class-a>
 		<class-b>com.pfe.shared.dto.StockDTO</class-b>
 		
 		<field map-id="miniLocation">

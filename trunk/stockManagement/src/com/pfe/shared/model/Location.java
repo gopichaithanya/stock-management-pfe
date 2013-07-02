@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import com.pfe.server.model.Stock;
+
 /**
  * The location stores products for sale. Attributes : a unique name, the type
  * (store, warehouse) and a list of stocks. Products can be sold from a location
