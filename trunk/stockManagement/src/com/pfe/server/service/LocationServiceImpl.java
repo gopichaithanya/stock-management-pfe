@@ -14,6 +14,7 @@ import com.pfe.client.service.LocationService;
 import com.pfe.server.dao.location.LocationDAO;
 import com.pfe.server.dao.locationtype.LocationTypeDAO;
 import com.pfe.server.dao.stock.StockDAO;
+import com.pfe.server.model.LocationType;
 import com.pfe.server.model.Stock;
 import com.pfe.shared.BusinessException;
 import com.pfe.shared.dto.LocationDTO;
@@ -90,6 +91,10 @@ public class LocationServiceImpl implements LocationService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(LocationDTO location) throws BusinessException {
 		Location entity = locationDao.get(location.getId());
+		if(entity.getType().getDescription().equals(LocationType.warehouseDescription)){
+			throw new BusinessException("You are not allowed to delete the warehouse");
+		}
+		
 		SortedSet<Stock> stocks = entity.getStocks();
 		if(stocks.size() > 0){
 			throw new BusinessException("Please clear stocks before deleting location.");
