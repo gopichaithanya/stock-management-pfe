@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import java.util.SortedSet;
 
@@ -16,8 +16,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.pfe.server.model.LocationType;
-import com.pfe.server.model.Stock;
 
 /**
  * The location stores products for sale. Attributes : a unique name, the type

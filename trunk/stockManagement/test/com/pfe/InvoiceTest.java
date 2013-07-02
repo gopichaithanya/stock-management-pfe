@@ -17,11 +17,11 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfe.server.model.Location;
 import com.pfe.server.model.ProductType;
 import com.pfe.server.model.Stock;
 import com.pfe.server.model.Supplier;
 import com.pfe.shared.model.Invoice;
-import com.pfe.shared.model.Location;
 import com.pfe.shared.model.Shipment;
 
 @SuppressWarnings("unchecked")

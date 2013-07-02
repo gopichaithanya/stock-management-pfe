@@ -3,8 +3,8 @@ package com.pfe.server.dao.location;
 import java.util.List;
 
 import com.pfe.server.dao.IBaseDao;
+import com.pfe.server.model.Location;
 import com.pfe.server.model.LocationType;
-import com.pfe.shared.model.Location;
 
 public interface LocationDAO extends IBaseDao<Long, Location> {
 	

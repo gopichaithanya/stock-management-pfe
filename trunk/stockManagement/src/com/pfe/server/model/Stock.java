@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.pfe.shared.model.Location;
 
 /**
  * A stock contains information on products stored in a certain location : the
