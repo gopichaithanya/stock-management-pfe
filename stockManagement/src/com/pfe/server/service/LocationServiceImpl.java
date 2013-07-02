@@ -46,7 +46,7 @@ public class LocationServiceImpl implements LocationService {
 		FilterConfig nameFilter = config.getFilters().get(0);
 		String filterValue = nameFilter.getValue();	
 		if(filterValue != null){
-			filterValue.trim();
+			filterValue = filterValue.trim();
 		}
 		
 		int size = (int) locationDao.countByCriteria(filterValue);
