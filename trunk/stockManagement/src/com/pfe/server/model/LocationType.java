@@ -15,6 +15,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "LocationTypes")
 public class LocationType{
+	
+	public static final String warehouseDescription = "warehouse";
+	public static final String storeDescription = "store";
 
 	private Long id;
 	private String description;
