@@ -1,4 +1,4 @@
-package com.pfe.shared.model;
+package com.pfe.server.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.pfe.server.model.ProductType;
+import com.pfe.shared.model.Invoice;
 
 /**
  * A shipment is a bundle of products of the same type belonging to the same
