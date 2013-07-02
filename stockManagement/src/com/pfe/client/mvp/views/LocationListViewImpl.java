@@ -104,23 +104,7 @@ public class LocationListViewImpl implements LocationListView {
 				presenter.displayDetailsView(store.get(event.getRowIndex()));
 			}
 		});
-		
-		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<LocationDTO>() {
-			
-			@Override
-			public void onSelection(SelectionEvent<LocationDTO> arg0) {
-				if (grid.getSelectionModel().getSelectedItems().size() > 1) { 
-					toolbar.getEditBtn().setEnabled(false);
-					toolbar.getDeleteBtn().setEnabled(true);
-				} else if (grid.getSelectionModel().getSelectedItems().size() == 1) { 
-					toolbar.getEditBtn().setEnabled(true);
-					toolbar.getDeleteBtn().setEnabled(true);
-				} else {
-					toolbar.getEditBtn().setEnabled(false);
-					toolbar.getDeleteBtn().setEnabled(false);
-				}
-			}
-		});
+	
 		pagingToolBar = new PagingToolBar(ViewConstants.recordsPerPage);
 				
 		toolbar = new GridToolbar();
@@ -157,8 +141,29 @@ public class LocationListViewImpl implements LocationListView {
 		toolbar.getFilterText().setEmptyText("Search name...");
 		
 		actionsBtn = new TextButton("Actions", ImageResources.INSTANCE.addActionIcon());
+		actionsBtn.setEnabled(false);
 		actionsBtn.addSelectHandler(new ActionBtnHandler());
 		toolbar.addTool(actionsBtn);
+		
+		grid.getSelectionModel().addSelectionHandler(new SelectionHandler<LocationDTO>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<LocationDTO> arg0) {
+				if (grid.getSelectionModel().getSelectedItems().size() > 1) { 
+					toolbar.getEditBtn().setEnabled(false);
+					actionsBtn.setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else if (grid.getSelectionModel().getSelectedItems().size() == 1) { 
+					toolbar.getEditBtn().setEnabled(true);
+					actionsBtn.setEnabled(true);
+					toolbar.getDeleteBtn().setEnabled(true);
+				} else {
+					toolbar.getEditBtn().setEnabled(false);
+					actionsBtn.setEnabled(false);
+					toolbar.getDeleteBtn().setEnabled(false);
+				}
+			}
+		});
 		
 		verticalCon = new VerticalLayoutContainer();
 		verticalCon.add(toolbar, new VerticalLayoutData(1, -1));
