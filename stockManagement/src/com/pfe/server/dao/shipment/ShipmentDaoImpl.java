@@ -15,7 +15,7 @@ import com.pfe.server.dao.OrderAlias;
 import com.pfe.server.dao.SortField;
 import com.pfe.server.dao.shipment.sort.ShipmentCreatedSortField;
 import com.pfe.server.dao.shipment.sort.ShipmentSortField;
-import com.pfe.shared.model.ProductType;
+import com.pfe.server.model.ProductType;
 import com.pfe.shared.model.Shipment;
 
 @Repository
