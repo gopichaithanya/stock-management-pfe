@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.pfe.shared.model.Invoice;
 
 /**
  * A shipment is a bundle of products of the same type belonging to the same

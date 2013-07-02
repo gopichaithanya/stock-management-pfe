@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 import com.pfe.server.dao.BaseDaoImpl;
 import com.pfe.server.dao.OrderAlias;
 import com.pfe.server.dao.SortField;
+import com.pfe.server.model.Invoice;
 import com.pfe.server.model.Supplier;
-import com.pfe.shared.model.Invoice;
 
 @Repository
 public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
