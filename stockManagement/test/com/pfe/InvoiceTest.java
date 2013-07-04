@@ -1,174 +1,91 @@
 package com.pfe;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
+import org.dozer.DozerBeanMapper;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.pfe.server.model.Invoice;
-import com.pfe.server.model.Location;
+import com.pfe.server.dao.producttype.ProductTypeDao;
+import com.pfe.server.dao.producttype.ProductTypeDaoImpl;
+import com.pfe.server.dao.supplier.SupplierDao;
+import com.pfe.server.dao.supplier.SupplierDaoImpl;
 import com.pfe.server.model.ProductType;
-import com.pfe.server.model.Shipment;
-import com.pfe.server.model.Stock;
 import com.pfe.server.model.Supplier;
+import com.pfe.server.service.InvoiceServiceImpl;
+import com.pfe.server.service.SupplierServiceImpl;
+import com.pfe.shared.BusinessException;
+import com.pfe.shared.dto.InvoiceDTO;
+import com.pfe.shared.dto.ProductTypeDTO;
+import com.pfe.shared.dto.ShipmentDTO;
+import com.pfe.shared.dto.SupplierDTO;
 
-@SuppressWarnings("unchecked")
 public class InvoiceTest {
+	
+	private ProductTypeDao productTypeDao;
+	private SupplierDao supplierDao;
+	private InvoiceServiceImpl invoiceService;
+	private DozerBeanMapper dozerMapper;
 
+	
 	/**
-	 * Receive new invoice 
+	 * Create invoice with ONSALE payment type. The invoice contains 1 shipment
+	 * so you should have at least one product type and one supplier in the
+	 * database.
 	 * 
 	 */
 	@Test
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void receiveInvoiceTest() {
-
+	public void createOnSaleInvoiceTest() {
+		
 		// Database connection
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"db-config.xml");
-		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
-		HibernateTemplate ht = new HibernateTemplate(sf);
+		ApplicationContext context = new ClassPathXmlApplicationContext("db-config.xml");
+		SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+		
+		invoiceService = new InvoiceServiceImpl();
+		dozerMapper = new DozerBeanMapper();
 
 		// Invoice attributes
-		Invoice i = new Invoice();
+		InvoiceDTO i = new InvoiceDTO();
 		Date date = Calendar.getInstance().getTime();
-		String paymentType = "onSale";
+		String paymentType = InvoiceDTO.ONSALE_PAY;
 		i.setCode(202);
 		i.setCreated(date);
 		i.setPaymentType(paymentType);
-		i.setRestToPay(new BigDecimal(0));
+		
+		//Supplier
+		supplierDao = new SupplierDaoImpl(sessionFactory);
+		Supplier supplier = (supplierDao.search(0, 1, null)).get(0);
+		i.setSupplier(dozerMapper.map(supplier, SupplierDTO.class, SupplierServiceImpl.MINI_SUPPLIER_MAPPING));
 
 		// Shipments
-		List<Shipment> shipments = new ArrayList<Shipment>();
+		ArrayList<ShipmentDTO> shipments = new ArrayList<ShipmentDTO>();
 		int qty = 1000;
-		Shipment s1 = new Shipment();
+		ShipmentDTO s1 = new ShipmentDTO();
 		s1.setCreated(date);
 		s1.setCurrentQuantity(qty);
 		s1.setInitialQuantity(qty);
-		if (paymentType.equals("onSale")) {
-			s1.setPaid(false);
-		} else {
-			s1.setPaid(true);
-		}
-
-		s1.setUnitPrice(new BigDecimal(20));
-		//set shipment type
-		DetachedCriteria pTypeCriteria = DetachedCriteria.forClass(ProductType.class);
-		pTypeCriteria.add(Restrictions.eq("name", "pen"));
-		List<ProductType> types = ht.findByCriteria(pTypeCriteria);
-		ProductType type = types.get(0);
+		s1.setPaid(false);
+		s1.setUnitPrice(new Double(20));
+		
+		// Shipment type
+		productTypeDao = new ProductTypeDaoImpl(sessionFactory);
+		ProductType type = (productTypeDao.search(0, 1, null)).get(0);
+		s1.setProductType(dozerMapper.map(type, ProductTypeDTO.class));
 	
-		s1.setProductType(type);
-		s1.setInvoice(i);
+//		s1.setInvoice(i);
 		shipments.add(s1);
 		i.setShipments(shipments);
-
-		// Supplier
-		DetachedCriteria supplierCriteria = DetachedCriteria.forClass(Supplier.class);
-		supplierCriteria.add(Restrictions.eq("name", "Supplier 2"));
-		List<Supplier> suppliers = ht.findByCriteria(supplierCriteria);
-		Supplier supplier = suppliers.get(0);
-		i.setSupplier(supplier);
-
-		// Update warehouse stocks
-		//get the warehouse
-		DetachedCriteria locationCriteria = DetachedCriteria.forClass(Location.class);
-		locationCriteria.add(Restrictions.eq("name", "Main warehouse"));
-		List<Location> warehouses = ht.findByCriteria(locationCriteria);
-		Location warehouse = warehouses.get(0);
 		
-		//get corresponding stocks
-		Stock stock;
-		DetachedCriteria stockCriteria = DetachedCriteria.forClass(Stock.class);
-		Criterion criterion1 = Restrictions.eq("location", warehouse);
-		Criterion criterion2 = Restrictions.eq("type", type);
-		stockCriteria.add(criterion1); stockCriteria.add(criterion2);
-		List<Stock> list = ht.findByCriteria(stockCriteria);
-		//no stocks of this type so create one
-		if(list.size() < 1){
-			stock = new Stock();
-			stock.setType(type);
-			stock.setQuantity(qty);
-			stock.setLocation(warehouse);
-		} else {
-			stock = list.get(0);
-			int newQty = stock.getQuantity() + qty;
-			stock.setQuantity(newQty);
-			stock.setLocation(warehouse);
+		try {
+			invoiceService.create(i);
+		} catch (BusinessException e) {
+			e.printStackTrace();
 		}
-
-		ht.saveOrUpdate(stock);
-		ht.saveOrUpdate(i);
+		
 	}
 
-	/**
-	 * Delete invoice
-	 * 
-	 */
-	@Test
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteInvoiceTest() {
-
-		// Database connection
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"db-config.xml");
-		SessionFactory sf = (SessionFactory) context.getBean("sessionFactory");
-		HibernateTemplate ht = new HibernateTemplate(sf);
-
-		// Get the warehouse
-		DetachedCriteria locationCriteria = DetachedCriteria.forClass(Location.class);
-		locationCriteria.add(Restrictions.eq("name", "Main warehouse"));
-		List<Location> warehouses = ht.findByCriteria(locationCriteria);
-		Location warehouse = warehouses.get(0);
-
-		// Get invoice to delete
-		DetachedCriteria invoiceCriteria = DetachedCriteria.forClass(Invoice.class);
-		invoiceCriteria.add(Restrictions.eq("code", 201));
-		List<Invoice> invoices = ht.findByCriteria(invoiceCriteria);
-		
-		if (invoices.size() > 0) {
-			Invoice i = invoices.get(0);
-
-			List<Shipment> shipments = i.getShipments();
-			// for each shipment to delete, remove products from
-			// warehouse stocks if possible
-			for (Shipment s : shipments) {
-				ProductType pType = s.getProductType();
-				int qty = s.getCurrentQuantity();
-				
-				DetachedCriteria stockCriteria = DetachedCriteria.forClass(Stock.class);
-				Criterion criterion1 = Restrictions.eq("location", warehouse);
-				Criterion criterion2 = Restrictions.eq("type", pType);
-				stockCriteria.add(criterion1); stockCriteria.add(criterion2);
-				List<Stock> list = ht.findByCriteria(stockCriteria);
-
-				if (list.size() == 0) {
-					// can't delete ---> throw exception
-				} else {
-					Stock warehouseStock = list.get(0);
-					int warehouseQty = warehouseStock.getQuantity();
-					if (warehouseQty < qty) {
-						// can't delete, throw exception
-					} else {
-						int newQty = warehouseStock.getQuantity() - qty;
-						warehouseStock.setQuantity(newQty);
-						ht.merge(warehouseStock);
-					}
-				}
-			}
-			ht.delete(i);
-		}
-	}
 }
