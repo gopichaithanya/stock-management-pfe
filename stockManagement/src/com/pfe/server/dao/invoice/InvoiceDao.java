@@ -19,6 +19,7 @@ public interface InvoiceDao extends IBaseDao<Long, Invoice> {
 
 	/**
 	 * Retrieves invoices applying limit of results and filter by code.
+	 * The code parameter is ignored if its value == -1
 	 * 
 	 * @param start
 	 * @param limit
@@ -28,14 +29,36 @@ public interface InvoiceDao extends IBaseDao<Long, Invoice> {
 	 */
 	public List<Invoice> search(int start, int limit, Boolean showAll, int code); 
 	
+	/**
+	 * Retrieves invoices applying limit of results and filter by supplier name.
+	 * The supplier name parameter is ignored if null or blank.
+	 * 
+	 * @param start
+	 * @param limit
+	 * @param supplierName
+	 * @return
+	 */
+	public List<Invoice> search(int start, int limit, String supplierName); 
 	
 	/**
-	 * Counts records applying criteria for filter code and show all/ show
-	 * unpaid only option
+	 * Counts records applying criteria for filter on invoice code and show all/
+	 * show unpaid only option. The code parameter is ignored if its value == -1
 	 * 
 	 * @param countAll
 	 * @param code
 	 * @return
 	 */
 	public long countByCriteria(Boolean countAll, int code);
+	
+
+	/**
+	 * Counts invoice records where supplier name like given parameter. The
+	 * boolean parameter indicates whether to count or not the paid invoices.
+	 * The supplier name parameter is ignored if null or blank.
+	 * 
+	 * @param showAll
+	 * @param supplierName
+	 * @return
+	 */
+	public int countByCriteria(Boolean showAll, String supplierName);
 }

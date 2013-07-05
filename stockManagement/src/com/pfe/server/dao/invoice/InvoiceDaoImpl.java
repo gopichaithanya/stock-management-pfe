@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +81,51 @@ public class InvoiceDaoImpl extends BaseDaoImpl<Long, Invoice> implements
 		
 		return countByCriteria(showAll, filter);
 	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Invoice> search(int start, int limit, String supplierName) {
+		
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Invoice.class).createCriteria("supplier");
+		Criterion criterion = null;
+		
+		if(StringUtils.isNotBlank(supplierName)){
+			criterion = Restrictions.ilike("name", "%" + supplierName + "%");
+		}
+		detachedCriteria.add(criterion);
+		return (List<Invoice>)getHibernateTemplate().findByCriteria(detachedCriteria, start, limit);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public int countByCriteria(Boolean showAll, String supplierName) {
+		
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Invoice.class).createCriteria("supplier");
+		Criterion criterion = null;
+		
+		if(StringUtils.isNotBlank(supplierName)){
+			criterion = Restrictions.ilike("name", "%" + supplierName + "%");
+		}
+		detachedCriteria.add(criterion);
+		List<Invoice> allInvoices = (List<Invoice>)getHibernateTemplate().findByCriteria(detachedCriteria);
+
+		if(!showAll){
+			//Keep only those invoices with restToPay > 0
+			List<Invoice> unpaidInvoices = new ArrayList<Invoice>();
+			for(Invoice invoice : allInvoices){
+				if(invoice.getRestToPay().compareTo(new BigDecimal(0)) == 1){
+					unpaidInvoices.add(invoice);
+				}
+			}
+			return unpaidInvoices.size();
+			
+		} else {
+			return allInvoices.size();
+		}
+	}
+
+
+
+
 	
 }

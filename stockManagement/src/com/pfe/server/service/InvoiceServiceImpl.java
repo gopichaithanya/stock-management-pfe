@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,11 +66,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public PagingLoadResult<InvoiceDTO> search(FilterPagingLoadConfig config) {
 		
+		int start = config.getOffset();
+		int limit = config.getLimit();
+		List<Invoice> sublist = new ArrayList<Invoice>();
+		int size = 0;
+		
 		//Retrieve all invoices by default
 		Boolean showAll = true;
-		
-		//Filter by code unused by default
-		int invoiceCode = -1;
 		
 		//Show all or unpaid invoices filter
 		FilterConfig debtFilter = config.getFilters().get(0);
@@ -81,17 +84,41 @@ public class InvoiceServiceImpl implements InvoiceService {
 		//Get filter value 
 		FilterConfig codeFilter = config.getFilters().get(1);
 		String filterValue = codeFilter.getValue();
-		if(filterValue != null){
-			invoiceCode = Integer.parseInt(filterValue); //Parse exception handled on client side
+		
+		try{
+			// Filter by code
+			int invoiceCode = Integer.parseInt(filterValue); 
+			
+			size = (int) invoiceDao.countByCriteria(showAll, invoiceCode);
+			sublist = invoiceDao.search(start, limit, showAll, invoiceCode);
 		}
 		
-		int start = config.getOffset();
-		int limit = config.getLimit();
-		int size = (int) invoiceDao.countByCriteria(showAll, invoiceCode);
+		catch (NumberFormatException ex){
+			//Filter by supplier name
+			if(StringUtils.isNotBlank(filterValue)){
+				size = invoiceDao.countByCriteria(showAll, filterValue);
+				
+				List<Invoice> sublistShowAll = invoiceDao.search(start, limit, filterValue);
+				if(!showAll){
+					//Keep only unpaid invoices
+					for(Invoice invoice : sublistShowAll){
+						if(invoice.getRestToPay().compareTo(new BigDecimal(0)) == 1){
+							sublist.add(invoice);
+						}
+					}
+				} else {
+					sublist.addAll(sublistShowAll);
+				}
+			
+			} else {
+				//Empty filter 
+				size = (int) invoiceDao.countByCriteria(showAll, -1);
+				sublist = invoiceDao.search(start, limit, showAll, -1);
+			}
+			
+		}
 		
-		List<Invoice> sublist = invoiceDao.search(start, limit, showAll, invoiceCode);
 		List<InvoiceDTO> dtos = new ArrayList<InvoiceDTO>();
-
 		if (sublist.size() > 0) {
 			for (Invoice invoice : sublist) {
 				dtos.add(dozerMapper.map(invoice, InvoiceDTO.class, MINI_INVOICE_MAPPING));
