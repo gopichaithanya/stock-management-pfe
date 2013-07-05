@@ -26,7 +26,6 @@ import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.Dialog;
-import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
@@ -161,8 +160,15 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		toolbar.getDeleteBtn().addSelectHandler(new DeleteBtnHandler());
 		toolbar.getEditBtn().setEnabled(false);
 		toolbar.getDeleteBtn().setEnabled(false);
-		toolbar.getFilterText().setEmptyText("Search code...");
-		toolbar.getFilterBtn().addSelectHandler(new FilterBtnHandler());
+		toolbar.getFilterText().setEmptyText("Search Code OR Supplier...");
+		toolbar.getFilterBtn().addSelectHandler(new SelectHandler() {
+			
+			@Override
+			public void onSelect(SelectEvent event) {
+				presenter.search();
+				
+			}
+		});
 		toolbar.getClearFilterBtn().addSelectHandler(new SelectHandler(){
 
 			@Override
@@ -267,27 +273,6 @@ public class InvoiceListViewImpl implements InvoiceListView {
 		}
 	}
 	
-	/**
-	 * Filter list by code handler
-	 * 
-	 * @author Alexandra
-	 * 
-	 */
-	private class FilterBtnHandler implements SelectHandler {
-
-		@Override
-		public void onSelect(SelectEvent event) {
-			String filterValue = toolbar.getFilterText().getCurrentValue();
-			try{
-				Integer.parseInt(filterValue.trim());
-				presenter.search();
-			} catch(NumberFormatException ex){
-				AlertMessageBox box = new AlertMessageBox("Bad input", "Please provide a valid number for filter search");
-				box.show();
-			}
-		}
-	}
-	
 	@Override
 	public Widget asWidget() {
 		return verticalCon;
@@ -381,7 +366,7 @@ public class InvoiceListViewImpl implements InvoiceListView {
 
 	@Override
 	public String getFilterValue() {
-		String codeString = toolbar.getFilterText().getValue();
+		String codeString = toolbar.getFilterText().getCurrentValue();
 		if(codeString == null || codeString.trim().equals("") ){
 			return null;
 		}
