@@ -169,25 +169,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Long id = updatedInvoice.getId();
 		Invoice invoice = invoiceDao.get(id);
 		
-		//Supplier update
-		Long initialId = invoice.getSupplier().getId();
-		Long updatedId = updatedInvoice.getSupplier().getId();
-		if(!initialId.equals(updatedId)){
-			
-			Supplier updatedSupplier = supplierDao.get(updatedId);
-			invoice.setSupplier(updatedSupplier);
-			updatedSupplier.getInvoices().add(invoice);
-			
-			Supplier initialSupplier = invoice.getSupplier();
-			initialSupplier.getInvoices().remove(invoice);
-		
-			supplierDao.merge(initialSupplier);
-			supplierDao.merge(updatedSupplier);
-		}
-		
 		//Debt update
 		BigDecimal updatedDebt = new BigDecimal(updatedInvoice.getRestToPay());
 		invoice.setRestToPay(updatedDebt);
+		
+		//Supplier update
+		Supplier updatedSupplier = dozerMapper.map(updatedInvoice.getSupplier(), Supplier.class);
+		invoice.setSupplier(updatedSupplier);
 		
 		//Shipments update
 		List<ShipmentDTO> shipmentDtos = updatedInvoice.getShipments();
@@ -252,8 +240,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			
 		}
 		invoice.setShipments(shipments);
-		invoiceDao.merge(invoice);	
-		InvoiceDTO dto = dozerMapper.map(invoice, InvoiceDTO.class, FULL_INVOICE_MAPPING);
+		Invoice merged = invoiceDao.merge(invoice);	
+		InvoiceDTO dto = dozerMapper.map(merged, InvoiceDTO.class, FULL_INVOICE_MAPPING);
 		return dto;
 	}
 	
