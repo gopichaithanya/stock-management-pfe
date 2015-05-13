@@ -1,0 +1,1 @@
+technologies: gwt, hibernate, j2ee
